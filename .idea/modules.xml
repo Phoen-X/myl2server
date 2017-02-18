@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/l2-gameserver/l2-gameserver.iml" filepath="$PROJECT_DIR$/l2-gameserver/l2-gameserver.iml" />
+      <module fileurl="file://$PROJECT_DIR$/l2-loginserver/l2-loginserver.iml" filepath="$PROJECT_DIR$/l2-loginserver/l2-loginserver.iml" />
+      <module fileurl="file://$PROJECT_DIR$/l2-mock-client/l2-mock-client.iml" filepath="$PROJECT_DIR$/l2-mock-client/l2-mock-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/l2-network/l2-network.iml" filepath="$PROJECT_DIR$/l2-network/l2-network.iml" />
+      <module fileurl="file://$PROJECT_DIR$/myl2server.iml" filepath="$PROJECT_DIR$/myl2server.iml" />
+    </modules>
+  </component>
+</project>
