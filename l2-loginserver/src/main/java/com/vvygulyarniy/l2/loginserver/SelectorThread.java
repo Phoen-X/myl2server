@@ -19,6 +19,7 @@ package com.vvygulyarniy.l2.loginserver;
 
 import com.l2server.network.*;
 import com.l2server.network.clientpackets.L2LoginClientPacket;
+import com.l2server.network.util.crypt.LoginCrypt;
 import com.vvygulyarniy.l2.loginserver.logic.LoginPacketsProcessor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -111,6 +112,36 @@ public final class SelectorThread<T extends MMOClient<?>> extends Thread impleme
         _clientFactory = clientFactory;
         _executor = executor;
         _selector = Selector.open();
+    }
+
+    final static void putPacketIntoWriteBuffer(final LoginCrypt loginCrypt, final SendablePacket sp, ByteBuffer buffer) {
+        buffer.clear();
+
+        // reserve space for the size
+        final int headerPos = buffer.position();
+        final int dataPos = headerPos + HEADER_SIZE;
+        buffer.position(dataPos);
+
+        // set the write buffer
+        sp._buf = buffer;
+        // set the client.
+        // write content to buffer
+        sp.write();
+        // delete the write buffer
+        sp._buf = null;
+
+        // size (inclusive header)
+        int dataSize = buffer.position() - dataPos;
+        buffer.position(dataPos);
+        loginCrypt.encrypt(buffer, dataSize);
+
+        // recalculate size after encryption
+        dataSize = buffer.position() - dataPos;
+
+        buffer.position(headerPos);
+        // write header
+        buffer.putShort((short) (dataSize + HEADER_SIZE));
+        buffer.position(dataPos + dataSize);
     }
 
     private void openServerSocket(InetAddress address, int tcpPort) {
@@ -418,7 +449,7 @@ public final class SelectorThread<T extends MMOClient<?>> extends Thread impleme
             while ((sp = sendQueue.removeFirst()) != null) {
                 WRITE_BUFFER.clear();
 
-                putPacketIntoWriteBuffer(con.getClient(), sp);
+                putPacketIntoWriteBuffer(((L2LoginClient) con.getClient()).getLoginCrypt(), sp, WRITE_BUFFER);
 
                 WRITE_BUFFER.flip();
 
@@ -500,7 +531,7 @@ public final class SelectorThread<T extends MMOClient<?>> extends Thread impleme
                 hasPending = true;
 
                 // put into WriteBuffer
-                putPacketIntoWriteBuffer(client, sp);
+                putPacketIntoWriteBuffer(((L2LoginClient) client).getLoginCrypt(), sp, WRITE_BUFFER);
 
                 WRITE_BUFFER.flip();
 
@@ -513,36 +544,6 @@ public final class SelectorThread<T extends MMOClient<?>> extends Thread impleme
             }
         }
         return hasPending;
-    }
-
-    private final void putPacketIntoWriteBuffer(final MMOClient client, final SendablePacket sp) {
-        WRITE_BUFFER.clear();
-
-        // reserve space for the size
-        final int headerPos = WRITE_BUFFER.position();
-        final int dataPos = headerPos + HEADER_SIZE;
-        WRITE_BUFFER.position(dataPos);
-
-        // set the write buffer
-        sp._buf = WRITE_BUFFER;
-        // set the client.
-        // write content to buffer
-        sp.write();
-        // delete the write buffer
-        sp._buf = null;
-
-        // size (inclusive header)
-        int dataSize = WRITE_BUFFER.position() - dataPos;
-        WRITE_BUFFER.position(dataPos);
-        client.encrypt(WRITE_BUFFER, dataSize);
-
-        // recalculate size after encryption
-        dataSize = WRITE_BUFFER.position() - dataPos;
-
-        WRITE_BUFFER.position(headerPos);
-        // write header
-        WRITE_BUFFER.putShort((short) (dataSize + HEADER_SIZE));
-        WRITE_BUFFER.position(dataPos + dataSize);
     }
 
     public final void closeConnection(final MMOConnection con) {

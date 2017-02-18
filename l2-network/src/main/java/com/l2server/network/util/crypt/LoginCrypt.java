@@ -20,6 +20,7 @@ package com.l2server.network.util.crypt;
 
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.Random;
 
 /**
@@ -117,5 +118,16 @@ public class LoginCrypt {
             _crypt.crypt(raw, offset, size);
         }
         return size;
+    }
+
+    public ByteBuffer encrypt(ByteBuffer buffer, int size) {
+        final int offset = buffer.position();
+        try {
+            size = encrypt(buffer.array(), offset, size);
+            buffer.position(offset + size);
+            return buffer;
+        } catch (IOException e) {
+            throw new RuntimeException("Parse exception");
+        }
     }
 }

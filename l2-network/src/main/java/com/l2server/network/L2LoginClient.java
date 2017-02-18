@@ -21,6 +21,7 @@ package com.l2server.network;
 
 import com.l2server.network.util.crypt.LoginCrypt;
 import com.l2server.network.util.crypt.ScrambledKeyPair;
+import lombok.Getter;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -38,7 +39,8 @@ import java.util.Random;
 public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>> {
     private static final Random rnd = new Random();
     // Crypt
-    private final LoginCrypt _loginCrypt;
+    @Getter
+    private final LoginCrypt loginCrypt;
     private final ScrambledKeyPair _scrambledPair;
     private final byte[] _blowfishKey;
     private final int _sessionId;
@@ -62,15 +64,15 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
         this._blowfishKey = blowfishKey;
         this._sessionId = rnd.nextInt();
         this._connectionStartTime = System.currentTimeMillis();
-        this._loginCrypt = new LoginCrypt();
-        this._loginCrypt.setKey(blowfishKey);
+        this.loginCrypt = new LoginCrypt();
+        this.loginCrypt.setKey(blowfishKey);
     }
 
     @Override
     public boolean decrypt(ByteBuffer buf, int size) {
         boolean isChecksumValid = false;
         try {
-            isChecksumValid = _loginCrypt.decrypt(buf.array(), buf.position(), size);
+            isChecksumValid = loginCrypt.decrypt(buf.array(), buf.position(), size);
             if (!isChecksumValid) {
 
                 super.getConnection().close((SendablePacket) null);
@@ -86,15 +88,21 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 
     @Override
     public boolean encrypt(ByteBuffer buf, int size) {
-        final int offset = buf.position();
+        /*final int offset = buf.position();
         try {
-            size = _loginCrypt.encrypt(buf.array(), offset, size);
+            size = loginCrypt.encrypt(buf.array(), offset, size);
         } catch (IOException e) {
 
             return false;
         }
         buf.position(offset + size);
-        return true;
+        return true;*/
+        try {
+            loginCrypt.encrypt(buf, size);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public LoginClientState getState() {
