@@ -127,6 +127,7 @@ public class GameServerSelectorThread extends Thread implements BuffersHolder {
             }
 
             if (selectedKeysCount > 0) {
+                log.info("new connection");
                 selectedKeys = _selector.selectedKeys().iterator();
                 while (selectedKeys.hasNext()) {
                     key = selectedKeys.next();
@@ -472,7 +473,7 @@ public class GameServerSelectorThread extends Thread implements BuffersHolder {
         sp._buf = WRITE_BUFFER;
         // set the client.
         // write content to buffer
-        sp.write();
+        sp.write(WRITE_BUFFER);
         // delete the write buffer
         sp._buf = null;
 

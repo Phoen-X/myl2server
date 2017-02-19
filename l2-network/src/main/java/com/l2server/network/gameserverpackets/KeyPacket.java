@@ -21,6 +21,8 @@ package com.l2server.network.gameserverpackets;
 import com.l2server.network.serverpackets.L2GameServerPacket;
 import lombok.ToString;
 
+import java.nio.ByteBuffer;
+
 @ToString
 public final class KeyPacket extends L2GameServerPacket {
     private final byte[] _key;
@@ -32,15 +34,15 @@ public final class KeyPacket extends L2GameServerPacket {
     }
 
     @Override
-    public void writeImpl() {
-        writeC(0x2e);
-        writeC(_id); // 0 - wrong protocol, 1 - protocol ok
+    public void writeImpl(ByteBuffer buffer) {
+        writeC(buffer, 0x2e);
+        writeC(buffer, _id); // 0 - wrong protocol, 1 - protocol ok
         for (int i = 0; i < 8; i++) {
-            writeC(_key[i]); // key
+            writeC(buffer, _key[i]); // key
         }
-        writeD(0x01);
-        writeD(0x01); // server id
-        writeC(0x01);
-        writeD(0x00); // obfuscation key
+        writeD(buffer, 0x01);
+        writeD(buffer, 0x01); // server id
+        writeC(buffer, 0x01);
+        writeD(buffer, 0x00); // obfuscation key
     }
 }

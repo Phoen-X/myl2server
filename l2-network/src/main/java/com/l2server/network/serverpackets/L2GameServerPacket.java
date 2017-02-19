@@ -20,6 +20,8 @@ package com.l2server.network.serverpackets;
 
 import com.l2server.network.SendablePacket;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author KenM
  */
@@ -46,6 +48,7 @@ public abstract class L2GameServerPacket extends SendablePacket {
 
     /**
      * Writes 3 D (int32) with current location x, y, z
+     * @param buffer
      */
     /*protected void writeLoc( loc) {
         writeD(loc.getX());
@@ -54,13 +57,13 @@ public abstract class L2GameServerPacket extends SendablePacket {
     }
 */
     @Override
-    public void write() {
-        writeImpl();
+    public void write(ByteBuffer buffer) {
+        writeImpl(buffer);
     }
 
     public void runImpl() {
 
     }
 
-    protected abstract void writeImpl();
+    protected abstract void writeImpl(ByteBuffer buffer);
 }

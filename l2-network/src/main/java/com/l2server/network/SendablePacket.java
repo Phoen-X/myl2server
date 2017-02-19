@@ -17,16 +17,18 @@
  */
 package com.l2server.network;
 
+import java.nio.ByteBuffer;
+
 public abstract class SendablePacket extends AbstractPacket {
-    protected final void putInt(final int value) {
+    protected final void putInt(ByteBuffer _buf, final int value) {
         _buf.putInt(value);
     }
 
-    protected final void putDouble(final double value) {
+    protected final void putDouble(ByteBuffer _buf, final double value) {
         _buf.putDouble(value);
     }
 
-    protected final void putFloat(final float value) {
+    protected final void putFloat(ByteBuffer _buf, final float value) {
         _buf.putFloat(value);
     }
 
@@ -36,7 +38,7 @@ public abstract class SendablePacket extends AbstractPacket {
      *
      * @param data
      */
-    protected final void writeC(final int data) {
+    protected final void writeC(ByteBuffer _buf, int data) {
         _buf.put((byte) data);
     }
 
@@ -47,7 +49,7 @@ public abstract class SendablePacket extends AbstractPacket {
      *
      * @param value
      */
-    protected final void writeF(final double value) {
+    protected final void writeF(ByteBuffer _buf, final double value) {
         _buf.putDouble(value);
     }
 
@@ -57,7 +59,7 @@ public abstract class SendablePacket extends AbstractPacket {
      *
      * @param value
      */
-    protected final void writeH(final int value) {
+    protected final void writeH(ByteBuffer _buf, final int value) {
         _buf.putShort((short) value);
     }
 
@@ -67,7 +69,7 @@ public abstract class SendablePacket extends AbstractPacket {
      *
      * @param value
      */
-    protected final void writeD(final int value) {
+    protected final void writeD(ByteBuffer _buf, final int value) {
         _buf.putInt(value);
     }
 
@@ -77,7 +79,7 @@ public abstract class SendablePacket extends AbstractPacket {
      *
      * @param value
      */
-    protected final void writeQ(final long value) {
+    protected final void writeQ(ByteBuffer _buf, final long value) {
         _buf.putLong(value);
     }
 
@@ -87,16 +89,17 @@ public abstract class SendablePacket extends AbstractPacket {
      *
      * @param data
      */
-    protected final void writeB(final byte[] data) {
+    protected final void writeB(ByteBuffer _buf, final byte[] data) {
         _buf.put(data);
     }
 
     /**
      * Write <B>String</B> to the buffer.
      *
+     * @param _buf
      * @param text
      */
-    protected final void writeS(final String text) {
+    protected final void writeS(ByteBuffer _buf, final String text) {
         if (text != null) {
             final int len = text.length();
             for (int i = 0; i < len; i++) {
@@ -107,5 +110,5 @@ public abstract class SendablePacket extends AbstractPacket {
         _buf.putChar('\000');
     }
 
-    public abstract void write();
+    public abstract void write(ByteBuffer buffer);
 }

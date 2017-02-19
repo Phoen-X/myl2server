@@ -18,6 +18,8 @@
  */
 package com.l2server.network.serverpackets;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author devScarlet, mrTJO
  */
@@ -28,7 +30,7 @@ public class ServerClose extends L2GameServerPacket {
     }
 
     @Override
-    protected void writeImpl() {
-        writeC(0x20);
+    protected void writeImpl(ByteBuffer buffer) {
+        writeC(buffer, 0x20);
     }
 }

@@ -21,6 +21,8 @@ package com.l2server.network;
 
 import lombok.ToString;
 
+import java.nio.ByteBuffer;
+
 /**
  * <pre>
  * Format: dd b dddd s
@@ -53,21 +55,16 @@ public final class Init extends L2LoginServerPacket {
     }
 
     @Override
-    public void write() {
-        writeC(0x00); // init packet id
-
-        writeD(_sessionId); // session id
-        writeD(0x0000c621); // protocol revision
-
-        writeB(_publicKey); // RSA Public Key
-
-        // unk GG related?
-        writeD(0x29DD954E);
-        writeD(0x77C39CFC);
-        writeD(0x97ADB620);
-        writeD(0x07BDE0F7);
-
-        writeB(_blowfishKey); // BlowFish key
-        writeC(0x00); // null termination ;)
+    public void write(ByteBuffer buffer) {
+        writeC(buffer, 0x00); // init packet id
+        writeD(buffer, _sessionId); // session id
+        writeD(buffer, 0x0000c621); // protocol revision
+        writeB(buffer, _publicKey); // RSA Public Key
+        writeD(buffer, 0x29DD954E);// unk GG related?
+        writeD(buffer, 0x77C39CFC);// unk GG related?
+        writeD(buffer, 0x97ADB620);// unk GG related?
+        writeD(buffer, 0x07BDE0F7);// unk GG related?
+        writeB(buffer, _blowfishKey); // BlowFish key
+        writeC(buffer, 0x00); // null termination ;)
     }
 }

@@ -18,6 +18,8 @@
  */
 package com.l2server.network;
 
+import java.nio.ByteBuffer;
+
 /**
  * Fromat: d d: the failure reason
  */
@@ -29,9 +31,9 @@ public final class LoginFail extends L2LoginServerPacket {
     }
 
     @Override
-    public void write() {
-        writeC(0x01);
-        writeC(_reason.getCode());
+    public void write(ByteBuffer buffer) {
+        writeC(buffer, 0x01);
+        writeC(buffer, _reason.getCode());
     }
 
     public static enum LoginFailReason {

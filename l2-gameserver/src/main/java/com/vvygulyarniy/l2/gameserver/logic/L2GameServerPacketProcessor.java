@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
     @Override
     public void process(ProtocolVersion packet, L2GameClient client) {
+        log.info("Got packet: {}", packet);
         // this packet is never encrypted
         if (packet.getVersion() == -2) {
             // this is just a ping attempt from the new C2 client

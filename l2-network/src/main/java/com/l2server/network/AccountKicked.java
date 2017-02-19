@@ -18,6 +18,8 @@
  */
 package com.l2server.network;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author KenM
  */
@@ -32,9 +34,9 @@ public final class AccountKicked extends L2LoginServerPacket {
     }
 
     @Override
-    public void write() {
-        writeC(0x02);
-        writeD(_reason.getCode());
+    public void write(ByteBuffer buffer) {
+        writeC(buffer, 0x02);
+        writeD(buffer, _reason.getCode());
     }
 
     public static enum AccountKickedReason {

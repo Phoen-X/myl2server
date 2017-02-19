@@ -21,6 +21,7 @@ package com.l2server.network;
 
 import lombok.ToString;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -69,44 +70,44 @@ public final class ServerList extends L2LoginServerPacket {
     }
 
     @Override
-    public void write() {
-        writeC(0x04);
-        writeC(_servers.size());
-        writeC(_lastServer);
+    public void write(ByteBuffer buffer) {
+        writeC(buffer, 0x04);
+        writeC(buffer, _servers.size());
+        writeC(buffer, _lastServer);
         for (ServerData server : _servers) {
-            writeC(server._serverId); // server id
+            writeC(buffer, server._serverId); // server id
 
-            writeC(server._ip[0] & 0xff);
-            writeC(server._ip[1] & 0xff);
-            writeC(server._ip[2] & 0xff);
-            writeC(server._ip[3] & 0xff);
+            writeC(buffer, server._ip[0] & 0xff);
+            writeC(buffer, server._ip[1] & 0xff);
+            writeC(buffer, server._ip[2] & 0xff);
+            writeC(buffer, server._ip[3] & 0xff);
 
-            writeD(server._port);
-            writeC(server._ageLimit); // Age Limit 0, 15, 18
-            writeC(server._pvp ? 0x01 : 0x00);
-            writeH(server._currentPlayers);
-            writeH(server._maxPlayers);
-            writeC(server._status == com.l2server.network.gameserverpackets.ServerStatus.STATUS_DOWN ? 0x00 : 0x01);
-            writeD(server._serverType); // 1: Normal, 2: Relax, 4: Public Test, 8: No Label, 16: Character Creation Restricted, 32: Event, 64: Free
-            writeC(server._brackets ? 0x01 : 0x00);
+            writeD(buffer, server._port);
+            writeC(buffer, server._ageLimit); // Age Limit 0, 15, 18
+            writeC(buffer, server._pvp ? 0x01 : 0x00);
+            writeH(buffer, server._currentPlayers);
+            writeH(buffer, server._maxPlayers);
+            writeC(buffer, server._status == com.l2server.network.gameserverpackets.ServerStatus.STATUS_DOWN ? 0x00 : 0x01);
+            writeD(buffer, server._serverType); // 1: Normal, 2: Relax, 4: Public Test, 8: No Label, 16: Character Creation Restricted, 32: Event, 64: Free
+            writeC(buffer, server._brackets ? 0x01 : 0x00);
         }
-        writeH(0x00); // unknown
+        writeH(buffer, 0x00); // unknown
         if (_charsOnServers != null) {
-            writeC(_charsOnServers.size());
+            writeC(buffer, _charsOnServers.size());
             for (int servId : _charsOnServers.keySet()) {
-                writeC(servId);
-                writeC(_charsOnServers.get(servId));
+                writeC(buffer, servId);
+                writeC(buffer, _charsOnServers.get(servId));
                 if ((_charsToDelete == null) || !_charsToDelete.containsKey(servId)) {
-                    writeC(0x00);
+                    writeC(buffer, 0x00);
                 } else {
-                    writeC(_charsToDelete.get(servId).length);
+                    writeC(buffer, _charsToDelete.get(servId).length);
                     for (long deleteTime : _charsToDelete.get(servId)) {
-                        writeD((int) ((deleteTime - System.currentTimeMillis()) / 1000));
+                        writeD(buffer, (int) ((deleteTime - System.currentTimeMillis()) / 1000));
                     }
                 }
             }
         } else {
-            writeC(0x00);
+            writeC(buffer, 0x00);
         }
     }
 

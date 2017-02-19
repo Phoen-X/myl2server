@@ -21,12 +21,14 @@ package com.l2server.network.clientpackets;
 
 import com.l2server.network.ClientPacketProcessor;
 import com.l2server.network.L2LoginClient;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Format: ddddd
  *
  * @author -Wooden-
  */
+@Slf4j
 public class AuthGameGuard extends L2LoginClientPacket {
     private int _sessionId;
     private int _data1;

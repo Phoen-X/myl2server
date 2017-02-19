@@ -126,7 +126,7 @@ public final class SelectorThread<T extends MMOClient<?>> extends Thread impleme
         sp._buf = buffer;
         // set the client.
         // write content to buffer
-        sp.write();
+        sp.write(buffer);
         // delete the write buffer
         sp._buf = null;
 

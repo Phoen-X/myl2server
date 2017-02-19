@@ -22,6 +22,7 @@ package com.l2server.network;
 import com.l2server.network.util.crypt.LoginCrypt;
 import com.l2server.network.util.crypt.ScrambledKeyPair;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -36,6 +37,7 @@ import java.util.Random;
  *
  * @author KenM
  */
+@Slf4j
 public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>> {
     private static final Random rnd = new Random();
     // Crypt
@@ -174,6 +176,7 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
     }
 
     public void sendPacket(L2LoginServerPacket lsp) {
+        log.info("sending {}", lsp);
         getConnection().sendPacket(lsp);
     }
 

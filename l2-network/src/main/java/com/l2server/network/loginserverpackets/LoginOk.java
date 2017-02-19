@@ -22,6 +22,8 @@ package com.l2server.network.loginserverpackets;
 import com.l2server.network.L2LoginServerPacket;
 import com.l2server.network.SessionKey;
 
+import java.nio.ByteBuffer;
+
 /**
  * <pre>
  * Format: dddddddd
@@ -44,16 +46,16 @@ public final class LoginOk extends L2LoginServerPacket {
     }
 
     @Override
-    public void write() {
-        writeC(0x03);
-        writeD(_loginOk1);
-        writeD(_loginOk2);
-        writeD(0x00);
-        writeD(0x00);
-        writeD(0x000003ea);
-        writeD(0x00);
-        writeD(0x00);
-        writeD(0x00);
-        writeB(new byte[16]);
+    public void write(ByteBuffer buffer) {
+        writeC(buffer, 0x03);
+        writeD(buffer, _loginOk1);
+        writeD(buffer, _loginOk2);
+        writeD(buffer, 0x00);
+        writeD(buffer, 0x00);
+        writeD(buffer, 0x000003ea);
+        writeD(buffer, 0x00);
+        writeD(buffer, 0x00);
+        writeD(buffer, 0x00);
+        writeB(buffer, new byte[16]);
     }
 }

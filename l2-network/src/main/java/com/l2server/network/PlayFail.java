@@ -18,6 +18,8 @@
  */
 package com.l2server.network;
 
+import java.nio.ByteBuffer;
+
 /**
  * This class ...
  *
@@ -31,9 +33,9 @@ public final class PlayFail extends L2LoginServerPacket {
     }
 
     @Override
-    public void write() {
-        writeC(0x06);
-        writeC(_reason.getCode());
+    public void write(ByteBuffer buffer) {
+        writeC(buffer, 0x06);
+        writeC(buffer, _reason.getCode());
     }
 
     public static enum PlayFailReason {

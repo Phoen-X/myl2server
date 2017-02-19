@@ -23,6 +23,7 @@ import com.l2server.network.ClientPacketProcessor;
 import com.l2server.network.L2LoginClient;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <pre>
@@ -32,6 +33,7 @@ import lombok.Setter;
  *
  * <pre>
  */
+@Slf4j
 public class RequestAuthLogin extends L2LoginClientPacket {
     @Getter
     private final byte[] raw = new byte[128];

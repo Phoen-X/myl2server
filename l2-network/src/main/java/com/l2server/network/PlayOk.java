@@ -19,6 +19,8 @@
 package com.l2server.network;
 
 
+import java.nio.ByteBuffer;
+
 /**
  *
  */
@@ -31,9 +33,9 @@ public final class PlayOk extends L2LoginServerPacket {
     }
 
     @Override
-    public void write() {
-        writeC(0x07);
-        writeD(_playOk1);
-        writeD(_playOk2);
+    public void write(ByteBuffer buffer) {
+        writeC(buffer, 0x07);
+        writeD(buffer, _playOk1);
+        writeD(buffer, _playOk2);
     }
 }

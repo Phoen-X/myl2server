@@ -19,11 +19,15 @@
 package com.l2server.network;
 
 
+import lombok.extern.slf4j.Slf4j;
+
+import java.nio.ByteBuffer;
 import java.util.logging.Logger;
 
 /**
  * Fromat: d d: response
  */
+@Slf4j
 public final class GGAuth extends L2LoginServerPacket {
     public static final int SKIP_GG_AUTH_REQUEST = 0x0b;
     static final Logger _log = Logger.getLogger(GGAuth.class.getName());
@@ -34,12 +38,12 @@ public final class GGAuth extends L2LoginServerPacket {
     }
 
     @Override
-    public void write() {
-        writeC(0x0b);
-        writeD(_response);
-        writeD(0x00);
-        writeD(0x00);
-        writeD(0x00);
-        writeD(0x00);
+    public void write(ByteBuffer buffer) {
+        writeC(buffer, 0x0b);
+        writeD(buffer, _response);
+        writeD(buffer, 0x00);
+        writeD(buffer, 0x00);
+        writeD(buffer, 0x00);
+        writeD(buffer, 0x00);
     }
 }
