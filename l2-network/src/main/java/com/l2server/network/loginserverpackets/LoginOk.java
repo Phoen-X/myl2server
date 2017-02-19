@@ -21,6 +21,7 @@ package com.l2server.network.loginserverpackets;
 
 import com.l2server.network.L2LoginServerPacket;
 import com.l2server.network.SessionKey;
+import lombok.ToString;
 
 import java.nio.ByteBuffer;
 
@@ -37,6 +38,7 @@ import java.nio.ByteBuffer;
  * b: 16 bytes - unknown
  * </pre>
  */
+@ToString
 public final class LoginOk extends L2LoginServerPacket {
     private final int _loginOk1, _loginOk2;
 

@@ -20,10 +20,12 @@ package com.l2server.network.loginserverpackets;
 
 
 import com.l2server.network.BaseSendablePacket;
+import lombok.ToString;
 
 /**
  * @author -Wooden-
  */
+@ToString
 public class AuthResponse extends BaseSendablePacket {
     /**
      * @param serverId

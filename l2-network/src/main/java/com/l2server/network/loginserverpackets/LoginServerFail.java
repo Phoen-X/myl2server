@@ -20,10 +20,12 @@ package com.l2server.network.loginserverpackets;
 
 
 import com.l2server.network.BaseSendablePacket;
+import lombok.ToString;
 
 /**
  * @author -Wooden-
  */
+@ToString
 public class LoginServerFail extends BaseSendablePacket {
 
     public static final int REASON_IP_BANNED = 1;

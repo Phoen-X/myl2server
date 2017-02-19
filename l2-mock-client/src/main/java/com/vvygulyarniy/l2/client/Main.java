@@ -43,13 +43,13 @@ public class Main {
     private static class ClientHandler extends ChannelInboundHandlerAdapter {
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-
+            System.out.println("Got packet");
             ByteBuf buf = (ByteBuf) msg;
             buf.markReaderIndex();
             byte[] bytes = new byte[buf.readableBytes()];
             buf.readBytes(bytes);
             buf.resetReaderIndex();
-            int length = buf.readShort();
+            int length = buf.readShortLE();
             System.out.println("Length:" + length + " " + bytes.length);
             System.out.println("Got message: " + Arrays.toString(bytes));
         }

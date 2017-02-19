@@ -1,13 +1,15 @@
 package com.l2server.network.coders.loginserver;
 
 import com.l2server.network.L2LoginClient;
-import com.l2server.network.clientpackets.L2LoginClientPacket;
+import com.l2server.network.clientpackets.*;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.util.AttributeKey;
 import lombok.extern.slf4j.Slf4j;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.List;
 
 /**
@@ -20,17 +22,21 @@ public class LoginServerClientPacketDecoder extends ByteToMessageDecoder {
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf byteBuf, List<Object> list) throws Exception {
-        /*log.debug("Decoding messaage: {}", Arrays.toString(byteBuf.array()));
         byteBuf.markReaderIndex();
         int dataSize = byteBuf.readShortLE() & 0xFFFF - HEADER_SIZE;
         L2LoginClient client = ctx.channel().attr(clientKey).get();
-        final boolean descrypted = client.decrypt(byteBuf, dataSize);
+        ByteBuffer byteBuffer = ByteBuffer.allocate(byteBuf.readableBytes()).order(ByteOrder.LITTLE_ENDIAN);
+        byte[] data = new byte[byteBuf.readableBytes()];
+        byteBuf.readBytes(data);
+        byteBuffer.put(data);
+        byteBuffer.position(0);
+        final boolean descrypted = client.decrypt(byteBuffer, dataSize);
 
-        if (descrypted && byteBuf.readableBytes() > 0) {
+        if (descrypted && byteBuffer.hasRemaining()) {
             // apply limit
-            final int limit = byteBuf.capacity();
-            byteBuf.capacity(byteBuf.readerIndex() + dataSize);
-            final L2LoginClientPacket cp = handlePacket(byteBuf);
+            final int limit = byteBuffer.limit();
+            byteBuf.capacity(byteBuffer.position() + dataSize);
+            final L2LoginClientPacket cp = handlePacket(byteBuffer);
             log.info("Packet got: {}", cp);
 
             if(cp != null) {
@@ -39,11 +45,11 @@ public class LoginServerClientPacketDecoder extends ByteToMessageDecoder {
                 byteBuf.resetReaderIndex();
             }
 
-        }*/
+        }
     }
 
-    private L2LoginClientPacket handlePacket(ByteBuf byteBuf) {
-       /* int opcode = byteBuf.readByte() & 0xFF;
+    private L2LoginClientPacket handlePacket(ByteBuffer byteBuffer) {
+        int opcode = byteBuffer.get() & 0xFF;
 
         L2LoginClientPacket packet = null;
 
@@ -67,13 +73,12 @@ public class LoginServerClientPacketDecoder extends ByteToMessageDecoder {
         if (packet == null) {
             return null;
         } else {
-            packet._buf = byteBuf;
+            packet._buf = byteBuffer;
             if (packet.read()) {
                 return packet;
             } else {
                 return null;
             }
-        }*/
-        return null;
+        }
     }
 }

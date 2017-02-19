@@ -19,9 +19,11 @@
 package com.l2server.network;
 
 
+import com.l2server.network.loginserverpackets.LoginServerPacketsSender;
 import com.l2server.network.util.crypt.LoginCrypt;
 import com.l2server.network.util.crypt.ScrambledKeyPair;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -55,7 +57,8 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
     private boolean _joinedGS;
     private Map<Integer, Integer> _charsOnServers;
     private Map<Integer, long[]> _charsToDelete;
-
+    @Setter
+    private LoginServerPacketsSender packetsSender;
     /**
      * @param con
      */
@@ -177,7 +180,8 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 
     public void sendPacket(L2LoginServerPacket lsp) {
         log.info("sending {}", lsp);
-        getConnection().sendPacket(lsp);
+        packetsSender.sendPacket(lsp);
+        //getConnection().sendPacket(lsp);
     }
 
     public void close(LoginFail.LoginFailReason reason) {

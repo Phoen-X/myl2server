@@ -20,10 +20,12 @@ package com.l2server.network.loginserverpackets;
 
 
 import com.l2server.network.BaseSendablePacket;
+import lombok.ToString;
 
 /**
  * @author -Wooden-
  */
+@ToString
 public class InitLS extends BaseSendablePacket {
     public static final int PROTOCOL_REV = 0x0106;
     // ID 0x00

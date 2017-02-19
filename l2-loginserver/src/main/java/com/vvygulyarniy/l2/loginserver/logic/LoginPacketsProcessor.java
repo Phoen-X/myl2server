@@ -4,6 +4,7 @@ import com.l2server.network.*;
 import com.l2server.network.ServerList.ServerData;
 import com.l2server.network.clientpackets.*;
 import com.l2server.network.gameserverpackets.ServerStatus;
+import com.l2server.network.loginserverpackets.GGAuth;
 import com.vvygulyarniy.l2.loginserver.GameServerTable;
 import com.vvygulyarniy.l2.loginserver.LoginController;
 import com.vvygulyarniy.l2.loginserver.model.data.AccountInfo;

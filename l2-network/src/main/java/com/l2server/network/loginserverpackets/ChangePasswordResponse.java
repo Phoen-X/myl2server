@@ -20,10 +20,12 @@ package com.l2server.network.loginserverpackets;
 
 
 import com.l2server.network.BaseSendablePacket;
+import lombok.ToString;
 
 /**
  * @author Nik
  */
+@ToString
 public class ChangePasswordResponse extends BaseSendablePacket {
     public ChangePasswordResponse(byte successful, String characterName, String msgToSend) {
         writeC(0x06);

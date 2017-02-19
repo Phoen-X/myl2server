@@ -16,21 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2server.network;
+package com.l2server.network.loginserverpackets;
 
 
+import com.l2server.network.L2LoginServerPacket;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 import java.nio.ByteBuffer;
-import java.util.logging.Logger;
 
 /**
  * Fromat: d d: response
  */
 @Slf4j
+@ToString
 public final class GGAuth extends L2LoginServerPacket {
     public static final int SKIP_GG_AUTH_REQUEST = 0x0b;
-    static final Logger _log = Logger.getLogger(GGAuth.class.getName());
     private final int _response;
 
     public GGAuth(int response) {

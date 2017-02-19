@@ -20,10 +20,12 @@ package com.l2server.network.loginserverpackets;
 
 
 import com.l2server.network.BaseSendablePacket;
+import lombok.ToString;
 
 /**
  * @author mrTJO
  */
+@ToString
 public class RequestCharacters extends BaseSendablePacket {
     public RequestCharacters(String account) {
         writeC(0x05);
