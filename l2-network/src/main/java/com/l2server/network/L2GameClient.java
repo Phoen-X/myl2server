@@ -18,10 +18,11 @@
  */
 package com.l2server.network;
 
-import com.l2server.network.serverpackets.L2GameServerPacket;
-import com.l2server.network.serverpackets.ServerClose;
+import com.l2server.network.serverpackets.game.L2GameServerPacket;
+import com.l2server.network.serverpackets.game.ServerClose;
 import com.l2server.network.util.crypt.BlowFishKeygen;
 import com.l2server.network.util.crypt.GameCrypt;
+import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetAddress;
@@ -49,6 +50,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
     private final ClientStats _stats;
     private final ArrayBlockingQueue<ReceivablePacket> _packetQueue;
     private final ReentrantLock _queueLock = new ReentrantLock();
+    private final ChannelHandlerContext channelContext;
     // Task
     protected ScheduledFuture<?> _cleanupTask = null;
     private GameClientState _state;
@@ -59,8 +61,9 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
     private boolean _protocol;
     private int[][] trace;
 
-    public L2GameClient(MMOConnection<L2GameClient> con) {
+    public L2GameClient(MMOConnection<L2GameClient> con, ChannelHandlerContext channelContext) {
         super(con);
+        this.channelContext = channelContext;
         _state = GameClientState.CONNECTED;
         _connectionStartTime = System.currentTimeMillis();
         _crypt = new GameCrypt();
@@ -167,8 +170,12 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
             return;
         }*/
 
-        getConnection().sendPacket(gsp);
-        gsp.runImpl();
+        if (channelContext != null) {
+            channelContext.channel().writeAndFlush(gsp);
+        } else {
+            getConnection().sendPacket(gsp);
+            gsp.runImpl();
+        }
     }
 
     public boolean isDetached() {
@@ -180,7 +187,14 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
     }
 
     public void close(L2GameServerPacket gsp) {
-        getConnection().close(gsp);
+        if (channelContext != null) {
+            if (gsp != null) {
+                channelContext.channel().writeAndFlush(gsp);
+                channelContext.channel().close();
+            }
+        } else {
+            getConnection().close(gsp);
+        }
     }
 
     public void close(L2GameServerPacket[] gspArray) {

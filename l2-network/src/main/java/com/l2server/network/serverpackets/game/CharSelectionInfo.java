@@ -1,0 +1,145 @@
+/*
+ * Copyright (C) 2004-2015 L2J Server
+ * 
+ * This file is part of L2J Server.
+ * 
+ * L2J Server is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * L2J Server is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.l2server.network.serverpackets.game;
+
+import lombok.ToString;
+
+import java.nio.ByteBuffer;
+import java.util.List;
+
+import static java.util.Comparator.comparing;
+
+@ToString
+public final class CharSelectionInfo extends L2GameServerPacket {
+    private final String loginName;
+    private final int sessionId;
+    private final List<L2CharData> chars;
+    private int activeId;
+
+    /**
+     * Constructor for CharSelectionInfo.
+     *
+     * @param loginName
+     * @param sessionId
+     */
+    public CharSelectionInfo(String loginName, int sessionId, List<L2CharData> chars, int activeCharId) {
+        this.sessionId = sessionId;
+        this.loginName = loginName;
+        chars.sort(comparing(L2CharData::getLastAccess).reversed());
+        this.chars = chars;
+        if (this.activeId == -1 && !chars.isEmpty()) {
+            this.activeId = chars.get(0).getObjectId();
+        } else {
+            this.activeId = activeCharId;
+        }
+    }
+
+    @Override
+    protected final void writeImpl(ByteBuffer buffer) {
+        writeC(buffer, 0x09);
+        int size = chars.size();
+        writeD(buffer, size);
+
+        // Can prevent players from creating new characters (if 0); (if 1, the client will ask if chars may be created (0x13) Response: (0x0D) )
+        writeD(buffer, 1);
+        writeC(buffer, 0x00);
+        for (L2CharData l2Char : chars) {
+            writeS(buffer, l2Char.getName());
+            writeD(buffer, l2Char.getObjectId());
+            writeS(buffer, loginName);
+            writeD(buffer, sessionId);
+            writeD(buffer, l2Char.getClanId());
+            writeD(buffer, 0x00); // ??
+
+            writeD(buffer, l2Char.getSex());
+            writeD(buffer, l2Char.getRace());
+
+            if (l2Char.getClassId() == l2Char.getBaseClassId()) {
+                writeD(buffer, l2Char.getClassId());
+            } else {
+                writeD(buffer, l2Char.getBaseClassId());
+            }
+
+            writeD(buffer, 0x01); // active ??
+            writeD(buffer, l2Char.getX());
+            writeD(buffer, l2Char.getY());
+            writeD(buffer, l2Char.getZ());
+
+            writeF(buffer, l2Char.getCurrentHp());
+            writeF(buffer, l2Char.getCurrentMp());
+
+            writeD(buffer, l2Char.getSp());
+            writeQ(buffer, l2Char.getExp());
+            writeF(buffer, 1f); // High Five exp %
+            writeD(buffer, l2Char.getLevel());
+
+            writeD(buffer, l2Char.getKarma());
+            writeD(buffer, l2Char.getPkKills());
+            writeD(buffer, l2Char.getPvpKills());
+
+            writeD(buffer, 0x00);
+            writeD(buffer, 0x00);
+            writeD(buffer, 0x00);
+            writeD(buffer, 0x00);
+            writeD(buffer, 0x00);
+            writeD(buffer, 0x00);
+            writeD(buffer, 0x00);
+
+            for (int slotId = 0; slotId < l2Char.getPaperdoll().length; slotId++) {
+                writeD(buffer, l2Char.getPaperdoll()[slotId][0]);
+            }
+
+            writeD(buffer, l2Char.getHairStyle());
+            writeD(buffer, l2Char.getHairColor());
+            writeD(buffer, l2Char.getFace());
+
+            writeF(buffer, l2Char.getMaxHp()); // hp max
+            writeF(buffer, l2Char.getMaxMp()); // mp max
+
+            long deleteTime = l2Char.getDeleteTimer();
+            int deletedays = 0;
+            if (deleteTime > 0) {
+                deletedays = (int) ((deleteTime - System.currentTimeMillis()) / 1000);
+            }
+            writeD(buffer, deletedays); // days left before
+            // delete .. if != 0
+            // then char is inactive
+            writeD(buffer, l2Char.getClassId());
+            writeD(buffer, l2Char.getObjectId() == activeId ? 0x01 : 0x00); // c3 auto-select char
+
+            writeC(buffer, 127);
+            writeH(buffer, 0x00);
+            writeH(buffer, 0x00);
+            // writeD(charInfoPackage.getAugmentationId());
+
+            // writeD(charInfoPackage.getTransformId()); // Used to display Transformations
+            writeD(buffer, 0x00); // Currently on retail when you are on character select you don't see your transformation.
+
+            // Freya by Vistall:
+            writeD(buffer, 0x00); // npdid - 16024 Tame Tiny Baby Kookaburra A9E89C
+            writeD(buffer, 0x00); // level
+            writeD(buffer, 0x00); // ?
+            writeD(buffer, 0x00); // food? - 1200
+            writeF(buffer, 0x00); // max Hp
+            writeF(buffer, 0x00); // cur Hp
+
+            writeD(buffer, l2Char.getVitalityPoints()); // H5 Vitality
+        }
+    }
+}

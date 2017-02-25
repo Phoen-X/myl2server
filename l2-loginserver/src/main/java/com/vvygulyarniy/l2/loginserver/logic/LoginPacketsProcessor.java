@@ -1,24 +1,28 @@
 package com.vvygulyarniy.l2.loginserver.logic;
 
-import com.l2server.network.*;
-import com.l2server.network.ServerList.ServerData;
-import com.l2server.network.clientpackets.*;
-import com.l2server.network.gameserverpackets.ServerStatus;
-import com.l2server.network.loginserverpackets.GGAuth;
+import com.l2server.network.ClientPacketProcessor;
+import com.l2server.network.L2LoginClient;
+import com.l2server.network.SessionKey;
+import com.l2server.network.clientpackets.game.ProtocolVersion;
+import com.l2server.network.clientpackets.login.AuthGameGuard;
+import com.l2server.network.clientpackets.login.RequestAuthLogin;
+import com.l2server.network.clientpackets.login.RequestServerList;
+import com.l2server.network.clientpackets.login.RequestServerLogin;
+import com.l2server.network.serverpackets.login.*;
+import com.l2server.network.serverpackets.login.ServerList.ServerData;
 import com.vvygulyarniy.l2.loginserver.GameServerTable;
 import com.vvygulyarniy.l2.loginserver.LoginController;
 import com.vvygulyarniy.l2.loginserver.model.data.AccountInfo;
 
 import javax.crypto.Cipher;
-import java.net.InetAddress;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.List;
 
-import static com.l2server.network.AccountKicked.AccountKickedReason.REASON_PERMANENTLY_BANNED;
 import static com.l2server.network.L2LoginClient.LoginClientState.AUTHED_LOGIN;
-import static com.l2server.network.LoginFail.LoginFailReason.*;
-import static com.l2server.network.PlayFail.PlayFailReason.REASON_SERVER_OVERLOADED;
+import static com.l2server.network.serverpackets.login.AccountKicked.AccountKickedReason.REASON_PERMANENTLY_BANNED;
+import static com.l2server.network.serverpackets.login.LoginFail.LoginFailReason.*;
+import static com.l2server.network.serverpackets.login.PlayFail.PlayFailReason.REASON_SERVER_OVERLOADED;
 
 /**
  * Created by Phoen-X on 16.02.2017.
@@ -66,17 +70,17 @@ public class LoginPacketsProcessor implements ClientPacketProcessor {
             return;
         }
 
-        InetAddress clientAddr = client.getConnection().getInetAddress();
+        /*InetAddress clientAddr = client.getConnection().getInetAddress();*/
 
         final LoginController lc = LoginController.getInstance();
-        AccountInfo info = lc.retriveAccountInfo(clientAddr, packet.getUser(), packet.getPassword());
+        AccountInfo info = lc.retriveAccountInfo(/*clientAddr, */packet.getUser(), packet.getPassword());
         if (info == null) {
             // user or pass wrong
             client.close(REASON_USER_OR_PASS_WRONG);
             return;
         }
 
-        LoginController.AuthLoginResult result = lc.tryCheckinAccount(client, clientAddr, info);
+        LoginController.AuthLoginResult result = lc.tryCheckinAccount(client, info);
         switch (result) {
             case AUTH_SUCCESS:
                 client.setAccount(info.getLogin());

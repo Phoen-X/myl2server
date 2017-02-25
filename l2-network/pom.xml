@@ -54,6 +54,11 @@
             <version>3.6.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.vvygulyarniy</groupId>
+            <artifactId>l2-domain</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
     </dependencies>
 

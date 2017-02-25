@@ -1,6 +1,6 @@
 package com.vvygulyarniy.l2.loginserver;
 
-import com.l2server.network.Init;
+import com.l2server.network.serverpackets.login.Init;
 import com.l2server.network.util.crypt.LoginCrypt;
 import org.testng.annotations.Test;
 

@@ -18,7 +18,7 @@
 package com.vvygulyarniy.l2.loginserver;
 
 import com.l2server.network.*;
-import com.l2server.network.clientpackets.L2LoginClientPacket;
+import com.l2server.network.clientpackets.login.L2LoginClientPacket;
 import com.l2server.network.util.crypt.LoginCrypt;
 import com.vvygulyarniy.l2.loginserver.logic.LoginPacketsProcessor;
 import lombok.extern.slf4j.Slf4j;

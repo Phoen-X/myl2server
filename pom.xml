@@ -12,6 +12,7 @@
         <module>l2-loginserver</module>
         <module>l2-gameserver</module>
         <module>l2-mock-client</module>
+        <module>l2-domain</module>
     </modules>
 
     <packaging>pom</packaging>

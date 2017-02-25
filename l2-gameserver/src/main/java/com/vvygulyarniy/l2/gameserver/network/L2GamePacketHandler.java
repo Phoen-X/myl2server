@@ -19,8 +19,8 @@
 package com.vvygulyarniy.l2.gameserver.network;
 
 import com.l2server.network.*;
-import com.l2server.network.clientpackets.L2GameClientPacket;
-import com.l2server.network.clientpackets.ProtocolVersion;
+import com.l2server.network.clientpackets.game.L2GameClientPacket;
+import com.l2server.network.clientpackets.game.ProtocolVersion;
 import com.l2server.network.util.crypt.ScrambledKeyPair;
 
 import java.nio.ByteBuffer;

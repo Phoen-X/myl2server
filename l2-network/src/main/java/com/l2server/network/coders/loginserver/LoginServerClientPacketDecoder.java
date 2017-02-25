@@ -1,7 +1,7 @@
 package com.l2server.network.coders.loginserver;
 
 import com.l2server.network.L2LoginClient;
-import com.l2server.network.clientpackets.*;
+import com.l2server.network.clientpackets.login.*;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
@@ -10,7 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * Created by Phoen-X on 17.02.2017.
@@ -18,6 +21,13 @@ import java.util.List;
 @Slf4j
 public class LoginServerClientPacketDecoder extends ByteToMessageDecoder {
     public static final int HEADER_SIZE = 2;
+    private static final Map<Integer, Supplier<L2LoginClientPacket>> opcodeMapping = new HashMap<Integer, Supplier<L2LoginClientPacket>>() {{
+        put(0x07, AuthGameGuard::new);
+        put(0x00, RequestAuthLogin::new);
+        put(0x02, RequestServerLogin::new);
+        put(0x05, RequestServerList::new);
+    }};
+
     private final AttributeKey<L2LoginClient> clientKey = AttributeKey.valueOf("l2LoginClient");
 
     @Override
@@ -51,24 +61,7 @@ public class LoginServerClientPacketDecoder extends ByteToMessageDecoder {
     private L2LoginClientPacket handlePacket(ByteBuffer byteBuffer) {
         int opcode = byteBuffer.get() & 0xFF;
 
-        L2LoginClientPacket packet = null;
-
-        switch (opcode) {
-            case 0x07:
-                packet = new AuthGameGuard();
-                break;
-            case 0x00:
-                packet = new RequestAuthLogin();
-                break;
-            case 0x02:
-                packet = new RequestServerLogin();
-                break;
-            case 0x05:
-                packet = new RequestServerList();
-                break;
-            default:
-                break;
-        }
+        L2LoginClientPacket packet = opcodeMapping.getOrDefault(opcode, () -> null).get();
 
         if (packet == null) {
             return null;

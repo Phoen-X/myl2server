@@ -19,8 +19,8 @@
 package com.vvygulyarniy.l2.loginserver;
 
 import com.l2server.network.L2LoginClient;
-import com.l2server.network.LoginFail.LoginFailReason;
 import com.l2server.network.SessionKey;
+import com.l2server.network.serverpackets.login.LoginFail.LoginFailReason;
 import com.l2server.network.util.crypt.ScrambledKeyPair;
 import com.vvygulyarniy.l2.loginserver.model.data.AccountInfo;
 import com.vvygulyarniy.l2.loginserver.util.Rnd;
@@ -148,8 +148,8 @@ public class LoginController {
         return _loginServerClients.get(account);
     }
 
-    public AccountInfo retriveAccountInfo(InetAddress clientAddr, String login, String password) {
-        return retriveAccountInfo(clientAddr, login, password, true);
+    public AccountInfo retriveAccountInfo(/*InetAddress clientAddr, */String login, String password) {
+        return retriveAccountInfo(/*clientAddr, */login, password, true);
     }
 
     private void recordFailedLoginAttemp(InetAddress addr) {
@@ -175,7 +175,7 @@ public class LoginController {
         }
     }
 
-    private AccountInfo retriveAccountInfo(InetAddress addr, String login, String password, boolean autoCreateIfEnabled) {
+    private AccountInfo retriveAccountInfo(/*InetAddress addr,*/ String login, String password, boolean autoCreateIfEnabled) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA");
             byte[] raw = password.getBytes(StandardCharsets.UTF_8);
@@ -187,7 +187,7 @@ public class LoginController {
         }
     }
 
-    public AuthLoginResult tryCheckinAccount(L2LoginClient client, InetAddress address, AccountInfo info) {
+    public AuthLoginResult tryCheckinAccount(L2LoginClient client, AccountInfo info) {
         return AuthLoginResult.AUTH_SUCCESS;
     }
 

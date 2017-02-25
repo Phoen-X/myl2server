@@ -20,6 +20,7 @@ package com.vvygulyarniy.l2.loginserver;
 
 
 import com.l2server.network.*;
+import com.l2server.network.serverpackets.login.Init;
 import com.l2server.network.util.crypt.ScrambledKeyPair;
 
 import java.nio.channels.SocketChannel;

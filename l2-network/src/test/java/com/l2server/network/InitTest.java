@@ -1,5 +1,6 @@
 package com.l2server.network;
 
+import com.l2server.network.serverpackets.login.Init;
 import org.testng.annotations.Test;
 
 import java.nio.ByteBuffer;

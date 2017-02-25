@@ -19,7 +19,7 @@
 package com.vvygulyarniy.l2.loginserver;
 
 
-import com.l2server.network.gameserverpackets.ServerStatus;
+import com.l2server.network.serverpackets.login.ServerStatus;
 import com.vvygulyarniy.l2.loginserver.util.Rnd;
 
 import java.math.BigInteger;
@@ -29,7 +29,7 @@ import java.security.spec.RSAKeyGenParameterSpec;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.l2server.network.gameserverpackets.ServerStatus.STATUS_GOOD;
+import static com.l2server.network.serverpackets.login.ServerStatus.STATUS_GOOD;
 
 /**
  * The Class GameServerTable loads the game server names and initialize the game server tables.

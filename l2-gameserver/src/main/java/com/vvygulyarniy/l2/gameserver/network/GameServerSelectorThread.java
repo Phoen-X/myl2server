@@ -1,8 +1,7 @@
 package com.vvygulyarniy.l2.gameserver.network;
 
 import com.l2server.network.*;
-import com.l2server.network.clientpackets.L2GameClientPacket;
-import com.vvygulyarniy.l2.gameserver.logic.L2GameServerPacketProcessor;
+import com.l2server.network.clientpackets.game.L2GameClientPacket;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -51,7 +50,7 @@ public class GameServerSelectorThread extends Thread implements BuffersHolder {
     // Pending Close
     private boolean _shutdown;
     private L2GamePacketHandler _packetHandler;
-    private GameServerPacketProcessor packetProcessor = new L2GameServerPacketProcessor();
+    private GameServerPacketProcessor packetProcessor = new L2GameServerPacketProcessor(null);
 
     public GameServerSelectorThread(L2GamePacketHandler _packetHandler) throws IOException {
         super.setName("SelectorThread-" + super.getId());
@@ -191,7 +190,7 @@ public class GameServerSelectorThread extends Thread implements BuffersHolder {
                 sc.configureBlocking(false);
                 SelectionKey clientKey = sc.register(_selector, SelectionKey.OP_READ);
                 con = new MMOConnection(this, sc.socket(), clientKey, TCP_NODELAY);
-                con.setClient(new L2GameClient(con));
+                con.setClient(new L2GameClient(con, null));
                 clientKey.attach(con);
             }
         } catch (IOException e) {

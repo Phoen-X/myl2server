@@ -19,7 +19,9 @@
 package com.l2server.network;
 
 
-import com.l2server.network.loginserverpackets.LoginServerPacketsSender;
+import com.l2server.network.serverpackets.login.L2LoginServerPacket;
+import com.l2server.network.serverpackets.login.LoginFail;
+import com.l2server.network.serverpackets.login.PlayFail;
 import com.l2server.network.util.crypt.LoginCrypt;
 import com.l2server.network.util.crypt.ScrambledKeyPair;
 import lombok.Getter;
@@ -180,11 +182,17 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 
     public void sendPacket(L2LoginServerPacket lsp) {
         log.info("sending {}", lsp);
-        packetsSender.sendPacket(lsp);
-        //getConnection().sendPacket(lsp);
+        if (packetsSender != null) {
+            packetsSender.sendPacket(lsp);
+        } else {
+            getConnection().sendPacket(lsp);
+        }
     }
 
     public void close(LoginFail.LoginFailReason reason) {
+        if (packetsSender != null) {
+            packetsSender.sendPacket(new LoginFail(reason));
+        }
         getConnection().close(new LoginFail(reason));
     }
 

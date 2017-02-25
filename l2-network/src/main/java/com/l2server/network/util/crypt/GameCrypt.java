@@ -18,15 +18,21 @@
  */
 package com.l2server.network.util.crypt;
 
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.Arrays;
+
 /**
  * @author KenM
  */
+@Slf4j
 public class GameCrypt {
     private final byte[] _inKey = new byte[16];
     private final byte[] _outKey = new byte[16];
     private boolean _isEnabled;
 
     public void setKey(byte[] key) {
+        log.debug("Setting crypt key: {}", Arrays.toString(key));
         System.arraycopy(key, 0, _inKey, 0, 16);
         System.arraycopy(key, 0, _outKey, 0, 16);
     }

@@ -21,7 +21,7 @@ package com.vvygulyarniy.l2.loginserver;
 
 import com.l2server.network.IPacketHandler;
 import com.l2server.network.L2LoginClient;
-import com.l2server.network.clientpackets.*;
+import com.l2server.network.clientpackets.login.*;
 
 import java.nio.ByteBuffer;
 

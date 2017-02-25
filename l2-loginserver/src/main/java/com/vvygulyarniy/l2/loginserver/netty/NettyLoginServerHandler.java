@@ -1,8 +1,8 @@
 package com.vvygulyarniy.l2.loginserver.netty;
 
-import com.l2server.network.Init;
 import com.l2server.network.L2LoginClient;
-import com.l2server.network.clientpackets.L2LoginClientPacket;
+import com.l2server.network.clientpackets.login.L2LoginClientPacket;
+import com.l2server.network.serverpackets.login.Init;
 import com.vvygulyarniy.l2.loginserver.LoginController;
 import com.vvygulyarniy.l2.loginserver.logic.LoginPacketsProcessor;
 import io.netty.channel.ChannelHandlerContext;
@@ -24,7 +24,7 @@ public class NettyLoginServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
         L2LoginClient client = new L2LoginClient(null, loginController.getScrambledRSAKeyPair(), loginController.getBlowfishKey());
-        client.setPacketsSender(ctx::write);
+        client.setPacketsSender((packet -> ctx.channel().writeAndFlush(packet)));
         ctx.channel().attr(clientKey).set(client);
         log.info("CHannel registered: {}", ctx);
     }
