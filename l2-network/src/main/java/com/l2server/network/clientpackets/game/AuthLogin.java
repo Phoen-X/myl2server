@@ -51,7 +51,7 @@ public final class AuthLogin extends L2GameClientPacket {
     }
 
 	/*@Override
-	protected void runImpl()
+    protected void runImpl()
 	{
 		final L2GameClient client = getClient();
 		if (loginName.isEmpty() || !client.isProtocolOk())

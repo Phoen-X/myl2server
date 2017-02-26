@@ -41,5 +41,10 @@ public final class L2CharData {
     private String htmlPrefix = null;
     private int vitalityPoints = 0;
     private int accessLevel = 0;
-
+    private int statInt;
+    private int statDex;
+    private int statCon;
+    private int statStr;
+    private int statMen;
+    private int statWit;
 }

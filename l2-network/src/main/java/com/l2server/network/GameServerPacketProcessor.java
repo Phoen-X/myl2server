@@ -19,4 +19,12 @@ public interface GameServerPacketProcessor {
     void process(RequestExFishRanking requestExFishRanking, L2GameClient client);
 
     void process(RequestPledgeSetAcademyMaster packet, L2GameClient client);
+
+    void process(CharacterSelect packet, L2GameClient client);
+
+    void process(EnterWorld enterWorld, L2GameClient client);
+
+    void process(RequestKeyMapping requestKeyMapping, L2GameClient client);
+
+    void process(RequestManorList packet, L2GameClient client);
 }

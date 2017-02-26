@@ -50,7 +50,7 @@ public class GameServerSelectorThread extends Thread implements BuffersHolder {
     // Pending Close
     private boolean _shutdown;
     private L2GamePacketHandler _packetHandler;
-    private GameServerPacketProcessor packetProcessor = new L2GameServerPacketProcessor(null);
+    private GameServerPacketProcessor packetProcessor = new L2GameServerPacketProcessor(null, null);
 
     public GameServerSelectorThread(L2GamePacketHandler _packetHandler) throws IOException {
         super.setName("SelectorThread-" + super.getId());

@@ -22,12 +22,15 @@ import com.l2server.network.serverpackets.game.L2GameServerPacket;
 import com.l2server.network.serverpackets.game.ServerClose;
 import com.l2server.network.util.crypt.BlowFishKeygen;
 import com.l2server.network.util.crypt.GameCrypt;
+import com.vvygulyarniy.l2.domain.character.L2Character;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.ReentrantLock;
@@ -59,6 +62,8 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
     private boolean _isAuthedGG;
     private boolean _isDetached = false;
     private boolean _protocol;
+    private List<L2Character> accountCharacters = new ArrayList<>();
+    private L2Character activeCharacter = null;
     private int[][] trace;
 
     public L2GameClient(MMOConnection<L2GameClient> con, ChannelHandlerContext channelContext) {
@@ -92,7 +97,6 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
     public void setState(GameClientState pState) {
         if (_state != pState) {
             _state = pState;
-            _packetQueue.clear();
         }
     }
 
@@ -124,6 +128,22 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
         _crypt.encrypt(buf.array(), buf.position(), size);
         buf.position(buf.position() + size);
         return true;
+    }
+
+    public List<L2Character> getAccountCharacters() {
+        return new ArrayList<>(accountCharacters);
+    }
+
+    public void addCharacter(L2Character l2Character) {
+        this.accountCharacters.add(l2Character);
+    }
+
+    public L2Character getActiveCharacter() {
+        return activeCharacter;
+    }
+
+    public void selectCharacter(int slotId) {
+        this.activeCharacter = accountCharacters.get(slotId);
     }
 
     @Override

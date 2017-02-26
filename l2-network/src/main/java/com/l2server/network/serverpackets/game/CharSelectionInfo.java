@@ -18,18 +18,17 @@
  */
 package com.l2server.network.serverpackets.game;
 
+import com.vvygulyarniy.l2.domain.character.L2Character;
 import lombok.ToString;
 
 import java.nio.ByteBuffer;
 import java.util.List;
 
-import static java.util.Comparator.comparing;
-
 @ToString
 public final class CharSelectionInfo extends L2GameServerPacket {
     private final String loginName;
     private final int sessionId;
-    private final List<L2CharData> chars;
+    private final List<L2Character> chars;
     private int activeId;
 
     /**
@@ -38,13 +37,13 @@ public final class CharSelectionInfo extends L2GameServerPacket {
      * @param loginName
      * @param sessionId
      */
-    public CharSelectionInfo(String loginName, int sessionId, List<L2CharData> chars, int activeCharId) {
+    public CharSelectionInfo(String loginName, int sessionId, List<L2Character> chars, int activeCharId) {
         this.sessionId = sessionId;
         this.loginName = loginName;
-        chars.sort(comparing(L2CharData::getLastAccess).reversed());
         this.chars = chars;
+
         if (this.activeId == -1 && !chars.isEmpty()) {
-            this.activeId = chars.get(0).getObjectId();
+            this.activeId = chars.get(0).getId();
         } else {
             this.activeId = activeCharId;
         }
@@ -57,41 +56,36 @@ public final class CharSelectionInfo extends L2GameServerPacket {
         writeD(buffer, size);
 
         // Can prevent players from creating new characters (if 0); (if 1, the client will ask if chars may be created (0x13) Response: (0x0D) )
-        writeD(buffer, 1);
+        writeD(buffer, 1); //max char number per account
         writeC(buffer, 0x00);
-        for (L2CharData l2Char : chars) {
-            writeS(buffer, l2Char.getName());
-            writeD(buffer, l2Char.getObjectId());
+        for (L2Character l2Char : chars) {
+            writeS(buffer, l2Char.getNickName());
+            writeD(buffer, l2Char.getId());
             writeS(buffer, loginName);
             writeD(buffer, sessionId);
             writeD(buffer, l2Char.getClanId());
             writeD(buffer, 0x00); // ??
+            writeD(buffer, l2Char.getAppearance().getSex().ordinal());
+            writeD(buffer, l2Char.getProfession().getRace().ordinal());
 
-            writeD(buffer, l2Char.getSex());
-            writeD(buffer, l2Char.getRace());
-
-            if (l2Char.getClassId() == l2Char.getBaseClassId()) {
-                writeD(buffer, l2Char.getClassId());
-            } else {
-                writeD(buffer, l2Char.getBaseClassId());
-            }
+            writeD(buffer, l2Char.getProfession().getId());
 
             writeD(buffer, 0x01); // active ??
-            writeD(buffer, l2Char.getX());
-            writeD(buffer, l2Char.getY());
-            writeD(buffer, l2Char.getZ());
+            writeD(buffer, l2Char.getPosition().getX());
+            writeD(buffer, l2Char.getPosition().getY());
+            writeD(buffer, l2Char.getPosition().getZ());
 
-            writeF(buffer, l2Char.getCurrentHp());
-            writeF(buffer, l2Char.getCurrentMp());
+            writeF(buffer, l2Char.getCurrHp());
+            writeF(buffer, l2Char.getCurrMp());
 
             writeD(buffer, l2Char.getSp());
             writeQ(buffer, l2Char.getExp());
-            writeF(buffer, 1f); // High Five exp %
+            writeF(buffer, 0); // High Five exp %
             writeD(buffer, l2Char.getLevel());
 
-            writeD(buffer, l2Char.getKarma());
-            writeD(buffer, l2Char.getPkKills());
-            writeD(buffer, l2Char.getPvpKills());
+            writeD(buffer, 0);//l2Char.getKarma());
+            writeD(buffer, 0);//l2Char.getPkKills());
+            writeD(buffer, 0);//l2Char.getPvpKills());
 
             writeD(buffer, 0x00);
             writeD(buffer, 0x00);
@@ -105,23 +99,23 @@ public final class CharSelectionInfo extends L2GameServerPacket {
                 writeD(buffer, l2Char.getPaperdoll()[slotId][0]);
             }
 
-            writeD(buffer, l2Char.getHairStyle());
-            writeD(buffer, l2Char.getHairColor());
-            writeD(buffer, l2Char.getFace());
+            writeD(buffer, l2Char.getAppearance().getHairStyle());
+            writeD(buffer, l2Char.getAppearance().getHairColor());
+            writeD(buffer, l2Char.getAppearance().getFace());
 
             writeF(buffer, l2Char.getMaxHp()); // hp max
             writeF(buffer, l2Char.getMaxMp()); // mp max
 
-            long deleteTime = l2Char.getDeleteTimer();
+            /*long deleteTime = l2Char.getDeleteTimer();
             int deletedays = 0;
             if (deleteTime > 0) {
                 deletedays = (int) ((deleteTime - System.currentTimeMillis()) / 1000);
-            }
-            writeD(buffer, deletedays); // days left before
+            }*/
+            writeD(buffer, 0); // days left before
             // delete .. if != 0
             // then char is inactive
-            writeD(buffer, l2Char.getClassId());
-            writeD(buffer, l2Char.getObjectId() == activeId ? 0x01 : 0x00); // c3 auto-select char
+            writeD(buffer, l2Char.getProfession().getId());
+            writeD(buffer, l2Char.getId() == activeId ? 0x01 : 0x00); // c3 auto-select char
 
             writeC(buffer, 127);
             writeH(buffer, 0x00);
@@ -139,7 +133,7 @@ public final class CharSelectionInfo extends L2GameServerPacket {
             writeF(buffer, 0x00); // max Hp
             writeF(buffer, 0x00); // cur Hp
 
-            writeD(buffer, l2Char.getVitalityPoints()); // H5 Vitality
+            writeD(buffer, 7);//l2Char.getVitalityPoints()); // H5 Vitality
         }
     }
 }

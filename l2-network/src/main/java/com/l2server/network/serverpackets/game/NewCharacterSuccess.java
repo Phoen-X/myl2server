@@ -18,44 +18,46 @@
  */
 package com.l2server.network.serverpackets.game;
 
-import com.vvygulyarniy.l2.domain.character.info.L2CharTemplate;
+import com.vvygulyarniy.l2.domain.character.profession.Profession;
 
 import java.nio.ByteBuffer;
 import java.util.List;
 
-public final class NewCharacterSuccess extends L2GameServerPacket {
-    private final List<L2CharTemplate> templatesAvailable;
+import static com.vvygulyarniy.l2.domain.character.info.stat.BasicStat.*;
 
-    public NewCharacterSuccess(List<L2CharTemplate> templatesAvailable) {
-        this.templatesAvailable = templatesAvailable;
+public final class NewCharacterSuccess extends L2GameServerPacket {
+    private final List<Profession> professionsAvailable;
+
+    public NewCharacterSuccess(List<Profession> professionsAvailable) {
+        this.professionsAvailable = professionsAvailable;
     }
 
 
     @Override
     protected void writeImpl(ByteBuffer buffer) {
         writeC(buffer, 0x0D);
-        writeD(buffer, templatesAvailable.size());
+        writeD(buffer, professionsAvailable.size());
 
-        for (L2CharTemplate template : templatesAvailable) {
-            writeD(buffer, template.getRace().ordinal());
-            writeD(buffer, template.getClassId().getId());
+        for (Profession profession : professionsAvailable) {
+            writeD(buffer, profession.getRace().ordinal());
+            writeD(buffer, profession.getId());
             writeD(buffer, 0x46);
-            writeD(buffer, template.getBaseStr());
+            writeD(buffer, profession.getStats().get(STR));
             writeD(buffer, 0x0A);
             writeD(buffer, 0x46);
-            writeD(buffer, template.getBaseDex());
+            writeD(buffer, profession.getStats().get(DEX));
             writeD(buffer, 0x0A);
             writeD(buffer, 0x46);
-            writeD(buffer, template.getBaseCon());
+            writeD(buffer, profession.getStats().get(CON));
             writeD(buffer, 0x0A);
             writeD(buffer, 0x46);
-            writeD(buffer, template.getBaseInt());
+            writeD(buffer, profession.getStats().get(INT));
             writeD(buffer, 0x0A);
             writeD(buffer, 0x46);
-            writeD(buffer, template.getBaseWit());
+            writeD(buffer, profession.getStats().get(WIT));
             writeD(buffer, 0x0A);
             writeD(buffer, 0x46);
-            writeD(buffer, template.getBaseMen());
+            writeD(buffer, profession.getStats().get(MEN));
             writeD(buffer, 0x0A);
         }
     }
