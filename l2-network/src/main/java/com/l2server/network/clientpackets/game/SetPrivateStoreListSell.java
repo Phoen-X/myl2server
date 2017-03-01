@@ -20,6 +20,7 @@ package com.l2server.network.clientpackets.game;
 
 import com.l2server.network.GameServerPacketProcessor;
 import com.l2server.network.L2GameClient;
+import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -27,6 +28,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  *
  * @version $Revision: 1.2.2.1.2.5 $ $Date: 2005/03/27 15:29:30 $
  */
+@ToString
 public class SetPrivateStoreListSell extends L2GameClientPacket {
     private static final String _C__31_SETPRIVATESTORELISTSELL = "[C] 31 SetPrivateStoreListSell";
 

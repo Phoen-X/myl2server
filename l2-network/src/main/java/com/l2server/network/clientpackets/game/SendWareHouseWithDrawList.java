@@ -20,6 +20,7 @@ package com.l2server.network.clientpackets.game;
 
 import com.l2server.network.GameServerPacketProcessor;
 import com.l2server.network.L2GameClient;
+import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -27,6 +28,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  *
  * @version $Revision: 1.2.2.1.2.4 $ $Date: 2005/03/29 23:15:16 $
  */
+@ToString
 public final class SendWareHouseWithDrawList extends L2GameClientPacket {
     private static final String _C__32_SENDWAREHOUSEWITHDRAWLIST = "[C] 3C SendWareHouseWithDrawList";
 

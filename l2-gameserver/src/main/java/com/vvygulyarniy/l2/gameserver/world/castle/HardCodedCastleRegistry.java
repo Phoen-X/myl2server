@@ -12,7 +12,6 @@ import java.util.List;
 public class HardCodedCastleRegistry implements CastleRegistry {
     private final List<Castle> castles = Arrays.asList(
             new Castle(1, "Gludio"),
-            new Castle(1, "Gludio"),
             new Castle(2, "Dion"),
             new Castle(3, "Giran"),
             new Castle(4, "Oren"),

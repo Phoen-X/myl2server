@@ -21,6 +21,7 @@ package com.l2server.network.clientpackets.game;
 import com.l2server.network.GameServerPacketProcessor;
 import com.l2server.network.L2GameClient;
 import lombok.Getter;
+import lombok.ToString;
 
 /**
  * This class ...
@@ -28,6 +29,7 @@ import lombok.Getter;
  * @version $Revision: 1.9.2.3.2.4 $ $Date: 2005/03/27 15:29:30 $
  */
 @Getter
+@ToString
 public final class AuthLogin extends L2GameClientPacket {
     private static final String _C__2B_AUTHLOGIN = "[C] 2B AuthLogin";
 

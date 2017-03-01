@@ -20,6 +20,7 @@ package com.l2server.network.clientpackets.game;
 
 import com.l2server.network.GameServerPacketProcessor;
 import com.l2server.network.L2GameClient;
+import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.logging.Logger;
@@ -29,6 +30,7 @@ import java.util.logging.Logger;
  *
  * @version $Revision: 1.16.2.12.2.7 $ $Date: 2005/04/11 10:06:11 $
  */
+@ToString
 public final class Say2 extends L2GameClientPacket {
     public static final int ALL = 0;
     public static final int SHOUT = 1; // !

@@ -20,11 +20,13 @@ package com.l2server.network.clientpackets.game;
 
 import com.l2server.network.GameServerPacketProcessor;
 import com.l2server.network.L2GameClient;
+import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * @author Gnacik
  */
+@ToString
 public final class RequestWithdrawPartyRoom extends L2GameClientPacket {
     private static final String _C__D0_0B_REQUESTWITHDRAWPARTYROOM = "[C] D0:0B RequestWithdrawPartyRoom";
 

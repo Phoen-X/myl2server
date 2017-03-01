@@ -134,6 +134,10 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
         return new ArrayList<>(accountCharacters);
     }
 
+    public void setAccountCharacters(List<L2Character> accountCharacters) {
+        this.accountCharacters = accountCharacters;
+    }
+
     public void addCharacter(L2Character l2Character) {
         this.accountCharacters.add(l2Character);
     }

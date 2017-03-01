@@ -20,11 +20,13 @@ package com.l2server.network.clientpackets.game;
 
 import com.l2server.network.GameServerPacketProcessor;
 import com.l2server.network.L2GameClient;
+import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * This packet manages the trade response.
  */
+@ToString
 public final class TradeDone extends L2GameClientPacket {
     private int _response;
 

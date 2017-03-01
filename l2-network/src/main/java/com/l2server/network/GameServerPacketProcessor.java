@@ -27,4 +27,10 @@ public interface GameServerPacketProcessor {
     void process(RequestKeyMapping requestKeyMapping, L2GameClient client);
 
     void process(RequestManorList packet, L2GameClient client);
+
+    void process(ValidatePosition validatePosition, L2GameClient client);
+
+    void process(RequestShowMiniMap requestShowMiniMap, L2GameClient client);
+
+    void process(RequestAllFortressInfo requestAllFortressInfo, L2GameClient client);
 }

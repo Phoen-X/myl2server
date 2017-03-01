@@ -18,27 +18,23 @@
  */
 package com.l2server.network.serverpackets.game;
 
-import com.vvygulyarniy.l2.domain.sevensigns.SevenSignsWinner;
-import lombok.ToString;
 
 import java.nio.ByteBuffer;
 
-/**
- * Changes the sky color depending on the outcome of the Seven Signs competition.
- *
- * @author Tempy
- */
-@ToString
-public class SSQInfo extends L2GameServerPacket {
-    private SevenSignsWinner winner;
+public class ShowMiniMap extends L2GameServerPacket {
+    private final int _mapId;
 
-    public SSQInfo(SevenSignsWinner winner) {
-        this.winner = winner;
+    /**
+     * @param mapId
+     */
+    public ShowMiniMap(int mapId) {
+        _mapId = mapId;
     }
 
     @Override
     protected void writeImpl(ByteBuffer buffer) {
-        writeC(buffer, 0x73);
-        writeH(buffer, 256 + winner.getId());
+        writeC(buffer, 0xa3);
+        writeD(buffer, _mapId);
+        writeC(buffer, 1); // Seven Signs period. PERIOD_COMP_RECRUITING = 0; PERIOD_COMPETITION = 1; PERIOD_COMP_RESULTS = 2; PERIOD_SEAL_VALIDATION = 3;
     }
 }

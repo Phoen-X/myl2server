@@ -52,6 +52,8 @@ public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
         SessionKey key = new SessionKey(packet.get_loginKey1(), packet.get_loginKey2(), packet.get_playKey1(), packet.get_playKey2());
         client.setSessionId(key);
         client.setState(AUTHED);
+        client.setAccountName(packet.getLoginName());
+        client.setAccountCharacters(characterRepository.findByAccount(client.getAccountName()));
         CharSelectionInfo charList = buildCharSelectionInfo(client);
         client.sendPacket(charList);
     }
@@ -124,6 +126,21 @@ public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
             return;
         }
         client.sendPacket(new ExSendManorList(castleRegistry.findAll()));
+    }
+
+    @Override
+    public void process(ValidatePosition validatePosition, L2GameClient client) {
+        client.sendPacket(new ValidateLocation(client.getActiveCharacter().getId(), client.getActiveCharacter().getPosition()));
+    }
+
+    @Override
+    public void process(RequestShowMiniMap requestShowMiniMap, L2GameClient client) {
+        client.sendPacket(new ShowMiniMap(1665));
+    }
+
+    @Override
+    public void process(RequestAllFortressInfo requestAllFortressInfo, L2GameClient client) {
+        client.sendPacket(ExShowFortressInfo.STATIC_PACKET);
     }
 
     private L2CharData getCharacterData(L2Character ch) {

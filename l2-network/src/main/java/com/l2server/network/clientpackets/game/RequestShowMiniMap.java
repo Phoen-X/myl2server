@@ -20,7 +20,6 @@ package com.l2server.network.clientpackets.game;
 
 import com.l2server.network.GameServerPacketProcessor;
 import com.l2server.network.L2GameClient;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * sample format d
@@ -49,6 +48,6 @@ public final class RequestShowMiniMap extends L2GameClientPacket {
 
     @Override
     public void process(GameServerPacketProcessor processor, L2GameClient client) {
-        throw new NotImplementedException();
+        processor.process(this, client);
     }
 }

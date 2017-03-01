@@ -18,27 +18,33 @@
  */
 package com.l2server.network.serverpackets.game;
 
-import com.vvygulyarniy.l2.domain.sevensigns.SevenSignsWinner;
-import lombok.ToString;
-
 import java.nio.ByteBuffer;
 
 /**
- * Changes the sky color depending on the outcome of the Seven Signs competition.
- *
- * @author Tempy
+ * @author KenM
  */
-@ToString
-public class SSQInfo extends L2GameServerPacket {
-    private SevenSignsWinner winner;
+public class ExShowFortressInfo extends L2GameServerPacket {
+    public static final ExShowFortressInfo STATIC_PACKET = new ExShowFortressInfo();
 
-    public SSQInfo(SevenSignsWinner winner) {
-        this.winner = winner;
+    private ExShowFortressInfo() {
+
     }
+
 
     @Override
     protected void writeImpl(ByteBuffer buffer) {
-        writeC(buffer, 0x73);
-        writeH(buffer, 256 + winner.getId());
+        writeC(buffer, 0xFE);
+        writeH(buffer, 0x15);
+        writeD(buffer, 0);
+        /*List<Fort> forts = FortManager.getInstance().getForts();
+        writeD(forts.size());
+        for (Fort fort : forts) {
+            L2Clan clan = fort.getOwnerClan();
+            writeD(fort.getResidenceId());
+            writeS(clan != null ? clan.getName() : "");
+            writeD(fort.getSiege().isInProgress() ? 0x01 : 0x00);
+            // Time of possession
+            writeD(fort.getOwnedTime());
+        }*/
     }
 }

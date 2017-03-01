@@ -36,7 +36,9 @@ public class L2Character {
     @Setter
     private int maxLoad;
     private int clanId;
-    private Position position = new Position(13406, 12620, -2000);
+    @Setter
+    @Getter
+    private Position position;
 
 
     private int runSpeed = 100;

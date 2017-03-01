@@ -5,6 +5,7 @@ import com.l2server.network.serverpackets.game.CharCreateFail;
 import com.vvygulyarniy.l2.domain.character.L2Character;
 import com.vvygulyarniy.l2.domain.character.info.CharacterAppearance;
 import com.vvygulyarniy.l2.domain.character.profession.Profession;
+import com.vvygulyarniy.l2.domain.geo.Position;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -20,6 +21,18 @@ import static java.util.stream.Collectors.toList;
 public class InMemoryCharacterRepository implements CharacterRepository {
     private final List<L2Character> characters = new ArrayList<>();
 
+    {
+        L2Character newChar = new L2Character(characters.size() + 1, "asd", Profession.ELF_FIGHTER,
+                new CharacterAppearance(CharacterAppearance.Sex.MALE, (byte) 1, (byte) 1, (byte) 1),
+                "test", 1);
+        newChar.setMaxHp(100);
+        newChar.setCurrHp(100);
+        newChar.setCurrMp(199);
+        newChar.setMaxMp(200);
+        newChar.setPosition(new Position(38000, 24128, -4704));
+        characters.add(newChar);
+    }
+
     @Override
     public L2Character createCharacter(L2GameClient gameClient, Profession profession, String nickName, CharacterAppearance appearance) throws CharacterCreationException {
         if ((profession == null) || (profession.getLevelFrom() > 0)) {
@@ -31,6 +44,7 @@ public class InMemoryCharacterRepository implements CharacterRepository {
         newChar.setCurrHp(100);
         newChar.setMaxMp(199);
         newChar.setCurrMp(200);
+        newChar.setPosition(new Position(104, 8000, -2000));
         characters.add(newChar);
         log.info("Character created: {}", newChar);
         return newChar;
@@ -38,6 +52,7 @@ public class InMemoryCharacterRepository implements CharacterRepository {
 
     @Override
     public List<L2Character> findByAccount(String accountName) {
+        log.debug("Looking for characters for account {}", accountName);
         return characters.stream().filter(c -> Objects.equals(c.getAccountName(), accountName)).collect(toList());
     }
 }

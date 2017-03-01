@@ -20,6 +20,7 @@ package com.l2server.network.clientpackets.game;
 
 import com.l2server.network.GameServerPacketProcessor;
 import com.l2server.network.L2GameClient;
+import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -27,6 +28,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  *
  * @author -Wooden-
  */
+@ToString
 public final class RequestWriteHeroWords extends L2GameClientPacket {
     private static final String _C__D0_05_REQUESTWRITEHEROWORDS = "[C] D0:05 RequestWriteHeroWords";
 

@@ -20,6 +20,7 @@ package com.l2server.network.clientpackets.game;
 
 import com.l2server.network.GameServerPacketProcessor;
 import com.l2server.network.L2GameClient;
+import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -27,6 +28,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  *
  * @version $Revision: 1.2.4.2 $ $Date: 2005/03/27 15:29:30 $
  */
+@ToString
 public final class SetPrivateStoreMsgBuy extends L2GameClientPacket {
     private static final String _C__9D_SETPRIVATESTOREMSGBUY = "[C] 9D SetPrivateStoreMsgBuy";
 

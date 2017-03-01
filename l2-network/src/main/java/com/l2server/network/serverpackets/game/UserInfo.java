@@ -143,8 +143,8 @@ public final class UserInfo extends L2GameServerPacket {
         writeF(buffer, _moveMultiplier);
         writeF(buffer, 0); //_activeChar.getAttackSpeedMultiplier());
 
-        writeF(buffer, 20); //_activeChar.getCollisionRadius());
-        writeF(buffer, 40); //_activeChar.getCollisionHeight());
+        writeF(buffer, 150); //_activeChar.getCollisionRadius());
+        writeF(buffer, 150); //_activeChar.getCollisionHeight());
 
         writeD(buffer, activeChar.getAppearance().getHairStyle());
         writeD(buffer, activeChar.getAppearance().getHairColor());
@@ -209,7 +209,7 @@ public final class UserInfo extends L2GameServerPacket {
         writeD(buffer, 0);//_activeChar.getFishx()); // fishing x
         writeD(buffer, 0);//_activeChar.getFishy()); // fishing y
         writeD(buffer, 0);//_activeChar.getFishz()); // fishing z
-        writeD(buffer, 0);//activeChar.getAppearance().getNameColor());
+        writeD(buffer, 0xFFFFFF);//activeChar.getAppearance().getNameColor());
 
         // new c5
         writeC(buffer, 0);//_activeChar.isRunning() ? 0x01 : 0x00); // changes the Speed display on Status Window
@@ -238,7 +238,7 @@ public final class UserInfo extends L2GameServerPacket {
 
         // T2 Starts
         writeD(buffer, 0);//_activeChar.getFame()); // Fame
-        writeD(buffer, 0);//_activeChar.isMinimapAllowed() ? 1 : 0); // Minimap on Hellbound
+        writeD(buffer, 1);//_activeChar.isMinimapAllowed() ? 1 : 0); // Minimap on Hellbound
         writeD(buffer, 0);//_activeChar.getVitalityPoints()); // Vitality Points
         writeD(buffer, 0);//_activeChar.getAbnormalVisualEffectSpecial());
 

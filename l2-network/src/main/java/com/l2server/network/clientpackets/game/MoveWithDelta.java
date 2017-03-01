@@ -20,6 +20,7 @@ package com.l2server.network.clientpackets.game;
 
 import com.l2server.network.GameServerPacketProcessor;
 import com.l2server.network.L2GameClient;
+import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -27,6 +28,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  *
  * @author -Wooden-
  */
+@ToString
 public class MoveWithDelta extends L2GameClientPacket {
     private static final String _C__52_MOVEWITHDELTA = "[C] 52 MoveWithDelta";
 

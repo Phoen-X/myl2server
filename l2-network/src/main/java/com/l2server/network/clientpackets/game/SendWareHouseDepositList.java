@@ -20,11 +20,13 @@ package com.l2server.network.clientpackets.game;
 
 import com.l2server.network.GameServerPacketProcessor;
 import com.l2server.network.L2GameClient;
+import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * SendWareHouseDepositList client packet class.
  */
+@ToString
 public final class SendWareHouseDepositList extends L2GameClientPacket {
     private static final String _C__3B_SENDWAREHOUSEDEPOSITLIST = "[C] 3B SendWareHouseDepositList";
 

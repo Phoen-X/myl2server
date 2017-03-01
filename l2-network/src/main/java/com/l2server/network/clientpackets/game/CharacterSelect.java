@@ -21,12 +21,14 @@ package com.l2server.network.clientpackets.game;
 import com.l2server.network.GameServerPacketProcessor;
 import com.l2server.network.L2GameClient;
 import lombok.Getter;
+import lombok.ToString;
 
 /**
  * This class ...
  *
  * @version $Revision: 1.5.2.1.2.5 $ $Date: 2005/03/27 15:29:30 $
  */
+@ToString
 public class CharacterSelect extends L2GameClientPacket {
     // cd
     @Getter
