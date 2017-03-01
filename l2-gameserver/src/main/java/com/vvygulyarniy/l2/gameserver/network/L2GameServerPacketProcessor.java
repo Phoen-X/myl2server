@@ -40,10 +40,10 @@ public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
             client.close((L2GameServerPacket) null);
         } else {
             log.info("Client {} protocol version: {}", client, packet.getVersion());
-            KeyPacket pk = new KeyPacket(client.enableCrypt(), 1);
-            client.sendPacket(pk);
 
-            client.setProtocolOk(true);
+            client.setProtocolVersion(packet.getVersion());
+            client.sendPacket(new KeyPacket(client.enableCrypt(), 1));
+
         }
     }
 

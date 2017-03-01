@@ -20,7 +20,7 @@ public class GameServerPacketHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
         log.info("New connection acquired: {}", ctx);
-        ctx.channel().attr(gameClientKey).set(new L2GameClient(null, ctx));
+        ctx.channel().attr(gameClientKey).set(new L2GameClient(ctx));
     }
 
     @Override

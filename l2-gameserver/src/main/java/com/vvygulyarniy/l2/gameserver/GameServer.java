@@ -2,7 +2,6 @@ package com.vvygulyarniy.l2.gameserver;
 
 import com.l2server.network.coders.gameserver.GameServerClientPacketDecoder;
 import com.l2server.network.coders.gameserver.GameServerClientPacketEncoder;
-import com.vvygulyarniy.l2.gameserver.network.L2GamePacketHandler;
 import com.vvygulyarniy.l2.gameserver.network.L2GameServerPacketProcessor;
 import com.vvygulyarniy.l2.gameserver.network.netty.GameServerPacketHandler;
 import com.vvygulyarniy.l2.gameserver.service.characters.InMemoryCharacterRepository;
@@ -28,35 +27,31 @@ public class GameServer {
 
     public static void main(String[] args) throws IOException, InterruptedException {
         log.info("Starting game server");
-        L2GamePacketHandler gamePacketHandler = new L2GamePacketHandler();
-
-        /*GameServerSelectorThread _selectorThread = new GameServerSelectorThread(gamePacketHandler);
-        _selectorThread.start();*/
         startNettyHandler();
         log.info("Started");
-
     }
 
     private static void startNettyHandler() throws InterruptedException {
         CastleRegistry castleRegistry = new HardCodedCastleRegistry();
         InMemoryCharacterRepository characterRepository = new InMemoryCharacterRepository();
-        L2GameServerPacketProcessor packetProcessor = new L2GameServerPacketProcessor(characterRepository, castleRegistry);
+        L2GameServerPacketProcessor packetProcessor = new L2GameServerPacketProcessor(characterRepository,
+                                                                                      castleRegistry);
         EventLoopGroup bossGroup = new NioEventLoopGroup(); // (1)
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
             ServerBootstrap b = new ServerBootstrap(); // (2)
             b.group(bossGroup, workerGroup)
-                    .channel(NioServerSocketChannel.class) // (3)
-                    .childHandler(new ChannelInitializer<SocketChannel>() { // (4)
-                        @Override
-                        public void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new GameServerClientPacketDecoder(),
-                                    new GameServerClientPacketEncoder(),
-                                    new GameServerPacketHandler(packetProcessor));
-                        }
-                    })
-                    .option(ChannelOption.SO_BACKLOG, 128)          // (5)
-                    .childOption(ChannelOption.SO_KEEPALIVE, true); // (6)
+             .channel(NioServerSocketChannel.class) // (3)
+             .childHandler(new ChannelInitializer<SocketChannel>() { // (4)
+                 @Override
+                 public void initChannel(SocketChannel ch) throws Exception {
+                     ch.pipeline().addLast(new GameServerClientPacketDecoder(),
+                                           new GameServerClientPacketEncoder(),
+                                           new GameServerPacketHandler(packetProcessor));
+                 }
+             })
+             .option(ChannelOption.SO_BACKLOG, 128)          // (5)
+             .childOption(ChannelOption.SO_KEEPALIVE, true); // (6)
 
             // Bind and start to accept incoming connections.
             ChannelFuture f = b.bind(9999).sync(); // (7)
