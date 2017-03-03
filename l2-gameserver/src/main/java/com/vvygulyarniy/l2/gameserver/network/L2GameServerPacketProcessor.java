@@ -55,7 +55,10 @@ public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
 
     @Override
     public void process(AuthLogin packet, L2GameClient client) {
-        SessionKey key = new SessionKey(packet.get_loginKey1(), packet.get_loginKey2(), packet.get_playKey1(), packet.get_playKey2());
+        SessionKey key = new SessionKey(packet.get_loginKey1(),
+                                        packet.get_loginKey2(),
+                                        packet.get_playKey1(),
+                                        packet.get_playKey2());
         client.setSessionId(key);
         client.setState(AUTHED);
         client.setAccountName(packet.getLoginName());
@@ -72,7 +75,10 @@ public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
 
     @Override
     public void process(CharacterCreate packet, L2GameClient client) {
-        CharacterAppearance appearance = new CharacterAppearance(Sex.valueOf(packet.getSex()), packet.getHairStyle(), packet.getHairColor(), packet.getFace());
+        CharacterAppearance appearance = new CharacterAppearance(Sex.valueOf(packet.getSex()),
+                                                                 packet.getHairStyle(),
+                                                                 packet.getHairColor(),
+                                                                 packet.getFace());
         try {
             L2Character character = characterRepository.createCharacter(client,
                                                                         getClassId(packet.getClassId()),
@@ -114,14 +120,15 @@ public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
         L2Character activeCharacter = client.getActiveCharacter();
         if (activeCharacter == null) {
             client.closeNow();
+        } else {
+
+            world.addCharacter(activeCharacter);
+
+            client.send(new UserInfo(activeCharacter));
+            client.send(new ItemList(new ArrayList<>(), false));
+            client.send(new ExQuestItemList());
+            client.send(new MoveToLocation(activeCharacter, activeCharacter.getPosition()));
         }
-
-        world.addCharacter(activeCharacter);
-
-        client.send(new UserInfo(activeCharacter));
-        client.send(new ItemList(new ArrayList<>(), false));
-        client.send(new ExQuestItemList());
-
     }
 
     @Override
@@ -159,8 +166,8 @@ public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
     @Override
     public void process(MoveBackwardToLocation packet, L2GameClient client) {
         client.getActiveCharacter().setMoveTarget(packet.getTarget());
-        client.send(new ValidateLocation(client.getActiveCharacter().getId(),
-                                         client.getActiveCharacter().getPosition()));
+        client.send(new MoveToLocation(client.getActiveCharacter(),
+                                       client.getActiveCharacter().getMoveTarget()));
     }
 
     private CharSelectionInfo buildCharSelectionInfo(L2GameClient client) {
