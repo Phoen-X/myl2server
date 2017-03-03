@@ -119,13 +119,13 @@ public class RequestBuySeed extends L2GameClientPacket {
         }
 
         if (!player.getInventory().validateWeight(totalWeight)) {
-            player.sendPacket(SystemMessageId.WEIGHT_LIMIT_EXCEEDED);
+            player.send(SystemMessageId.WEIGHT_LIMIT_EXCEEDED);
             return;
         } else if (!player.getInventory().validateCapacity(slots)) {
-            player.sendPacket(SystemMessageId.SLOTS_FULL);
+            player.send(SystemMessageId.SLOTS_FULL);
             return;
         } else if ((totalPrice < 0) || (player.getAdena() < totalPrice)) {
-            player.sendPacket(SystemMessageId.YOU_NOT_ENOUGH_ADENA);
+            player.send(SystemMessageId.YOU_NOT_ENOUGH_ADENA);
             return;
         }
 
@@ -151,7 +151,7 @@ public class RequestBuySeed extends L2GameClientPacket {
 
             final SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DISAPPEARED_ADENA);
             sm.addLong(totalPrice);
-            player.sendPacket(sm);
+            player.send(sm);
 
             if (Config.ALT_MANOR_SAVE_ALL_ACTIONS) {
                 manor.updateCurrentProduction(_manorId, _productInfo.values());

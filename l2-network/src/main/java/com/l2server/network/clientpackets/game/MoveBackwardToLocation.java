@@ -20,9 +20,9 @@ package com.l2server.network.clientpackets.game;
 
 import com.l2server.network.GameServerPacketProcessor;
 import com.l2server.network.L2GameClient;
+import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.nio.BufferUnderflowException;
 
@@ -33,30 +33,29 @@ import java.nio.BufferUnderflowException;
  */
 @Slf4j
 @ToString
+@Getter
 public class MoveBackwardToLocation extends L2GameClientPacket {
-    private static final String _C__0F_MOVEBACKWARDTOLOC = "[C] 0F MoveBackwardToLoc";
-
     // cdddddd
-    private int _targetX;
-    private int _targetY;
-    private int _targetZ;
-    private int _originX;
-    private int _originY;
-    private int _originZ;
+    private int targetX;
+    private int targetY;
+    private int targetZ;
+    private int originX;
+    private int originY;
+    private int originZ;
 
     @SuppressWarnings("unused")
-    private int _moveMovement;
+    private int moveMovement;
 
     @Override
     protected void readImpl() {
-        _targetX = readD();
-        _targetY = readD();
-        _targetZ = readD();
-        _originX = readD();
-        _originY = readD();
-        _originZ = readD();
+        targetX = readD();
+        targetY = readD();
+        targetZ = readD();
+        originX = readD();
+        originY = readD();
+        originZ = readD();
         try {
-            _moveMovement = readD(); // is 0 if cursor keys are used 1 if mouse is used
+            moveMovement = readD(); // is 0 if cursor keys are used 1 if mouse is used
         } catch (BufferUnderflowException e) {
             log.warn("Underflowed: {}", this);
         }
@@ -70,13 +69,13 @@ public class MoveBackwardToLocation extends L2GameClientPacket {
         }
 
         if ((Config.PLAYER_MOVEMENT_BLOCK_TIME > 0) && !activeChar.isGM() && (activeChar.getNotMoveUntil() > System.currentTimeMillis())) {
-            activeChar.sendPacket(SystemMessageId.CANNOT_MOVE_WHILE_SPEAKING_TO_AN_NPC);
-            activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+            activeChar.send(SystemMessageId.CANNOT_MOVE_WHILE_SPEAKING_TO_AN_NPC);
+            activeChar.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
-        if ((_targetX == _originX) && (_targetY == _originY) && (_targetZ == _originZ)) {
-            activeChar.sendPacket(new StopMove(activeChar));
+        if ((targetX == originX) && (targetY == originY) && (targetZ == originZ)) {
+            activeChar.send(new StopMove(activeChar));
             return;
         }
 
@@ -86,30 +85,30 @@ public class MoveBackwardToLocation extends L2GameClientPacket {
         // L2J uses floor, not head level as char coordinates. This is some
         // sort of incompatibility fix.
         // Validate position packets sends head level.
-        _targetZ += activeChar.getTemplate().getCollisionHeight();
+        targetZ += activeChar.getTemplate().getCollisionHeight();
 
         if (activeChar.getTeleMode() > 0) {
             if (activeChar.getTeleMode() == 1) {
                 activeChar.setTeleMode(0);
             }
-            activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-            activeChar.teleToLocation(new Location(_targetX, _targetY, _targetZ));
+            activeChar.send(ActionFailed.STATIC_PACKET);
+            activeChar.teleToLocation(new Location(targetX, targetY, targetZ));
             return;
         }
 
-        double dx = _targetX - activeChar.getX();
-        double dy = _targetY - activeChar.getY();
+        double dx = targetX - activeChar.getX();
+        double dy = targetY - activeChar.getY();
         // Can't move if character is confused, or trying to move a huge distance
         if (activeChar.isOutOfControl() || (((dx * dx) + (dy * dy)) > 98010000)) // 9900*9900
         {
-            activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+            activeChar.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
-        activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(_targetX, _targetY, _targetZ));
+        activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(targetX, targetY, targetZ));
     }*/
     @Override
     public void process(GameServerPacketProcessor processor, L2GameClient client) {
-        throw new NotImplementedException();
+        processor.process(this, client);
     }
 }

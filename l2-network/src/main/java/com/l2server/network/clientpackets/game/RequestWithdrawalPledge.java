@@ -43,15 +43,15 @@ public final class RequestWithdrawalPledge extends L2GameClientPacket {
             return;
         }
         if (activeChar.getClan() == null) {
-            activeChar.sendPacket(SystemMessageId.YOU_ARE_NOT_A_CLAN_MEMBER);
+            activeChar.send(SystemMessageId.YOU_ARE_NOT_A_CLAN_MEMBER);
             return;
         }
         if (activeChar.isClanLeader()) {
-            activeChar.sendPacket(SystemMessageId.CLAN_LEADER_CANNOT_WITHDRAW);
+            activeChar.send(SystemMessageId.CLAN_LEADER_CANNOT_WITHDRAW);
             return;
         }
         if (activeChar.isInCombat()) {
-            activeChar.sendPacket(SystemMessageId.YOU_CANNOT_LEAVE_DURING_COMBAT);
+            activeChar.send(SystemMessageId.YOU_CANNOT_LEAVE_DURING_COMBAT);
             return;
         }
 
@@ -66,8 +66,8 @@ public final class RequestWithdrawalPledge extends L2GameClientPacket {
         // Remove the Player From the Member list
         clan.broadcastToOnlineMembers(new PledgeShowMemberListDelete(activeChar.getName()));
 
-        activeChar.sendPacket(SystemMessageId.YOU_HAVE_WITHDRAWN_FROM_CLAN);
-        activeChar.sendPacket(SystemMessageId.YOU_MUST_WAIT_BEFORE_JOINING_ANOTHER_CLAN);
+        activeChar.send(SystemMessageId.YOU_HAVE_WITHDRAWN_FROM_CLAN);
+        activeChar.send(SystemMessageId.YOU_MUST_WAIT_BEFORE_JOINING_ANOTHER_CLAN);
     }
 */
 

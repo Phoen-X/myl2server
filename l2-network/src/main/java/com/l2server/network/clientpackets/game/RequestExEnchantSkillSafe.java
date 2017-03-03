@@ -56,17 +56,17 @@ public final class RequestExEnchantSkillSafe extends L2GameClientPacket {
 
         if (player.getClassId().level() < 3) // requires to have 3rd class quest completed
         {
-            player.sendPacket(SystemMessageId.YOU_CANNOT_USE_SKILL_ENCHANT_IN_THIS_CLASS);
+            player.send(SystemMessageId.YOU_CANNOT_USE_SKILL_ENCHANT_IN_THIS_CLASS);
             return;
         }
 
         if (player.getLevel() < 76) {
-            player.sendPacket(SystemMessageId.YOU_CANNOT_USE_SKILL_ENCHANT_ON_THIS_LEVEL);
+            player.send(SystemMessageId.YOU_CANNOT_USE_SKILL_ENCHANT_ON_THIS_LEVEL);
             return;
         }
 
         if (!player.isAllowedToEnchantSkills()) {
-            player.sendPacket(SystemMessageId.YOU_CANNOT_USE_SKILL_ENCHANT_ATTACKING_TRANSFORMED_BOAT);
+            player.send(SystemMessageId.YOU_CANNOT_USE_SKILL_ENCHANT_ATTACKING_TRANSFORMED_BOAT);
             return;
         }
 
@@ -97,12 +97,12 @@ public final class RequestExEnchantSkillSafe extends L2GameClientPacket {
             L2ItemInstance spb = player.getInventory().getItemByItemId(reqItemId);
             if (spb == null)// Haven't spellbook
             {
-                player.sendPacket(SystemMessageId.YOU_DONT_HAVE_ALL_OF_THE_ITEMS_NEEDED_TO_ENCHANT_THAT_SKILL);
+                player.send(SystemMessageId.YOU_DONT_HAVE_ALL_OF_THE_ITEMS_NEEDED_TO_ENCHANT_THAT_SKILL);
                 return;
             }
 
             if (player.getInventory().getAdena() < requireditems) {
-                player.sendPacket(SystemMessageId.YOU_DONT_HAVE_ALL_OF_THE_ITEMS_NEEDED_TO_ENCHANT_THAT_SKILL);
+                player.send(SystemMessageId.YOU_DONT_HAVE_ALL_OF_THE_ITEMS_NEEDED_TO_ENCHANT_THAT_SKILL);
                 return;
             }
 
@@ -112,7 +112,7 @@ public final class RequestExEnchantSkillSafe extends L2GameClientPacket {
             check &= player.destroyItemByItemId("Consume", Inventory.ADENA_ID, requireditems, player, true);
 
             if (!check) {
-                player.sendPacket(SystemMessageId.YOU_DONT_HAVE_ALL_OF_THE_ITEMS_NEEDED_TO_ENCHANT_THAT_SKILL);
+                player.send(SystemMessageId.YOU_DONT_HAVE_ALL_OF_THE_ITEMS_NEEDED_TO_ENCHANT_THAT_SKILL);
                 return;
             }
 
@@ -137,11 +137,11 @@ public final class RequestExEnchantSkillSafe extends L2GameClientPacket {
                     _log.fine("Learned skill ID: " + _skillId + " Level: " + _skillLvl + " for " + requiredSp + " SP, " + requireditems + " Adena.");
                 }
 
-                player.sendPacket(ExEnchantSkillResult.valueOf(true));
+                player.send(ExEnchantSkillResult.valueOf(true));
 
                 SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_SUCCEEDED_IN_ENCHANTING_THE_SKILL_S1);
                 sm.addSkillName(_skillId);
-                player.sendPacket(sm);
+                player.send(sm);
             } else {
                 if (Config.LOG_SKILL_ENCHANTS) {
                     LogRecord record = new LogRecord(Level.INFO, "Safe Fail");
@@ -158,20 +158,20 @@ public final class RequestExEnchantSkillSafe extends L2GameClientPacket {
 
                 SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.SKILL_ENCHANT_FAILED_S1_LEVEL_WILL_REMAIN);
                 sm.addSkillName(_skillId);
-                player.sendPacket(sm);
-                player.sendPacket(ExEnchantSkillResult.valueOf(false));
+                player.send(sm);
+                player.send(ExEnchantSkillResult.valueOf(false));
             }
 
-            player.sendPacket(new UserInfo(player));
-            player.sendPacket(new ExBrExtraUserInfo(player));
+            player.send(new UserInfo(player));
+            player.send(new ExBrExtraUserInfo(player));
             player.sendSkillList();
             final int afterEnchantSkillLevel = player.getSkillLevel(_skillId);
-            player.sendPacket(new ExEnchantSkillInfo(_skillId, afterEnchantSkillLevel));
-            player.sendPacket(new ExEnchantSkillInfoDetail(1, _skillId, afterEnchantSkillLevel + 1, player));
+            player.send(new ExEnchantSkillInfo(_skillId, afterEnchantSkillLevel));
+            player.send(new ExEnchantSkillInfoDetail(1, _skillId, afterEnchantSkillLevel + 1, player));
             player.updateShortCuts(_skillId, afterEnchantSkillLevel);
         } else {
             SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_DONT_HAVE_ENOUGH_SP_TO_ENCHANT_THAT_SKILL);
-            player.sendPacket(sm);
+            player.send(sm);
         }
     }
 */

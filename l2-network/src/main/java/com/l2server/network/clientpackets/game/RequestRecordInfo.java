@@ -37,13 +37,13 @@ public class RequestRecordInfo extends L2GameClientPacket {
             return;
         }
 
-        activeChar.sendPacket(new UserInfo(activeChar));
-        activeChar.sendPacket(new ExBrExtraUserInfo(activeChar));
+        activeChar.send(new UserInfo(activeChar));
+        activeChar.send(new ExBrExtraUserInfo(activeChar));
 
         Collection<L2Object> objs = activeChar.getKnownList().getKnownObjects().values();
         for (L2Object object : objs) {
             if (object.getPoly().isMorphed() && object.getPoly().getPolyType().equals("item")) {
-                activeChar.sendPacket(new SpawnItem(object));
+                activeChar.send(new SpawnItem(object));
             } else {
                 if (!object.isVisibleFor(activeChar)) {
                     object.sendInfo(activeChar);

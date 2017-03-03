@@ -46,58 +46,58 @@ public final class RequestAllyInfo extends L2GameClientPacket {
         final int allianceId = activeChar.getAllyId();
         if (allianceId > 0) {
             final AllianceInfo ai = new AllianceInfo(allianceId);
-            activeChar.sendPacket(ai);
+            activeChar.send(ai);
 
             // send for player
             sm = SystemMessage.getSystemMessage(SystemMessageId.ALLIANCE_INFO_HEAD);
-            activeChar.sendPacket(sm);
+            activeChar.send(sm);
 
             sm = SystemMessage.getSystemMessage(SystemMessageId.ALLIANCE_NAME_S1);
             sm.addString(ai.getName());
-            activeChar.sendPacket(sm);
+            activeChar.send(sm);
 
             sm = SystemMessage.getSystemMessage(SystemMessageId.ALLIANCE_LEADER_S2_OF_S1);
             sm.addString(ai.getLeaderC());
             sm.addString(ai.getLeaderP());
-            activeChar.sendPacket(sm);
+            activeChar.send(sm);
 
             sm = SystemMessage.getSystemMessage(SystemMessageId.CONNECTION_S1_TOTAL_S2);
             sm.addInt(ai.getOnline());
             sm.addInt(ai.getTotal());
-            activeChar.sendPacket(sm);
+            activeChar.send(sm);
 
             sm = SystemMessage.getSystemMessage(SystemMessageId.ALLIANCE_CLAN_TOTAL_S1);
             sm.addInt(ai.getAllies().length);
-            activeChar.sendPacket(sm);
+            activeChar.send(sm);
 
             sm = SystemMessage.getSystemMessage(SystemMessageId.CLAN_INFO_HEAD);
             for (final ClanInfo aci : ai.getAllies()) {
-                activeChar.sendPacket(sm);
+                activeChar.send(sm);
 
                 sm = SystemMessage.getSystemMessage(SystemMessageId.CLAN_INFO_NAME_S1);
                 sm.addString(aci.getClan().getName());
-                activeChar.sendPacket(sm);
+                activeChar.send(sm);
 
                 sm = SystemMessage.getSystemMessage(SystemMessageId.CLAN_INFO_LEADER_S1);
                 sm.addString(aci.getClan().getLeaderName());
-                activeChar.sendPacket(sm);
+                activeChar.send(sm);
 
                 sm = SystemMessage.getSystemMessage(SystemMessageId.CLAN_INFO_LEVEL_S1);
                 sm.addInt(aci.getClan().getLevel());
-                activeChar.sendPacket(sm);
+                activeChar.send(sm);
 
                 sm = SystemMessage.getSystemMessage(SystemMessageId.CONNECTION_S1_TOTAL_S2);
                 sm.addInt(aci.getOnline());
                 sm.addInt(aci.getTotal());
-                activeChar.sendPacket(sm);
+                activeChar.send(sm);
 
                 sm = SystemMessage.getSystemMessage(SystemMessageId.CLAN_INFO_SEPARATOR);
             }
 
             sm = SystemMessage.getSystemMessage(SystemMessageId.CLAN_INFO_FOOT);
-            activeChar.sendPacket(sm);
+            activeChar.send(sm);
         } else {
-            activeChar.sendPacket(SystemMessageId.NO_CURRENT_ALLIANCES);
+            activeChar.send(SystemMessageId.NO_CURRENT_ALLIANCES);
         }
     }*/
 

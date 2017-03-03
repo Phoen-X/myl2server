@@ -53,9 +53,9 @@ public final class RequestWithDrawalParty extends L2GameClientPacket {
                 if (player.isInPartyMatchRoom()) {
                     PartyMatchRoom _room = PartyMatchRoomList.getInstance().getPlayerRoom(player);
                     if (_room != null) {
-                        player.sendPacket(new PartyMatchDetail(player, _room));
-                        player.sendPacket(new ExPartyRoomMember(player, _room, 0));
-                        player.sendPacket(new ExClosePartyRoom());
+                        player.send(new PartyMatchDetail(player, _room));
+                        player.send(new ExPartyRoomMember(player, _room, 0));
+                        player.send(new ExClosePartyRoom());
 
                         _room.deleteMember(player);
                     }

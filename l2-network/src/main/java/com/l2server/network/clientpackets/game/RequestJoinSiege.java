@@ -48,7 +48,7 @@ public final class RequestJoinSiege extends L2GameClientPacket {
         }
 
         if (!activeChar.hasClanPrivilege(ClanPrivilege.CS_MANAGE_SIEGE)) {
-            activeChar.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
+            activeChar.send(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
             return;
         }
 
@@ -61,7 +61,7 @@ public final class RequestJoinSiege extends L2GameClientPacket {
         if (castle != null) {
             if (_isJoining == 1) {
                 if (System.currentTimeMillis() < clan.getDissolvingExpiryTime()) {
-                    activeChar.sendPacket(SystemMessageId.CANT_PARTICIPATE_IN_SIEGE_WHILE_DISSOLUTION_IN_PROGRESS);
+                    activeChar.send(SystemMessageId.CANT_PARTICIPATE_IN_SIEGE_WHILE_DISSOLUTION_IN_PROGRESS);
                     return;
                 }
                 if (_isAttacker == 1) {
@@ -79,14 +79,14 @@ public final class RequestJoinSiege extends L2GameClientPacket {
         if (hall != null) {
             if (_isJoining == 1) {
                 if (System.currentTimeMillis() < clan.getDissolvingExpiryTime()) {
-                    activeChar.sendPacket(SystemMessageId.CANT_PARTICIPATE_IN_SIEGE_WHILE_DISSOLUTION_IN_PROGRESS);
+                    activeChar.send(SystemMessageId.CANT_PARTICIPATE_IN_SIEGE_WHILE_DISSOLUTION_IN_PROGRESS);
                     return;
                 }
                 CHSiegeManager.getInstance().registerClan(clan, hall, activeChar);
             } else {
                 CHSiegeManager.getInstance().unRegisterClan(clan, hall);
             }
-            activeChar.sendPacket(new SiegeInfo(hall));
+            activeChar.send(new SiegeInfo(hall));
         }
     }*/
 

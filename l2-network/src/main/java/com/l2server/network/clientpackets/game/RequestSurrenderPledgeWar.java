@@ -46,7 +46,7 @@ public final class RequestSurrenderPledgeWar extends L2GameClientPacket {
 
         if (clan == null) {
             activeChar.sendMessage("No such clan.");
-            activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+            activeChar.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
@@ -54,13 +54,13 @@ public final class RequestSurrenderPledgeWar extends L2GameClientPacket {
 
         if (!_clan.isAtWarWith(clan.getId())) {
             activeChar.sendMessage("You aren't at war with this clan.");
-            activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+            activeChar.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_SURRENDERED_TO_THE_S1_CLAN);
         msg.addString(_pledgeName);
-        activeChar.sendPacket(msg);
+        activeChar.send(msg);
         ClanTable.getInstance().deleteclanswars(_clan.getId(), clan.getId());
     }*/
 

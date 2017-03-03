@@ -70,7 +70,7 @@ public final class ProtocolVersion extends L2GameClientPacket {
 			}
 			
 			KeyPacket pk = new KeyPacket(getClient().enableCrypt(), 1);
-			getClient().sendPacket(pk);
+			getClient().send(pk);
 			getClient().setProtocolOk(true);
 		}
 	}*/

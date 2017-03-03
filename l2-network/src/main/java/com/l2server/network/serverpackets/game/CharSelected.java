@@ -18,20 +18,23 @@
  */
 package com.l2server.network.serverpackets.game;
 
+import com.vvygulyarniy.l2.domain.character.L2Character;
 import lombok.ToString;
 
 import java.nio.ByteBuffer;
 
+import static com.vvygulyarniy.l2.domain.character.info.stat.BasicStat.*;
+
 @ToString
 public class CharSelected extends L2GameServerPacket {
-    private final L2CharData activeChar;
+    private final L2Character activeChar;
     private final int sessionId;
 
     /**
      * @param activeChar
      * @param sessionId
      */
-    public CharSelected(L2CharData activeChar, int sessionId) {
+    public CharSelected(L2Character activeChar, int sessionId) {
         this.activeChar = activeChar;
         this.sessionId = sessionId;
     }
@@ -40,38 +43,38 @@ public class CharSelected extends L2GameServerPacket {
     protected final void writeImpl(final ByteBuffer buffer) {
         writeC(buffer, 0x0b);
 
-        writeS(buffer, activeChar.getName());
-        writeD(buffer, activeChar.getObjectId());
+        writeS(buffer, activeChar.getNickName());
+        writeD(buffer, activeChar.getId());
         writeS(buffer, ""); // title
         writeD(buffer, sessionId);
         writeD(buffer, activeChar.getClanId());
         writeD(buffer, 0x00); // ??
-        writeD(buffer, activeChar.getSex());
-        writeD(buffer, activeChar.getRace());
-        writeD(buffer, activeChar.getClassId());
+        writeD(buffer, activeChar.getAppearance().getSex().getId());
+        writeD(buffer, activeChar.getProfession().getRace().getId());
+        writeD(buffer, activeChar.getProfession().getId());
         writeD(buffer, 0x01); // active ??
-        writeD(buffer, activeChar.getX());
-        writeD(buffer, activeChar.getY());
-        writeD(buffer, activeChar.getZ());
+        writeD(buffer, activeChar.getPosition().getX());
+        writeD(buffer, activeChar.getPosition().getY());
+        writeD(buffer, activeChar.getPosition().getZ());
 
-        writeF(buffer, activeChar.getCurrentHp());
-        writeF(buffer, activeChar.getCurrentMp());
+        writeF(buffer, activeChar.getCurrHp());
+        writeF(buffer, activeChar.getCurrMp());
         writeD(buffer, activeChar.getSp());
         writeQ(buffer, activeChar.getExp());
         writeD(buffer, activeChar.getLevel());
         writeD(buffer, activeChar.getKarma()); // thx evill33t
         writeD(buffer, activeChar.getPkKills());
-        writeD(buffer, activeChar.getStatInt());
-        writeD(buffer, activeChar.getStatStr());
-        writeD(buffer, activeChar.getStatCon());
-        writeD(buffer, activeChar.getStatMen());
-        writeD(buffer, activeChar.getStatDex());
-        writeD(buffer, activeChar.getStatWit());
+        writeD(buffer, activeChar.getProfession().getStats().get(INT));
+        writeD(buffer, activeChar.getProfession().getStats().get(STR));
+        writeD(buffer, activeChar.getProfession().getStats().get(CON));
+        writeD(buffer, activeChar.getProfession().getStats().get(MEN));
+        writeD(buffer, activeChar.getProfession().getStats().get(DEX));
+        writeD(buffer, activeChar.getProfession().getStats().get(WIT));
 
         writeD(buffer, 100000 % (24 * 60)); // "reset" on 24th hour
         writeD(buffer, 0x00);
 
-        writeD(buffer, activeChar.getClassId());
+        writeD(buffer, activeChar.getProfession().getId());
 
         writeD(buffer, 0x00);
         writeD(buffer, 0x00);

@@ -52,8 +52,8 @@ public final class Action extends L2GameClientPacket {
         }
 
         if (activeChar.inObserverMode()) {
-            activeChar.sendPacket(SystemMessageId.OBSERVERS_CANNOT_PARTICIPATE);
-            sendPacket(ActionFailed.STATIC_PACKET);
+            activeChar.send(SystemMessageId.OBSERVERS_CANNOT_PARTICIPATE);
+            send(ActionFailed.STATIC_PACKET);
             return;
         }
 
@@ -61,8 +61,8 @@ public final class Action extends L2GameClientPacket {
         if (info != null) {
             for (AbstractEffect effect : info.getEffects()) {
                 if (!effect.checkCondition(-4)) {
-                    activeChar.sendPacket(SystemMessageId.YOU_HAVE_BEEN_REPORTED_SO_ACTIONS_NOT_ALLOWED);
-                    activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+                    activeChar.send(SystemMessageId.YOU_HAVE_BEEN_REPORTED_SO_ACTIONS_NOT_ALLOWED);
+                    activeChar.send(ActionFailed.STATIC_PACKET);
                     return;
                 }
             }
@@ -80,31 +80,31 @@ public final class Action extends L2GameClientPacket {
         // If object requested does not exist, add warn msg into logs
         if (obj == null) {
             // pressing e.g. pickup many times quickly would get you here
-            sendPacket(ActionFailed.STATIC_PACKET);
+            send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         if (!obj.isTargetable() && !activeChar.canOverrideCond(PcCondOverride.TARGET_ALL)) {
-            sendPacket(ActionFailed.STATIC_PACKET);
+            send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         // Players can't interact with objects in the other instances, except from multiverse
         if ((obj.getInstanceId() != activeChar.getInstanceId()) && (activeChar.getInstanceId() != -1)) {
-            sendPacket(ActionFailed.STATIC_PACKET);
+            send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         // Only GMs can directly interact with invisible characters
         if (!obj.isVisibleFor(activeChar)) {
-            sendPacket(ActionFailed.STATIC_PACKET);
+            send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         // Check if the target is valid, if the player haven't a shop or isn't the requester of a transaction (ex : FriendInvite, JoinAlly, JoinParty...)
         if (activeChar.getActiveRequester() != null) {
             // Actions prohibited when in trade
-            sendPacket(ActionFailed.STATIC_PACKET);
+            send(ActionFailed.STATIC_PACKET);
             return;
         }
 
@@ -124,7 +124,7 @@ public final class Action extends L2GameClientPacket {
             default: {
                 // Invalid action detected (probably client cheating), log this
                 _log.warning(getType() + ": Character: " + activeChar.getName() + " requested invalid action: " + _actionId);
-                sendPacket(ActionFailed.STATIC_PACKET);
+                send(ActionFailed.STATIC_PACKET);
                 break;
             }
         }

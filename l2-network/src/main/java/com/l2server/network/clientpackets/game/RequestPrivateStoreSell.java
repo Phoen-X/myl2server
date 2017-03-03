@@ -69,7 +69,7 @@ public final class RequestPrivateStoreSell extends L2GameClientPacket {
         }
 
         if (_items == null) {
-            sendPacket(ActionFailed.STATIC_PACKET);
+            send(ActionFailed.STATIC_PACKET);
             return;
         }
 
@@ -107,12 +107,12 @@ public final class RequestPrivateStoreSell extends L2GameClientPacket {
 
         if (!player.getAccessLevel().allowTransaction()) {
             player.sendMessage("Transactions are disabled for your Access Level.");
-            sendPacket(ActionFailed.STATIC_PACKET);
+            send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         if (!storeList.privateStoreSell(player, _items)) {
-            sendPacket(ActionFailed.STATIC_PACKET);
+            send(ActionFailed.STATIC_PACKET);
             _log.warning("PrivateStore sell has failed due to invalid list or request. Player: " + player.getName() + ", Private store of: " + storePlayer.getName());
             return;
         }

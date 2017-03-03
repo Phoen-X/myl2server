@@ -33,4 +33,6 @@ public interface GameServerPacketProcessor {
     void process(RequestShowMiniMap requestShowMiniMap, L2GameClient client);
 
     void process(RequestAllFortressInfo requestAllFortressInfo, L2GameClient client);
+
+    void process(MoveBackwardToLocation packet, L2GameClient client);
 }

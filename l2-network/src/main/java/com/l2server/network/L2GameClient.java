@@ -24,11 +24,9 @@ import com.l2server.network.util.crypt.BlowFishKeygen;
 import com.l2server.network.util.crypt.GameCrypt;
 import com.vvygulyarniy.l2.domain.character.L2Character;
 import io.netty.channel.ChannelHandlerContext;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.nio.ByteBuffer;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +39,6 @@ import static com.l2server.network.L2GameClient.GameClientState.CONNECTED;
  */
 @Slf4j
 public final class L2GameClient {
-    private final LocalDateTime connectionTime;
     // Crypt
     private final GameCrypt _crypt;
     private final ChannelHandlerContext networkContext;
@@ -49,9 +46,6 @@ public final class L2GameClient {
     private String _accountName;
     private SessionKey _sessionId;
     private boolean _isAuthedGG;
-    private boolean _isDetached = false;
-    @Setter
-    private int protocolVersion;
     private List<L2Character> accountCharacters = new ArrayList<>();
     private L2Character activeCharacter = null;
     private int[][] trace;
@@ -59,7 +53,6 @@ public final class L2GameClient {
     public L2GameClient(ChannelHandlerContext networkContext) {
         this.networkContext = networkContext;
         state = CONNECTED;
-        connectionTime = LocalDateTime.now();
         _crypt = new GameCrypt();
     }
 
@@ -134,18 +127,12 @@ public final class L2GameClient {
         _sessionId = sk;
     }
 
-    public void sendPacket(L2GameServerPacket gsp) {
+    public void send(L2GameServerPacket gsp) {
         log.info("Sending packet {}", gsp);
-        if (_isDetached || (gsp == null)) {
-            return;
+
+        if (gsp != null) {
+            networkContext.channel().writeAndFlush(gsp);
         }
-
-        /*// Packets from invisible chars sends only to GMs
-        if (gsp.isInvisible() && (getActiveChar() != null) && !getActiveChar().canOverrideCond(PcCondOverride.SEE_ALL_PLAYERS)) {
-            return;
-        }*/
-
-        networkContext.channel().writeAndFlush(gsp);
     }
 
     public void close(L2GameServerPacket... packetsToSendBefore) {
@@ -157,25 +144,7 @@ public final class L2GameClient {
         networkContext.channel().close();
     }
 
-    /**
-     * True if detached, or flood detected, or queue overflow detected and queue still not empty.
-     *
-     * @return false if client can receive packets.
-     */
-    public boolean dropPacket() {
-        return false;
-    }
-
-    /**
-     * Counts unknown packets
-     */
-    public void onUnknownPacket() {
-        closeNow();
-    }
-
-
     public void closeNow() {
-        _isDetached = true; // prevents more packets execution
         close(ServerClose.STATIC_PACKET);
     }
 
@@ -183,17 +152,8 @@ public final class L2GameClient {
      * @author KenM
      */
     public enum GameClientState {
-        /**
-         * Client has just connected .
-         */
-        CONNECTED,
-        /**
-         * Client has authed but doesn't has character attached to it yet.
-         */
-        AUTHED,
-        /**
-         * Client has selected a char and is in game.
-         */
-        IN_GAME
+        CONNECTED, // Client has just connected .
+        AUTHED, // Client has authed but doesn't has character attached to it yet.
+        IN_GAME // Client has selected a char and is in game.
     }
 }

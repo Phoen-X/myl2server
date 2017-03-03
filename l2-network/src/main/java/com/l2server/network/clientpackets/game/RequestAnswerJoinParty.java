@@ -44,20 +44,20 @@ public final class RequestAnswerJoinParty extends L2GameClientPacket {
             return;
         }
 
-        requestor.sendPacket(new JoinParty(_response));
+        requestor.send(new JoinParty(_response));
 
         switch (_response) {
             case -1: // Party disable by player client config
             {
                 SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_IS_SET_TO_REFUSE_PARTY_REQUEST);
                 sm.addPcName(player);
-                requestor.sendPacket(sm);
+                requestor.send(sm);
                 break;
             }
             case 0: // Party cancel by player
             {
 
-                // requestor.sendPacket(SystemMessageId.PLAYER_DECLINED); FIXME: Done in client?
+                // requestor.send(SystemMessageId.PLAYER_DECLINED); FIXME: Done in client?
                 break;
             }
             case 1: // Party accept by player
@@ -65,8 +65,8 @@ public final class RequestAnswerJoinParty extends L2GameClientPacket {
                 if (requestor.isInParty()) {
                     if (requestor.getParty().getMemberCount() >= 9) {
                         SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.PARTY_FULL);
-                        player.sendPacket(sm);
-                        requestor.sendPacket(sm);
+                        player.send(sm);
+                        requestor.send(sm);
                         return;
                     }
                     player.joinParty(requestor.getParty());
@@ -83,7 +83,7 @@ public final class RequestAnswerJoinParty extends L2GameClientPacket {
                             final ExManagePartyRoomMember packet = new ExManagePartyRoomMember(player, room, 1);
                             for (L2PcInstance member : room.getPartyMembers()) {
                                 if (member != null) {
-                                    member.sendPacket(packet);
+                                    member.send(packet);
                                 }
                             }
                         }
@@ -97,7 +97,7 @@ public final class RequestAnswerJoinParty extends L2GameClientPacket {
                             ExManagePartyRoomMember packet = new ExManagePartyRoomMember(player, room, 1);
                             for (L2PcInstance member : room.getPartyMembers()) {
                                 if (member != null) {
-                                    member.sendPacket(packet);
+                                    member.send(packet);
                                 }
                             }
                             player.setPartyRoom(room.getId());

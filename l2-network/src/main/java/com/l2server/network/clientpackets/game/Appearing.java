@@ -50,8 +50,8 @@ public final class Appearing extends L2GameClientPacket {
             activeChar.onTeleported();
         }
 
-        sendPacket(new UserInfo(activeChar));
-        sendPacket(new ExBrExtraUserInfo(activeChar));
+        send(new UserInfo(activeChar));
+        send(new ExBrExtraUserInfo(activeChar));
     }
     */
     @Override

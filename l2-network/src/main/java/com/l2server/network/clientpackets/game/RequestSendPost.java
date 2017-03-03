@@ -102,43 +102,43 @@ public final class RequestSendPost extends L2GameClientPacket {
         }
 
         if (!activeChar.isInsideZone(ZoneId.PEACE) && (_items != null)) {
-            activeChar.sendPacket(SystemMessageId.CANT_FORWARD_NOT_IN_PEACE_ZONE);
+            activeChar.send(SystemMessageId.CANT_FORWARD_NOT_IN_PEACE_ZONE);
             return;
         }
 
         if (activeChar.getActiveTradeList() != null) {
-            activeChar.sendPacket(SystemMessageId.CANT_FORWARD_DURING_EXCHANGE);
+            activeChar.send(SystemMessageId.CANT_FORWARD_DURING_EXCHANGE);
             return;
         }
 
         if (activeChar.isEnchanting()) {
-            activeChar.sendPacket(SystemMessageId.CANT_FORWARD_DURING_ENCHANT);
+            activeChar.send(SystemMessageId.CANT_FORWARD_DURING_ENCHANT);
             return;
         }
 
         if (activeChar.getPrivateStoreType() != PrivateStoreType.NONE) {
-            activeChar.sendPacket(SystemMessageId.CANT_FORWARD_PRIVATE_STORE);
+            activeChar.send(SystemMessageId.CANT_FORWARD_PRIVATE_STORE);
             return;
         }
 
         if (_receiver.length() > MAX_RECV_LENGTH) {
-            activeChar.sendPacket(SystemMessageId.ALLOWED_LENGTH_FOR_RECIPIENT_EXCEEDED);
+            activeChar.send(SystemMessageId.ALLOWED_LENGTH_FOR_RECIPIENT_EXCEEDED);
             return;
         }
 
         if (_subject.length() > MAX_SUBJ_LENGTH) {
-            activeChar.sendPacket(SystemMessageId.ALLOWED_LENGTH_FOR_TITLE_EXCEEDED);
+            activeChar.send(SystemMessageId.ALLOWED_LENGTH_FOR_TITLE_EXCEEDED);
             return;
         }
 
         if (_text.length() > MAX_TEXT_LENGTH) {
             // not found message for this
-            activeChar.sendPacket(SystemMessageId.ALLOWED_LENGTH_FOR_TITLE_EXCEEDED);
+            activeChar.send(SystemMessageId.ALLOWED_LENGTH_FOR_TITLE_EXCEEDED);
             return;
         }
 
         if ((_items != null) && (_items.length > MAX_ATTACHMENTS)) {
-            activeChar.sendPacket(SystemMessageId.ITEM_SELECTION_POSSIBLE_UP_TO_8);
+            activeChar.send(SystemMessageId.ITEM_SELECTION_POSSIBLE_UP_TO_8);
             return;
         }
 
@@ -148,23 +148,23 @@ public final class RequestSendPost extends L2GameClientPacket {
 
         if (_isCod) {
             if (_reqAdena == 0) {
-                activeChar.sendPacket(SystemMessageId.PAYMENT_AMOUNT_NOT_ENTERED);
+                activeChar.send(SystemMessageId.PAYMENT_AMOUNT_NOT_ENTERED);
                 return;
             }
             if ((_items == null) || (_items.length == 0)) {
-                activeChar.sendPacket(SystemMessageId.PAYMENT_REQUEST_NO_ITEM);
+                activeChar.send(SystemMessageId.PAYMENT_REQUEST_NO_ITEM);
                 return;
             }
         }
 
         final int receiverId = CharNameTable.getInstance().getIdByName(_receiver);
         if (receiverId <= 0) {
-            activeChar.sendPacket(SystemMessageId.RECIPIENT_NOT_EXIST);
+            activeChar.send(SystemMessageId.RECIPIENT_NOT_EXIST);
             return;
         }
 
         if (receiverId == activeChar.getObjectId()) {
-            activeChar.sendPacket(SystemMessageId.YOU_CANT_SEND_MAIL_TO_YOURSELF);
+            activeChar.send(SystemMessageId.YOU_CANT_SEND_MAIL_TO_YOURSELF);
             return;
         }
 
@@ -174,42 +174,42 @@ public final class RequestSendPost extends L2GameClientPacket {
         if (accessLevel.isGm() && !activeChar.getAccessLevel().isGm()) {
             SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CANNOT_MAIL_GM_C1);
             sm.addString(_receiver);
-            activeChar.sendPacket(sm);
+            activeChar.send(sm);
             return;
         }
 
         if (activeChar.isJailed() && ((Config.JAIL_DISABLE_TRANSACTION && (_items != null)) || Config.JAIL_DISABLE_CHAT)) {
-            activeChar.sendPacket(SystemMessageId.CANT_FORWARD_NOT_IN_PEACE_ZONE);
+            activeChar.send(SystemMessageId.CANT_FORWARD_NOT_IN_PEACE_ZONE);
             return;
         }
 
         if (BlockList.isInBlockList(receiverId, activeChar.getObjectId())) {
             SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_BLOCKED_YOU_CANNOT_MAIL);
             sm.addString(_receiver);
-            activeChar.sendPacket(sm);
+            activeChar.send(sm);
             return;
         }
 
         if (MailManager.getInstance().getOutboxSize(activeChar.getObjectId()) >= OUTBOX_SIZE) {
-            activeChar.sendPacket(SystemMessageId.CANT_FORWARD_MAIL_LIMIT_EXCEEDED);
+            activeChar.send(SystemMessageId.CANT_FORWARD_MAIL_LIMIT_EXCEEDED);
             return;
         }
 
         if (MailManager.getInstance().getInboxSize(receiverId) >= INBOX_SIZE) {
-            activeChar.sendPacket(SystemMessageId.CANT_FORWARD_MAIL_LIMIT_EXCEEDED);
+            activeChar.send(SystemMessageId.CANT_FORWARD_MAIL_LIMIT_EXCEEDED);
             return;
         }
 
         if (!getClient().getFloodProtectors().getSendMail().tryPerformAction("sendmail")) {
-            activeChar.sendPacket(SystemMessageId.CANT_FORWARD_LESS_THAN_MINUTE);
+            activeChar.send(SystemMessageId.CANT_FORWARD_LESS_THAN_MINUTE);
             return;
         }
 
         Message msg = new Message(activeChar.getObjectId(), receiverId, _isCod, _subject, _text, _reqAdena);
         if (removeItems(activeChar, msg)) {
             MailManager.getInstance().sendMessage(msg);
-            activeChar.sendPacket(ExNoticePostSent.valueOf(true));
-            activeChar.sendPacket(SystemMessageId.MAIL_SUCCESSFULLY_SENT);
+            activeChar.send(ExNoticePostSent.valueOf(true));
+            activeChar.send(SystemMessageId.MAIL_SUCCESSFULLY_SENT);
         }
     }
 
@@ -222,7 +222,7 @@ public final class RequestSendPost extends L2GameClientPacket {
                 // Check validity of requested item
                 L2ItemInstance item = player.checkItemManipulation(i.getObjectId(), i.getCount(), "attach");
                 if ((item == null) || !item.isTradeable() || item.isEquipped()) {
-                    player.sendPacket(SystemMessageId.CANT_FORWARD_BAD_ITEM);
+                    player.send(SystemMessageId.CANT_FORWARD_BAD_ITEM);
                     return false;
                 }
 
@@ -236,7 +236,7 @@ public final class RequestSendPost extends L2GameClientPacket {
 
         // Check if enough adena and charge the fee
         if ((currentAdena < fee) || !player.reduceAdena("MailFee", fee, null, false)) {
-            player.sendPacket(SystemMessageId.CANT_FORWARD_NO_ADENA);
+            player.send(SystemMessageId.CANT_FORWARD_NO_ADENA);
             return false;
         }
 
@@ -283,15 +283,15 @@ public final class RequestSendPost extends L2GameClientPacket {
 
         // Send updated item list to the player
         if (playerIU != null) {
-            player.sendPacket(playerIU);
+            player.send(playerIU);
         } else {
-            player.sendPacket(new ItemList(player, false));
+            player.send(new ItemList(player, false));
         }
 
         // Update current load status on player
         StatusUpdate su = new StatusUpdate(player);
         su.addAttribute(StatusUpdate.CUR_LOAD, player.getCurrentLoad());
-        player.sendPacket(su);
+        player.send(su);
 
         return true;
     }

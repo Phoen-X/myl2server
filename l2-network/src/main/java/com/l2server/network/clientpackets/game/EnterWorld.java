@@ -130,7 +130,7 @@ public class EnterWorld extends L2GameClientPacket {
 
         // Clan related checks are here
         if (activeChar.getClan() != null) {
-            activeChar.sendPacket(new PledgeSkillList(activeChar.getClan()));
+            activeChar.send(new PledgeSkillList(activeChar.getClan()));
 
             notifyClanMembers(activeChar);
 
@@ -140,7 +140,7 @@ public class EnterWorld extends L2GameClientPacket {
 
             if (clanHall != null) {
                 if (!clanHall.getPaid()) {
-                    activeChar.sendPacket(SystemMessageId.PAYMENT_FOR_YOUR_CLAN_HALL_HAS_NOT_BEEN_MADE_PLEASE_MAKE_PAYMENT_TO_YOUR_CLAN_WAREHOUSE_BY_S1_TOMORROW);
+                    activeChar.send(SystemMessageId.PAYMENT_FOR_YOUR_CLAN_HALL_HAS_NOT_BEEN_MADE_PLEASE_MAKE_PAYMENT_TO_YOUR_CLAN_WAREHOUSE_BY_S1_TOMORROW);
                 }
             }
 
@@ -184,8 +184,8 @@ public class EnterWorld extends L2GameClientPacket {
                 }
             }
 
-            sendPacket(new PledgeShowMemberListAll(activeChar.getClan(), activeChar));
-            sendPacket(new PledgeStatusChanged(activeChar.getClan()));
+            send(new PledgeShowMemberListAll(activeChar.getClan(), activeChar));
+            send(new PledgeStatusChanged(activeChar.getClan()));
 
             // Residential skills support
             if (activeChar.getClan().getCastleId() > 0) {
@@ -236,25 +236,25 @@ public class EnterWorld extends L2GameClientPacket {
         activeChar.getMacros().sendUpdate();
 
         // Send Item List
-        sendPacket(new ItemList(activeChar, false));
+        send(new ItemList(activeChar, false));
 
         // Send GG check
         activeChar.queryGameGuard();
 
         // Send Teleport Bookmark List
-        sendPacket(new ExGetBookMarkInfoPacket(activeChar));
+        send(new ExGetBookMarkInfoPacket(activeChar));
 
         // Send Shortcuts
-        sendPacket(new ShortCutInit(activeChar));
+        send(new ShortCutInit(activeChar));
 
         // Send Action list
-        activeChar.sendPacket(ExBasicActionList.STATIC_PACKET);
+        activeChar.send(ExBasicActionList.STATIC_PACKET);
 
         // Send Skill list
         activeChar.sendSkillList();
 
         // Send Dye Information
-        activeChar.sendPacket(new HennaInfo(activeChar));
+        activeChar.send(new HennaInfo(activeChar));
 
         Quest.playerEnter(activeChar);
 
@@ -262,7 +262,7 @@ public class EnterWorld extends L2GameClientPacket {
             loadTutorial(activeChar);
         }
 
-        activeChar.sendPacket(new QuestList());
+        activeChar.send(new QuestList());
 
         if (Config.PLAYER_SPAWN_PROTECTION > 0) {
             activeChar.setProtection(true);
@@ -288,23 +288,23 @@ public class EnterWorld extends L2GameClientPacket {
 
         activeChar.updateEffectIcons();
 
-        activeChar.sendPacket(new EtcStatusUpdate(activeChar));
+        activeChar.send(new EtcStatusUpdate(activeChar));
 
         // Expand Skill
-        activeChar.sendPacket(new ExStorageMaxCount(activeChar));
+        activeChar.send(new ExStorageMaxCount(activeChar));
 
-        sendPacket(new FriendList(activeChar));
+        send(new FriendList(activeChar));
 
         SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.FRIEND_S1_HAS_LOGGED_IN);
         sm.addString(activeChar.getName());
         for (int id : activeChar.getFriendList()) {
             L2Object obj = L2World.getInstance().findObject(id);
             if (obj != null) {
-                obj.sendPacket(sm);
+                obj.send(sm);
             }
         }
 
-        activeChar.sendPacket(SystemMessageId.WELCOME_TO_LINEAGE);
+        activeChar.send(SystemMessageId.WELCOME_TO_LINEAGE);
 
         activeChar.sendMessage(getText("VGhpcyBTZXJ2ZXIgdXNlcyBMMkosIGEgUHJvamVjdCBmb3VuZGVkIGJ5IEwyQ2hlZg=="));
         activeChar.sendMessage(getText("YW5kIGRldmVsb3BlZCBieSBMMkogVGVhbSBhdCB3d3cubDJqc2VydmVyLmNvbQ=="));
@@ -320,11 +320,11 @@ public class EnterWorld extends L2GameClientPacket {
             notice.replace("%clan_name%", activeChar.getClan().getName());
             notice.replace("%notice_text%", activeChar.getClan().getNotice());
             notice.disableValidation();
-            sendPacket(notice);
+            send(notice);
         } else if (Config.SERVER_NEWS) {
             String serverNews = HtmCache.getInstance().getHtm(activeChar.getHtmlPrefix(), "data/html/servnews.htm");
             if (serverNews != null) {
-                sendPacket(new NpcHtmlMessage(serverNews));
+                send(new NpcHtmlMessage(serverNews));
             }
         }
 
@@ -335,16 +335,16 @@ public class EnterWorld extends L2GameClientPacket {
         if (activeChar.isAlikeDead()) // dead or fake dead
         {
             // no broadcast needed since the player will already spawn dead to others
-            sendPacket(new Die(activeChar));
+            send(new Die(activeChar));
         }
 
         activeChar.onPlayerEnter();
 
-        sendPacket(new SkillCoolTime(activeChar));
-        sendPacket(new ExVoteSystemInfo(activeChar));
-        sendPacket(new ExNevitAdventPointInfoPacket(0));
-        sendPacket(new ExNevitAdventTimeChange(-1)); // only set pause state...
-        sendPacket(new ExShowContactList(activeChar));
+        send(new SkillCoolTime(activeChar));
+        send(new ExVoteSystemInfo(activeChar));
+        send(new ExNevitAdventPointInfoPacket(0));
+        send(new ExNevitAdventTimeChange(-1)); // only set pause state...
+        send(new ExShowContactList(activeChar));
 
         for (L2ItemInstance i : activeChar.getInventory().getItems()) {
             if (i.isTimeLimitedItem()) {
@@ -366,7 +366,7 @@ public class EnterWorld extends L2GameClientPacket {
         }
 
         if (activeChar.getClanJoinExpiryTime() > System.currentTimeMillis()) {
-            activeChar.sendPacket(SystemMessageId.CLAN_MEMBERSHIP_TERMINATED);
+            activeChar.send(SystemMessageId.CLAN_MEMBERSHIP_TERMINATED);
         }
 
         // remove combat flag before teleporting
@@ -390,34 +390,34 @@ public class EnterWorld extends L2GameClientPacket {
 
         if (Config.ALLOW_MAIL) {
             if (MailManager.getInstance().hasUnreadPost(activeChar)) {
-                sendPacket(ExNoticePostArrived.valueOf(false));
+                send(ExNoticePostArrived.valueOf(false));
             }
         }
 
         TvTEvent.onLogin(activeChar);
 
         if (Config.WELCOME_MESSAGE_ENABLED) {
-            activeChar.sendPacket(new ExShowScreenMessage(Config.WELCOME_MESSAGE_TEXT, Config.WELCOME_MESSAGE_TIME));
+            activeChar.send(new ExShowScreenMessage(Config.WELCOME_MESSAGE_TEXT, Config.WELCOME_MESSAGE_TIME));
         }
 
         L2ClassMasterInstance.showQuestionMark(activeChar);
 
         int birthday = activeChar.checkBirthDay();
         if (birthday == 0) {
-            activeChar.sendPacket(SystemMessageId.YOUR_BIRTHDAY_GIFT_HAS_ARRIVED);
-            // activeChar.sendPacket(new ExBirthdayPopup()); Removed in H5?
+            activeChar.send(SystemMessageId.YOUR_BIRTHDAY_GIFT_HAS_ARRIVED);
+            // activeChar.send(new ExBirthdayPopup()); Removed in H5?
         } else if (birthday != -1) {
             sm = SystemMessage.getSystemMessage(SystemMessageId.THERE_ARE_S1_DAYS_UNTIL_YOUR_CHARACTERS_BIRTHDAY);
             sm.addString(Integer.toString(birthday));
-            activeChar.sendPacket(sm);
+            activeChar.send(sm);
         }
 
         if (!activeChar.getPremiumItemList().isEmpty()) {
-            activeChar.sendPacket(ExNotifyPremiumItem.STATIC_PACKET);
+            activeChar.send(ExNotifyPremiumItem.STATIC_PACKET);
         }
 
         // Unstuck players that had client open when server crashed.
-        activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+        activeChar.send(ActionFailed.STATIC_PACKET);
     }
 
     private void engage(L2PcInstance cha) {
@@ -473,14 +473,14 @@ public class EnterWorld extends L2GameClientPacket {
             if (sponsor != null) {
                 final SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.YOUR_APPRENTICE_S1_HAS_LOGGED_IN);
                 msg.addString(activeChar.getName());
-                sponsor.sendPacket(msg);
+                sponsor.send(msg);
             }
         } else if (activeChar.getApprentice() != 0) {
             final L2PcInstance apprentice = L2World.getInstance().getPlayer(activeChar.getApprentice());
             if (apprentice != null) {
                 final SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.YOUR_SPONSOR_C1_HAS_LOGGED_IN);
                 msg.addString(activeChar.getName());
-                apprentice.sendPacket(msg);
+                apprentice.send(msg);
             }
         }
     }

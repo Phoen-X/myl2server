@@ -36,15 +36,18 @@ public class L2Character {
     @Setter
     private int maxLoad;
     private int clanId;
-    @Setter
-    @Getter
-    private Position position;
+    private int karma;
+    private int pkKills;
 
+    @Setter
+    private Position position;
+    private Position moveTarget;
 
     private int runSpeed = 100;
     private int walkSpeed = 50;
     private int swimRunSpeed = 50;
     private int swimWalkSpeed = 25;
+
 
     public L2Character(int id, String accountName, Profession profession, CharacterAppearance appearance, String nickName, int level) {
         this.id = id;
@@ -54,4 +57,9 @@ public class L2Character {
         this.nickName = nickName;
         this.level = level;
     }
+
+    public void setMoveTarget(Position moveTo) {
+        this.moveTarget = moveTo;
+    }
+
 }

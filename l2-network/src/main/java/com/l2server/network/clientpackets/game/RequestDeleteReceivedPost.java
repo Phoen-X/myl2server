@@ -53,7 +53,7 @@ public final class RequestDeleteReceivedPost extends L2GameClientPacket {
         }
 
         if (!activeChar.isInsideZone(ZoneId.PEACE)) {
-            activeChar.sendPacket(SystemMessageId.CANT_USE_MAIL_OUTSIDE_PEACE_ZONE);
+            activeChar.send(SystemMessageId.CANT_USE_MAIL_OUTSIDE_PEACE_ZONE);
             return;
         }
 
@@ -73,7 +73,7 @@ public final class RequestDeleteReceivedPost extends L2GameClientPacket {
 
             msg.setDeletedByReceiver();
         }
-        activeChar.sendPacket(new ExChangePostState(true, _msgIds, Message.DELETED));
+        activeChar.send(new ExChangePostState(true, _msgIds, Message.DELETED));
     }
 */
 

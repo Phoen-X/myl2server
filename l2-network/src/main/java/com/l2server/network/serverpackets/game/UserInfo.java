@@ -141,7 +141,7 @@ public final class UserInfo extends L2GameServerPacket {
         writeD(buffer, _flyRunSpd);
         writeD(buffer, _flyWalkSpd);
         writeF(buffer, _moveMultiplier);
-        writeF(buffer, 0); //_activeChar.getAttackSpeedMultiplier());
+        writeF(buffer, 1); //_activeChar.getAttackSpeedMultiplier());
 
         writeF(buffer, 150); //_activeChar.getCollisionRadius());
         writeF(buffer, 150); //_activeChar.getCollisionHeight());
@@ -217,7 +217,7 @@ public final class UserInfo extends L2GameServerPacket {
         writeD(buffer, 0);//_activeChar.getPledgeClass()); // changes the text above CP on Status Window
         writeD(buffer, 0);//_activeChar.getPledgeType());
 
-        writeD(buffer, 0);//_activeChar.getAppearance().getTitleColor());
+        writeD(buffer, 0xFFFFFF);//_activeChar.getAppearance().getTitleColor());
 
         writeD(buffer, 0);//_activeChar.isCursedWeaponEquipped() ? CursedWeaponsManager.getInstance().getLevel(_activeChar.getCursedWeaponEquippedId()) : 0);
 

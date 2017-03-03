@@ -56,33 +56,33 @@ public final class RequestCancelPostAttachment extends L2GameClientPacket {
         }
 
         if (!activeChar.isInsideZone(ZoneId.PEACE)) {
-            activeChar.sendPacket(SystemMessageId.CANT_CANCEL_NOT_IN_PEACE_ZONE);
+            activeChar.send(SystemMessageId.CANT_CANCEL_NOT_IN_PEACE_ZONE);
             return;
         }
 
         if (activeChar.getActiveTradeList() != null) {
-            activeChar.sendPacket(SystemMessageId.CANT_CANCEL_DURING_EXCHANGE);
+            activeChar.send(SystemMessageId.CANT_CANCEL_DURING_EXCHANGE);
             return;
         }
 
         if (activeChar.isEnchanting()) {
-            activeChar.sendPacket(SystemMessageId.CANT_CANCEL_DURING_ENCHANT);
+            activeChar.send(SystemMessageId.CANT_CANCEL_DURING_ENCHANT);
             return;
         }
 
         if (activeChar.getPrivateStoreType() != PrivateStoreType.NONE) {
-            activeChar.sendPacket(SystemMessageId.CANT_CANCEL_PRIVATE_STORE);
+            activeChar.send(SystemMessageId.CANT_CANCEL_PRIVATE_STORE);
             return;
         }
 
         if (!msg.hasAttachments()) {
-            activeChar.sendPacket(SystemMessageId.YOU_CANT_CANCEL_RECEIVED_MAIL);
+            activeChar.send(SystemMessageId.YOU_CANT_CANCEL_RECEIVED_MAIL);
             return;
         }
 
         final ItemContainer attachments = msg.getAttachments();
         if ((attachments == null) || (attachments.getSize() == 0)) {
-            activeChar.sendPacket(SystemMessageId.YOU_CANT_CANCEL_RECEIVED_MAIL);
+            activeChar.send(SystemMessageId.YOU_CANT_CANCEL_RECEIVED_MAIL);
             return;
         }
 
@@ -118,12 +118,12 @@ public final class RequestCancelPostAttachment extends L2GameClientPacket {
         }
 
         if (!activeChar.getInventory().validateCapacity(slots)) {
-            activeChar.sendPacket(SystemMessageId.CANT_CANCEL_INVENTORY_FULL);
+            activeChar.send(SystemMessageId.CANT_CANCEL_INVENTORY_FULL);
             return;
         }
 
         if (!activeChar.getInventory().validateWeight(weight)) {
-            activeChar.sendPacket(SystemMessageId.CANT_CANCEL_INVENTORY_FULL);
+            activeChar.send(SystemMessageId.CANT_CANCEL_INVENTORY_FULL);
             return;
         }
 
@@ -150,35 +150,35 @@ public final class RequestCancelPostAttachment extends L2GameClientPacket {
             SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_ACQUIRED_S2_S1);
             sm.addItemName(item.getId());
             sm.addLong(count);
-            activeChar.sendPacket(sm);
+            activeChar.send(sm);
         }
 
         msg.removeAttachments();
 
         // Send updated item list to the player
         if (playerIU != null) {
-            activeChar.sendPacket(playerIU);
+            activeChar.send(playerIU);
         } else {
-            activeChar.sendPacket(new ItemList(activeChar, false));
+            activeChar.send(new ItemList(activeChar, false));
         }
 
         // Update current load status on player
         StatusUpdate su = new StatusUpdate(activeChar);
         su.addAttribute(StatusUpdate.CUR_LOAD, activeChar.getCurrentLoad());
-        activeChar.sendPacket(su);
+        activeChar.send(su);
 
         final L2PcInstance receiver = L2World.getInstance().getPlayer(msg.getReceiverId());
         if (receiver != null) {
             SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_CANCELLED_MAIL);
             sm.addCharName(activeChar);
-            receiver.sendPacket(sm);
-            receiver.sendPacket(new ExChangePostState(true, _msgId, Message.DELETED));
+            receiver.send(sm);
+            receiver.send(new ExChangePostState(true, _msgId, Message.DELETED));
         }
 
         MailManager.getInstance().deleteMessageInDb(_msgId);
 
-        activeChar.sendPacket(new ExChangePostState(false, _msgId, Message.DELETED));
-        activeChar.sendPacket(SystemMessageId.MAIL_SUCCESSFULLY_CANCELLED);
+        activeChar.send(new ExChangePostState(false, _msgId, Message.DELETED));
+        activeChar.send(SystemMessageId.MAIL_SUCCESSFULLY_CANCELLED);
     }
     */
     @Override

@@ -55,7 +55,7 @@ public final class RequestSendFriendMsg extends L2GameClientPacket {
 
         final L2PcInstance targetPlayer = L2World.getInstance().getPlayer(_reciever);
         if ((targetPlayer == null) || !targetPlayer.getFriendList().contains(activeChar.getObjectId())) {
-            activeChar.sendPacket(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
+            activeChar.send(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
             return;
         }
 
@@ -71,7 +71,7 @@ public final class RequestSendFriendMsg extends L2GameClientPacket {
             _logChat.log(record);
         }
 
-        targetPlayer.sendPacket(new L2FriendSay(activeChar.getName(), _reciever, _message));
+        targetPlayer.send(new L2FriendSay(activeChar.getName(), _reciever, _message));
     }
     */
     @Override

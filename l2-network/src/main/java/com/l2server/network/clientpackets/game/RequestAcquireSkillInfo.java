@@ -90,13 +90,13 @@ public final class RequestAcquireSkillInfo extends L2GameClientPacket {
             case SUBCLASS:
             case COLLECT:
             case TRANSFER: {
-                sendPacket(new AcquireSkillInfo(_skillType, s));
+                send(new AcquireSkillInfo(_skillType, s));
                 break;
             }
             case CLASS: {
                 if (trainer.getTemplate().canTeach(activeChar.getLearningClass())) {
                     final int customSp = s.getCalculatedLevelUpSp(activeChar.getClassId(), activeChar.getLearningClass());
-                    sendPacket(new AcquireSkillInfo(_skillType, s, customSp));
+                    send(new AcquireSkillInfo(_skillType, s, customSp));
                 }
                 break;
             }
@@ -104,14 +104,14 @@ public final class RequestAcquireSkillInfo extends L2GameClientPacket {
                 if (!activeChar.isClanLeader()) {
                     return;
                 }
-                sendPacket(new AcquireSkillInfo(_skillType, s));
+                send(new AcquireSkillInfo(_skillType, s));
                 break;
             }
             case SUBPLEDGE: {
                 if (!activeChar.isClanLeader() || !activeChar.hasClanPrivilege(ClanPrivilege.CL_TROOPS_FAME)) {
                     return;
                 }
-                sendPacket(new AcquireSkillInfo(_skillType, s));
+                send(new AcquireSkillInfo(_skillType, s));
                 break;
             }
         }

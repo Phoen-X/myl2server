@@ -70,60 +70,60 @@ public final class RequestAutoSoulShot extends L2GameClientPacket {
                         if (activeChar.hasSummon()) {
                             if (item.getEtcItem().getHandlerName().equals("BeastSoulShot")) {
                                 if (activeChar.getSummon().getSoulShotsPerHit() > item.getCount()) {
-                                    activeChar.sendPacket(SystemMessageId.NOT_ENOUGH_SOULSHOTS_FOR_PET);
+                                    activeChar.send(SystemMessageId.NOT_ENOUGH_SOULSHOTS_FOR_PET);
                                     return;
                                 }
                             } else {
                                 if (activeChar.getSummon().getSpiritShotsPerHit() > item.getCount()) {
-                                    activeChar.sendPacket(SystemMessageId.NOT_ENOUGH_SOULSHOTS_FOR_PET);
+                                    activeChar.send(SystemMessageId.NOT_ENOUGH_SOULSHOTS_FOR_PET);
                                     return;
                                 }
                             }
                             activeChar.addAutoSoulShot(_itemId);
-                            activeChar.sendPacket(new ExAutoSoulShot(_itemId, _type));
+                            activeChar.send(new ExAutoSoulShot(_itemId, _type));
 
                             // start the auto soulshot use
                             SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.USE_OF_S1_WILL_BE_AUTO);
                             sm.addItemName(item);
-                            activeChar.sendPacket(sm);
+                            activeChar.send(sm);
 
                             activeChar.rechargeShots(true, true);
                             activeChar.getSummon().rechargeShots(true, true);
 
                         } else {
-                            activeChar.sendPacket(SystemMessageId.NO_SERVITOR_CANNOT_AUTOMATE_USE);
+                            activeChar.send(SystemMessageId.NO_SERVITOR_CANNOT_AUTOMATE_USE);
                         }
                     } else {
                         if ((activeChar.getActiveWeaponItem() != activeChar.getFistsWeaponItem()) && (item.getItem().getCrystalType() == activeChar.getActiveWeaponItem().getItemGradeSPlus())) {
                             activeChar.addAutoSoulShot(_itemId);
-                            activeChar.sendPacket(new ExAutoSoulShot(_itemId, _type));
+                            activeChar.send(new ExAutoSoulShot(_itemId, _type));
                         } else {
                             if (((_itemId >= 2509) && (_itemId <= 2514)) || ((_itemId >= 3947) && (_itemId <= 3952)) || (_itemId == 5790) || ((_itemId >= 22072) && (_itemId <= 22081))) {
-                                activeChar.sendPacket(SystemMessageId.SPIRITSHOTS_GRADE_MISMATCH);
+                                activeChar.send(SystemMessageId.SPIRITSHOTS_GRADE_MISMATCH);
                             } else {
-                                activeChar.sendPacket(SystemMessageId.SOULSHOTS_GRADE_MISMATCH);
+                                activeChar.send(SystemMessageId.SOULSHOTS_GRADE_MISMATCH);
                             }
 
                             activeChar.addAutoSoulShot(_itemId);
-                            activeChar.sendPacket(new ExAutoSoulShot(_itemId, _type));
+                            activeChar.send(new ExAutoSoulShot(_itemId, _type));
                         }
 
                         // start the auto soulshot use
                         SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.USE_OF_S1_WILL_BE_AUTO);
                         sm.addItemName(item);
-                        activeChar.sendPacket(sm);
+                        activeChar.send(sm);
 
                         activeChar.rechargeShots(true, true);
                     }
                 }
             } else if (_type == 0) {
                 activeChar.removeAutoSoulShot(_itemId);
-                activeChar.sendPacket(new ExAutoSoulShot(_itemId, _type));
+                activeChar.send(new ExAutoSoulShot(_itemId, _type));
 
                 // cancel the auto soulshot use
                 SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.AUTO_USE_OF_S1_CANCELLED);
                 sm.addItemName(item);
-                activeChar.sendPacket(sm);
+                activeChar.send(sm);
             }
         }
     }

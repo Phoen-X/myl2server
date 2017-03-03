@@ -55,17 +55,17 @@ public final class RequestExEnchantSkillUntrain extends L2GameClientPacket {
 
         if (player.getClassId().level() < 3) // requires to have 3rd class quest completed
         {
-            player.sendPacket(SystemMessageId.YOU_CANNOT_USE_SKILL_ENCHANT_IN_THIS_CLASS);
+            player.send(SystemMessageId.YOU_CANNOT_USE_SKILL_ENCHANT_IN_THIS_CLASS);
             return;
         }
 
         if (player.getLevel() < 76) {
-            player.sendPacket(SystemMessageId.YOU_CANNOT_USE_SKILL_ENCHANT_ON_THIS_LEVEL);
+            player.send(SystemMessageId.YOU_CANNOT_USE_SKILL_ENCHANT_ON_THIS_LEVEL);
             return;
         }
 
         if (!player.isAllowedToEnchantSkills()) {
-            player.sendPacket(SystemMessageId.YOU_CANNOT_USE_SKILL_ENCHANT_ATTACKING_TRANSFORMED_BOAT);
+            player.send(SystemMessageId.YOU_CANNOT_USE_SKILL_ENCHANT_ATTACKING_TRANSFORMED_BOAT);
             return;
         }
 
@@ -99,13 +99,13 @@ public final class RequestExEnchantSkillUntrain extends L2GameClientPacket {
         if (Config.ES_SP_BOOK_NEEDED) {
             if (spb == null) // Haven't spellbook
             {
-                player.sendPacket(SystemMessageId.YOU_DONT_HAVE_ALL_OF_THE_ITEMS_NEEDED_TO_ENCHANT_THAT_SKILL);
+                player.send(SystemMessageId.YOU_DONT_HAVE_ALL_OF_THE_ITEMS_NEEDED_TO_ENCHANT_THAT_SKILL);
                 return;
             }
         }
 
         if (player.getInventory().getAdena() < requireditems) {
-            player.sendPacket(SystemMessageId.YOU_DONT_HAVE_ALL_OF_THE_ITEMS_NEEDED_TO_ENCHANT_THAT_SKILL);
+            player.send(SystemMessageId.YOU_DONT_HAVE_ALL_OF_THE_ITEMS_NEEDED_TO_ENCHANT_THAT_SKILL);
             return;
         }
 
@@ -117,7 +117,7 @@ public final class RequestExEnchantSkillUntrain extends L2GameClientPacket {
         check &= player.destroyItemByItemId("Consume", Inventory.ADENA_ID, requireditems, player, true);
 
         if (!check) {
-            player.sendPacket(SystemMessageId.YOU_DONT_HAVE_ALL_OF_THE_ITEMS_NEEDED_TO_ENCHANT_THAT_SKILL);
+            player.send(SystemMessageId.YOU_DONT_HAVE_ALL_OF_THE_ITEMS_NEEDED_TO_ENCHANT_THAT_SKILL);
             return;
         }
 
@@ -136,28 +136,28 @@ public final class RequestExEnchantSkillUntrain extends L2GameClientPacket {
         }
 
         player.addSkill(skill, true);
-        player.sendPacket(ExEnchantSkillResult.valueOf(true));
+        player.send(ExEnchantSkillResult.valueOf(true));
 
         if (Config.DEBUG) {
             _log.fine("Learned skill ID: " + _skillId + " Level: " + _skillLvl + " for " + requiredSp + " SP, " + requireditems + " Adena.");
         }
 
-        player.sendPacket(new UserInfo(player));
-        player.sendPacket(new ExBrExtraUserInfo(player));
+        player.send(new UserInfo(player));
+        player.send(new ExBrExtraUserInfo(player));
 
         if (_skillLvl > 100) {
             SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.UNTRAIN_SUCCESSFUL_SKILL_S1_ENCHANT_LEVEL_DECREASED_BY_ONE);
             sm.addSkillName(_skillId);
-            player.sendPacket(sm);
+            player.send(sm);
         } else {
             SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.UNTRAIN_SUCCESSFUL_SKILL_S1_ENCHANT_LEVEL_RESETED);
             sm.addSkillName(_skillId);
-            player.sendPacket(sm);
+            player.send(sm);
         }
         player.sendSkillList();
         final int afterUntrainSkillLevel = player.getSkillLevel(_skillId);
-        player.sendPacket(new ExEnchantSkillInfo(_skillId, afterUntrainSkillLevel));
-        player.sendPacket(new ExEnchantSkillInfoDetail(2, _skillId, afterUntrainSkillLevel - 1, player));
+        player.send(new ExEnchantSkillInfo(_skillId, afterUntrainSkillLevel));
+        player.send(new ExEnchantSkillInfoDetail(2, _skillId, afterUntrainSkillLevel - 1, player));
         player.updateShortCuts(_skillId, afterUntrainSkillLevel);
     }
     */

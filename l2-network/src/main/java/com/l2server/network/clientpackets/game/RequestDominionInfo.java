@@ -34,8 +34,8 @@ public class RequestDominionInfo extends L2GameClientPacket {
 
     /*@Override
     protected void runImpl() {
-        sendPacket(ExReplyDominionInfo.STATIC_PACKET);
-        sendPacket(ExShowOwnthingPos.STATIC_PACKET);
+        send(ExReplyDominionInfo.STATIC_PACKET);
+        send(ExShowOwnthingPos.STATIC_PACKET);
     }*/
 
     @Override

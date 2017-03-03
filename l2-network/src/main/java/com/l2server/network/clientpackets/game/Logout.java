@@ -46,13 +46,13 @@ public final class Logout extends L2GameClientPacket {
             if (Config.DEBUG) {
                 _log.fine("Player " + player.getName() + " tried to logout while enchanting.");
             }
-            player.sendPacket(ActionFailed.STATIC_PACKET);
+            player.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         if (player.isLocked()) {
             _log.warning("Player " + player.getName() + " tried to logout during class change.");
-            player.sendPacket(ActionFailed.STATIC_PACKET);
+            player.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
@@ -66,14 +66,14 @@ public final class Logout extends L2GameClientPacket {
                 _log.fine("Player " + player.getName() + " tried to logout while fighting.");
             }
 
-            player.sendPacket(SystemMessageId.CANT_LOGOUT_WHILE_FIGHTING);
-            player.sendPacket(ActionFailed.STATIC_PACKET);
+            player.send(SystemMessageId.CANT_LOGOUT_WHILE_FIGHTING);
+            player.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         if (L2Event.isParticipant(player)) {
             player.sendMessage("A superior power doesn't allow you to leave the event.");
-            player.sendPacket(ActionFailed.STATIC_PACKET);
+            player.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
@@ -83,7 +83,7 @@ public final class Logout extends L2GameClientPacket {
         if (player.isFestivalParticipant()) {
             if (SevenSignsFestival.getInstance().isFestivalInitialized()) {
                 player.sendMessage("You cannot log out while you are a participant in a Festival.");
-                player.sendPacket(ActionFailed.STATIC_PACKET);
+                player.send(ActionFailed.STATIC_PACKET);
                 return;
             }
 

@@ -134,12 +134,12 @@ public class MultiSellChoose extends L2GameClientPacket {
                 }
 
                 if (!inv.validateWeight(weight)) {
-                    player.sendPacket(SystemMessageId.WEIGHT_LIMIT_EXCEEDED);
+                    player.send(SystemMessageId.WEIGHT_LIMIT_EXCEEDED);
                     return;
                 }
 
                 if (!inv.validateCapacity(slots)) {
-                    player.sendPacket(SystemMessageId.SLOTS_FULL);
+                    player.send(SystemMessageId.SLOTS_FULL);
                     return;
                 }
 
@@ -157,7 +157,7 @@ public class MultiSellChoose extends L2GameClientPacket {
                         // this happens if 1 list entry has the same ingredient twice (example 2 swords = 1 dual)
                         if ((ex.getItemId() == e.getItemId()) && (ex.getEnchantLevel() == e.getEnchantLevel())) {
                             if ((ex.getItemCount() + e.getItemCount()) > Integer.MAX_VALUE) {
-                                player.sendPacket(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED);
+                                player.send(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED);
                                 return;
                             }
                             // two same ingredients, merge into one and replace old
@@ -177,7 +177,7 @@ public class MultiSellChoose extends L2GameClientPacket {
                 // now check if the player has sufficient items in the inventory to cover the ingredients' expences
                 for (Ingredient e : ingredientsList) {
                     if ((e.getItemCount() * _amount) > Integer.MAX_VALUE) {
-                        player.sendPacket(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED);
+                        player.send(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED);
                         return;
                     }
                     if (e.getItemId() < 0) {
@@ -192,7 +192,7 @@ public class MultiSellChoose extends L2GameClientPacket {
                             SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S2_UNIT_OF_THE_ITEM_S1_REQUIRED);
                             sm.addItemName(e.getTemplate());
                             sm.addLong(required);
-                            player.sendPacket(sm);
+                            player.send(sm);
                             return;
                         }
                     }
@@ -353,7 +353,7 @@ public class MultiSellChoose extends L2GameClientPacket {
                             sm = SystemMessage.getSystemMessage(SystemMessageId.EARNED_S2_S1_S);
                             sm.addItemName(e.getItemId());
                             sm.addLong(e.getItemCount() * _amount);
-                            player.sendPacket(sm);
+                            player.send(sm);
                         } else {
                             if (list.getMaintainEnchantment() && (e.getEnchantLevel() > 0)) {
                                 sm = SystemMessage.getSystemMessage(SystemMessageId.ACQUIRED_S1_S2);
@@ -363,15 +363,15 @@ public class MultiSellChoose extends L2GameClientPacket {
                                 sm = SystemMessage.getSystemMessage(SystemMessageId.EARNED_ITEM_S1);
                                 sm.addItemName(e.getItemId());
                             }
-                            player.sendPacket(sm);
+                            player.send(sm);
                         }
                     }
                 }
-                player.sendPacket(new ItemList(player, false));
+                player.send(new ItemList(player, false));
 
                 StatusUpdate su = new StatusUpdate(player);
                 su.addAttribute(StatusUpdate.CUR_LOAD, player.getCurrentLoad());
-                player.sendPacket(su);
+                player.send(su);
 
                 // finally, give the tax to the castle...
                 if ((npc != null) && (entry.getTaxAmount() > 0)) {

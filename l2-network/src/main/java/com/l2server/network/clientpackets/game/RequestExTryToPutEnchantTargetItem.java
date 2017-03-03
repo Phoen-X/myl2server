@@ -54,9 +54,9 @@ public class RequestExTryToPutEnchantTargetItem extends L2GameClientPacket {
 
         final EnchantScroll scrollTemplate = EnchantItemData.getInstance().getEnchantScroll(scroll);
         if ((scrollTemplate == null) || !scrollTemplate.isValid(item, null)) {
-            activeChar.sendPacket(SystemMessageId.DOES_NOT_FIT_SCROLL_CONDITIONS);
+            activeChar.send(SystemMessageId.DOES_NOT_FIT_SCROLL_CONDITIONS);
             activeChar.setActiveEnchantItemId(L2PcInstance.ID_NONE);
-            activeChar.sendPacket(new ExPutEnchantTargetItemResult(0));
+            activeChar.send(new ExPutEnchantTargetItemResult(0));
             if (scrollTemplate == null) {
                 _log.log(Level.WARNING, getClass().getSimpleName() + ": Undefined scroll have been used id: " + scroll.getId());
             }
@@ -64,7 +64,7 @@ public class RequestExTryToPutEnchantTargetItem extends L2GameClientPacket {
         }
         activeChar.setIsEnchanting(true);
         activeChar.setActiveEnchantTimestamp(System.currentTimeMillis());
-        activeChar.sendPacket(new ExPutEnchantTargetItemResult(_objectId));
+        activeChar.send(new ExPutEnchantTargetItemResult(_objectId));
     }
 */
 

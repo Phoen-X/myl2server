@@ -46,11 +46,11 @@ public final class RequestPostItemList extends L2GameClientPacket {
             }
 
             if (!activeChar.isInsideZone(ZoneId.PEACE)) {
-                activeChar.sendPacket(SystemMessageId.CANT_USE_MAIL_OUTSIDE_PEACE_ZONE);
+                activeChar.send(SystemMessageId.CANT_USE_MAIL_OUTSIDE_PEACE_ZONE);
                 return;
             }
 
-            activeChar.sendPacket(new ExReplyPostItemList(activeChar));
+            activeChar.send(new ExReplyPostItemList(activeChar));
         }
         */
     @Override

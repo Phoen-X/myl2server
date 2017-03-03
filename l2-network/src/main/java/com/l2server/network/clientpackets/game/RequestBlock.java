@@ -59,13 +59,13 @@ public final class RequestBlock extends L2GameClientPacket {
                 // can't use block/unblock for locating invisible characters
                 if (targetId <= 0) {
                     // Incorrect player name.
-                    activeChar.sendPacket(SystemMessageId.FAILED_TO_REGISTER_TO_IGNORE_LIST);
+                    activeChar.send(SystemMessageId.FAILED_TO_REGISTER_TO_IGNORE_LIST);
                     return;
                 }
 
                 if (targetAL > 0) {
                     // Cannot block a GM character.
-                    activeChar.sendPacket(SystemMessageId.YOU_MAY_NOT_IMPOSE_A_BLOCK_ON_GM);
+                    activeChar.send(SystemMessageId.YOU_MAY_NOT_IMPOSE_A_BLOCK_ON_GM);
                     return;
                 }
 
@@ -83,11 +83,11 @@ public final class RequestBlock extends L2GameClientPacket {
                 BlockList.sendListToOwner(activeChar);
                 break;
             case ALLBLOCK:
-                activeChar.sendPacket(SystemMessageId.MESSAGE_REFUSAL_MODE);
+                activeChar.send(SystemMessageId.MESSAGE_REFUSAL_MODE);
                 BlockList.setBlockAll(activeChar, true);
                 break;
             case ALLUNBLOCK:
-                activeChar.sendPacket(SystemMessageId.MESSAGE_ACCEPTANCE_MODE);
+                activeChar.send(SystemMessageId.MESSAGE_ACCEPTANCE_MODE);
                 BlockList.setBlockAll(activeChar, false);
                 break;
             default:

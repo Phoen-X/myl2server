@@ -58,7 +58,7 @@ public class RequestUnEquipItem extends L2GameClientPacket {
 
         // The English system message say weapon, but it's applied to any equipped item.
         if (activeChar.isAttackingNow() || activeChar.isCastingNow() || activeChar.isCastingSimultaneouslyNow()) {
-            activeChar.sendPacket(SystemMessageId.CANNOT_CHANGE_WEAPON_DURING_AN_ATTACK);
+            activeChar.send(SystemMessageId.CANNOT_CHANGE_WEAPON_DURING_AN_ATTACK);
             return;
         }
 
@@ -78,12 +78,12 @@ public class RequestUnEquipItem extends L2GameClientPacket {
         }
 
         if (!activeChar.getInventory().canManipulateWithItemId(item.getId())) {
-            activeChar.sendPacket(SystemMessageId.ITEM_CANNOT_BE_TAKEN_OFF);
+            activeChar.send(SystemMessageId.ITEM_CANNOT_BE_TAKEN_OFF);
             return;
         }
 
         if (item.isWeapon() && item.getWeaponItem().isForceEquip() && !activeChar.canOverrideCond(PcCondOverride.ITEM_CONDITIONS)) {
-            activeChar.sendPacket(SystemMessageId.ITEM_CANNOT_BE_TAKEN_OFF);
+            activeChar.send(SystemMessageId.ITEM_CANNOT_BE_TAKEN_OFF);
             return;
         }
 
@@ -100,11 +100,11 @@ public class RequestUnEquipItem extends L2GameClientPacket {
                 sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DISARMED);
             }
             sm.addItemName(unequipped[0]);
-            activeChar.sendPacket(sm);
+            activeChar.send(sm);
 
             InventoryUpdate iu = new InventoryUpdate();
             iu.addItems(Arrays.asList(unequipped));
-            activeChar.sendPacket(iu);
+            activeChar.send(iu);
         }
     }
 

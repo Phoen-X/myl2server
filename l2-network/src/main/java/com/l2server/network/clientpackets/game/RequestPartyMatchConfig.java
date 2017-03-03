@@ -48,8 +48,8 @@ public final class RequestPartyMatchConfig extends L2GameClientPacket {
         }
 
         if (!_activeChar.isInPartyMatchRoom() && (_activeChar.getParty() != null) && (_activeChar.getParty().getLeader() != _activeChar)) {
-            _activeChar.sendPacket(SystemMessageId.CANT_VIEW_PARTY_ROOMS);
-            _activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+            _activeChar.send(SystemMessageId.CANT_VIEW_PARTY_ROOMS);
+            _activeChar.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
@@ -65,8 +65,8 @@ public final class RequestPartyMatchConfig extends L2GameClientPacket {
                 return;
             }
 
-            _activeChar.sendPacket(new PartyMatchDetail(_activeChar, _room));
-            _activeChar.sendPacket(new ExPartyRoomMember(_activeChar, _room, 2));
+            _activeChar.send(new PartyMatchDetail(_activeChar, _room));
+            _activeChar.send(new ExPartyRoomMember(_activeChar, _room, 2));
 
             _activeChar.setPartyRoom(_room.getId());
             // _activeChar.setPartyMatching(1);
@@ -78,7 +78,7 @@ public final class RequestPartyMatchConfig extends L2GameClientPacket {
             // Send Room list
             ListPartyWating matchList = new ListPartyWating(_activeChar, _auto, _loc, _lvl);
 
-            _activeChar.sendPacket(matchList);
+            _activeChar.send(matchList);
         }
     }
     */

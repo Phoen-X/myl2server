@@ -20,6 +20,8 @@ package com.l2server.network.clientpackets.game;
 
 import com.l2server.network.GameServerPacketProcessor;
 import com.l2server.network.L2GameClient;
+import com.vvygulyarniy.l2.domain.geo.Position;
+import lombok.Getter;
 import lombok.ToString;
 
 /**
@@ -31,17 +33,17 @@ import lombok.ToString;
 public class ValidatePosition extends L2GameClientPacket {
     private static final String _C__59_VALIDATEPOSITION = "[C] 59 ValidatePosition";
 
-    private int _x;
-    private int _y;
-    private int _z;
+    @Getter
+    private Position position;
     private int _heading;
     private int _data; // vehicle id
 
     @Override
     protected void readImpl() {
-        _x = readD();
-        _y = readD();
-        _z = readD();
+        int x = readD();
+        int y = readD();
+        int z = readD();
+        position = new Position(x, y, z);
         _heading = readD();
         _data = readD();
     }
@@ -79,7 +81,7 @@ public class ValidatePosition extends L2GameClientPacket {
                 // dz = _z - activeChar.getInVehiclePosition().getZ();
                 diffSq = ((dx * dx) + (dy * dy));
                 if (diffSq > 250000) {
-                    sendPacket(new GetOnVehicle(activeChar.getObjectId(), _data, activeChar.getInVehiclePosition()));
+                    send(new GetOnVehicle(activeChar.getObjectId(), _data, activeChar.getInVehiclePosition()));
                 }
             }
             return;
@@ -94,7 +96,7 @@ public class ValidatePosition extends L2GameClientPacket {
             // diffSq = ((dx * dx) + (dy * dy));
             // if (diffSq > 250000)
             // {
-            // sendPacket(new GetOnVehicle(activeChar.getObjectId(), _data, activeChar.getInBoatPosition()));
+            // send(new GetOnVehicle(activeChar.getObjectId(), _data, activeChar.getInBoatPosition()));
             // }
             // }
             return;
@@ -125,7 +127,7 @@ public class ValidatePosition extends L2GameClientPacket {
         if (activeChar.isFlying() || activeChar.isInsideZone(ZoneId.WATER)) {
             activeChar.setXYZ(realX, realY, _z);
             if (diffSq > 90000) {
-                activeChar.sendPacket(new ValidateLocation(activeChar));
+                activeChar.send(new ValidateLocation(activeChar));
             }
         } else if (diffSq < 360000) // if too large, messes observation
         {
@@ -168,7 +170,7 @@ public class ValidatePosition extends L2GameClientPacket {
                         _log.info(activeChar.getName() + ": Synchronizing position Server --> Client");
                     }
 
-                    activeChar.sendPacket(new ValidateLocation(activeChar));
+                    activeChar.send(new ValidateLocation(activeChar));
                 }
             }
         }

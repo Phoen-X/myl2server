@@ -53,7 +53,7 @@ public final class RequestAnswerFriendInvite extends L2GameClientPacket {
                 || requestor.getFriendList().contains(player.getObjectId())) {
             final SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_ALREADY_IN_FRIENDS_LIST);
             sm.addCharName(player);
-            requestor.sendPacket(sm);
+            requestor.send(sm);
             return;
         }
 
@@ -66,29 +66,29 @@ public final class RequestAnswerFriendInvite extends L2GameClientPacket {
                 statement.setInt(4, requestor.getObjectId());
                 statement.execute();
                 SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_SUCCEEDED_INVITING_FRIEND);
-                requestor.sendPacket(msg);
+                requestor.send(msg);
 
                 // Player added to your friend list
                 msg = SystemMessage.getSystemMessage(SystemMessageId.S1_ADDED_TO_FRIENDS);
                 msg.addString(player.getName());
-                requestor.sendPacket(msg);
+                requestor.send(msg);
                 requestor.getFriendList().add(player.getObjectId());
 
                 // has joined as friend.
                 msg = SystemMessage.getSystemMessage(SystemMessageId.S1_JOINED_AS_FRIEND);
                 msg.addString(requestor.getName());
-                player.sendPacket(msg);
+                player.send(msg);
                 player.getFriendList().add(requestor.getObjectId());
 
                 // Send notifications for both player in order to show them online
-                player.sendPacket(new FriendPacket(true, requestor.getObjectId()));
-                requestor.sendPacket(new FriendPacket(true, player.getObjectId()));
+                player.send(new FriendPacket(true, requestor.getObjectId()));
+                requestor.send(new FriendPacket(true, player.getObjectId()));
             } catch (Exception e) {
                 _log.log(Level.WARNING, "Could not add friend objectid: " + e.getMessage(), e);
             }
         } else {
             SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.FAILED_TO_INVITE_A_FRIEND);
-            requestor.sendPacket(msg);
+            requestor.send(msg);
         }
 
         player.setActiveRequester(null);

@@ -88,7 +88,7 @@ public final class RequestPreviewItem extends L2GameClientPacket {
         }
 
         if ((_count < 1) || (_listId >= 4000000)) {
-            sendPacket(ActionFailed.STATIC_PACKET);
+            send(ActionFailed.STATIC_PACKET);
             return;
         }
 
@@ -144,7 +144,7 @@ public final class RequestPreviewItem extends L2GameClientPacket {
             }
 
             if (itemList.containsKey(slot)) {
-                activeChar.sendPacket(SystemMessageId.YOU_CAN_NOT_TRY_THOSE_ITEMS_ON_AT_THE_SAME_TIME);
+                activeChar.send(SystemMessageId.YOU_CAN_NOT_TRY_THOSE_ITEMS_ON_AT_THE_SAME_TIME);
                 return;
             }
 
@@ -158,12 +158,12 @@ public final class RequestPreviewItem extends L2GameClientPacket {
 
         // Charge buyer and add tax to castle treasury if not owned by npc clan because a Try On is not Free
         if ((totalPrice < 0) || !activeChar.reduceAdena("Wear", totalPrice, activeChar.getLastFolkNPC(), true)) {
-            activeChar.sendPacket(SystemMessageId.YOU_NOT_ENOUGH_ADENA);
+            activeChar.send(SystemMessageId.YOU_NOT_ENOUGH_ADENA);
             return;
         }
 
         if (!itemList.isEmpty()) {
-            activeChar.sendPacket(new ShopPreviewInfo(itemList));
+            activeChar.send(new ShopPreviewInfo(itemList));
             // Schedule task
             ThreadPoolManager.getInstance().scheduleGeneral(new RemoveWearItemsTask(activeChar), Config.WEAR_DELAY * 1000);
         }
@@ -184,8 +184,8 @@ public final class RequestPreviewItem extends L2GameClientPacket {
         @Override
         public void run() {
             try {
-                activeChar.sendPacket(SystemMessageId.NO_LONGER_TRYING_ON);
-                activeChar.sendPacket(new UserInfo(activeChar));
+                activeChar.send(SystemMessageId.NO_LONGER_TRYING_ON);
+                activeChar.send(new UserInfo(activeChar));
             } catch (Exception e) {
                 _log.log(Level.SEVERE, "", e);
             }

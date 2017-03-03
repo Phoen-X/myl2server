@@ -22,5 +22,9 @@ public class CharacterAppearance {
         public static Sex valueOf(byte sexId) {
             return Sex.values()[sexId];
         }
+
+        public int getId() {
+            return this.ordinal();
+        }
     }
 }

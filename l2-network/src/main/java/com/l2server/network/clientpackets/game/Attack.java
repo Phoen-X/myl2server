@@ -57,8 +57,8 @@ public final class Attack extends L2GameClientPacket {
 
         // Avoid Attacks in Boat.
         if (activeChar.isPlayable() && activeChar.isInBoat()) {
-            activeChar.sendPacket(SystemMessageId.NOT_ALLOWED_ON_BOAT);
-            activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+            activeChar.send(SystemMessageId.NOT_ALLOWED_ON_BOAT);
+            activeChar.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
@@ -66,8 +66,8 @@ public final class Attack extends L2GameClientPacket {
         if (info != null) {
             for (AbstractEffect effect : info.getEffects()) {
                 if (!effect.checkCondition(-1)) {
-                    activeChar.sendPacket(SystemMessageId.YOU_HAVE_BEEN_REPORTED_SO_ACTIONS_NOT_ALLOWED);
-                    activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+                    activeChar.send(SystemMessageId.YOU_HAVE_BEEN_REPORTED_SO_ACTIONS_NOT_ALLOWED);
+                    activeChar.send(ActionFailed.STATIC_PACKET);
                     return;
                 }
             }
@@ -86,20 +86,20 @@ public final class Attack extends L2GameClientPacket {
         }
 
         if (!target.isTargetable() && !activeChar.canOverrideCond(PcCondOverride.TARGET_ALL)) {
-            activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+            activeChar.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         // Players can't attack objects in the other instances
         // except from multiverse
         else if ((target.getInstanceId() != activeChar.getInstanceId()) && (activeChar.getInstanceId() != -1)) {
-            activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+            activeChar.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         // Only GMs can directly attack invisible characters
         else if (!target.isVisibleFor(activeChar)) {
-            activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+            activeChar.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
@@ -109,7 +109,7 @@ public final class Attack extends L2GameClientPacket {
             if ((target.getObjectId() != activeChar.getObjectId()) && (activeChar.getPrivateStoreType() == PrivateStoreType.NONE) && (activeChar.getActiveRequester() == null)) {
                 target.onForcedAttack(activeChar);
             } else {
-                activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+                activeChar.send(ActionFailed.STATIC_PACKET);
             }
         }
     }*/

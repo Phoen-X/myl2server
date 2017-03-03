@@ -61,7 +61,7 @@ public final class RequestDestroyItem extends L2GameClientPacket {
         long count = _count;
 
         if (activeChar.isProcessingTransaction() || (activeChar.getPrivateStoreType() != PrivateStoreType.NONE)) {
-            activeChar.sendPacket(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);
+            activeChar.send(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);
             return;
         }
 
@@ -69,21 +69,21 @@ public final class RequestDestroyItem extends L2GameClientPacket {
 
         // if we can't find the requested item, its actually a cheat
         if (itemToRemove == null) {
-            activeChar.sendPacket(SystemMessageId.CANNOT_DISCARD_THIS_ITEM);
+            activeChar.send(SystemMessageId.CANNOT_DISCARD_THIS_ITEM);
             return;
         }
 
         // Cannot discard item that the skill is consuming
         if (activeChar.isCastingNow()) {
             if ((activeChar.getCurrentSkill() != null) && (activeChar.getCurrentSkill().getSkill().getItemConsumeId() == itemToRemove.getId())) {
-                activeChar.sendPacket(SystemMessageId.CANNOT_DISCARD_THIS_ITEM);
+                activeChar.send(SystemMessageId.CANNOT_DISCARD_THIS_ITEM);
                 return;
             }
         }
         // Cannot discard item that the skill is consuming
         if (activeChar.isCastingSimultaneouslyNow()) {
             if ((activeChar.getLastSimultaneousSkillCast() != null) && (activeChar.getLastSimultaneousSkillCast().getItemConsumeId() == itemToRemove.getId())) {
-                activeChar.sendPacket(SystemMessageId.CANNOT_DISCARD_THIS_ITEM);
+                activeChar.send(SystemMessageId.CANNOT_DISCARD_THIS_ITEM);
                 return;
             }
         }
@@ -92,9 +92,9 @@ public final class RequestDestroyItem extends L2GameClientPacket {
 
         if ((!activeChar.canOverrideCond(PcCondOverride.DESTROY_ALL_ITEMS) && !itemToRemove.isDestroyable()) || CursedWeaponsManager.getInstance().isCursed(itemId)) {
             if (itemToRemove.isHeroItem()) {
-                activeChar.sendPacket(SystemMessageId.HERO_WEAPONS_CANT_DESTROYED);
+                activeChar.send(SystemMessageId.HERO_WEAPONS_CANT_DESTROYED);
             } else {
-                activeChar.sendPacket(SystemMessageId.CANNOT_DISCARD_THIS_ITEM);
+                activeChar.send(SystemMessageId.CANNOT_DISCARD_THIS_ITEM);
             }
             return;
         }
@@ -135,11 +135,11 @@ public final class RequestDestroyItem extends L2GameClientPacket {
                 SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.EQUIPMENT_S1_S2_REMOVED);
                 sm.addInt(itemToRemove.getEnchantLevel());
                 sm.addItemName(itemToRemove);
-                activeChar.sendPacket(sm);
+                activeChar.send(sm);
             } else {
                 SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DISARMED);
                 sm.addItemName(itemToRemove);
-                activeChar.sendPacket(sm);
+                activeChar.send(sm);
             }
 
             L2ItemInstance[] unequiped = activeChar.getInventory().unEquipItemInSlotAndRecord(itemToRemove.getLocationSlot());
@@ -148,7 +148,7 @@ public final class RequestDestroyItem extends L2GameClientPacket {
             for (L2ItemInstance itm : unequiped) {
                 iu.addModifiedItem(itm);
             }
-            activeChar.sendPacket(iu);
+            activeChar.send(iu);
         }
 
         L2ItemInstance removedItem = activeChar.getInventory().destroyItem("Destroy", itemToRemove, count, activeChar, null);
@@ -164,14 +164,14 @@ public final class RequestDestroyItem extends L2GameClientPacket {
             } else {
                 iu.addModifiedItem(removedItem);
             }
-            activeChar.sendPacket(iu);
+            activeChar.send(iu);
         } else {
-            sendPacket(new ItemList(activeChar, true));
+            send(new ItemList(activeChar, true));
         }
 
         StatusUpdate su = new StatusUpdate(activeChar);
         su.addAttribute(StatusUpdate.CUR_LOAD, activeChar.getCurrentLoad());
-        activeChar.sendPacket(su);
+        activeChar.send(su);
     }*/
 
     @Override

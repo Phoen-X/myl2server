@@ -59,7 +59,7 @@ public final class RequestDropItem extends L2GameClientPacket {
         L2ItemInstance item = activeChar.getInventory().getItemByObjectId(_objectId);
 
         if ((item == null) || (_count == 0) || !activeChar.validateItemManipulation(_objectId, "drop") || (!Config.ALLOW_DISCARDITEM && !activeChar.canOverrideCond(PcCondOverride.DROP_ALL_ITEMS)) || (!item.isDropable() && !(activeChar.canOverrideCond(PcCondOverride.DROP_ALL_ITEMS) && Config.GM_TRADE_RESTRICTED_ITEMS)) || ((item.getItemType() == EtcItemType.PET_COLLAR) && activeChar.havePetInvItems()) || activeChar.isInsideZone(ZoneId.NO_ITEM_DROP)) {
-            activeChar.sendPacket(SystemMessageId.CANNOT_DISCARD_THIS_ITEM);
+            activeChar.send(SystemMessageId.CANNOT_DISCARD_THIS_ITEM);
             return;
         }
         if (item.isQuestItem() && !(activeChar.canOverrideCond(PcCondOverride.DROP_ALL_ITEMS) && Config.GM_TRADE_RESTRICTED_ITEMS)) {
@@ -67,12 +67,12 @@ public final class RequestDropItem extends L2GameClientPacket {
         }
 
         if (_count > item.getCount()) {
-            activeChar.sendPacket(SystemMessageId.CANNOT_DISCARD_THIS_ITEM);
+            activeChar.send(SystemMessageId.CANNOT_DISCARD_THIS_ITEM);
             return;
         }
 
         if ((Config.PLAYER_SPAWN_PROTECTION > 0) && activeChar.isInvul() && !activeChar.isGM()) {
-            activeChar.sendPacket(SystemMessageId.CANNOT_DISCARD_THIS_ITEM);
+            activeChar.send(SystemMessageId.CANNOT_DISCARD_THIS_ITEM);
             return;
         }
 
@@ -93,17 +93,17 @@ public final class RequestDropItem extends L2GameClientPacket {
 
         if (!activeChar.getAccessLevel().allowTransaction()) {
             activeChar.sendMessage("Transactions are disabled for your Access Level.");
-            activeChar.sendPacket(SystemMessageId.NOTHING_HAPPENED);
+            activeChar.send(SystemMessageId.NOTHING_HAPPENED);
             return;
         }
 
         if (activeChar.isProcessingTransaction() || (activeChar.getPrivateStoreType() != PrivateStoreType.NONE)) {
-            activeChar.sendPacket(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);
+            activeChar.send(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);
             return;
         }
         if (activeChar.isFishing()) {
             // You can't mount, dismount, break and drop items while fishing
-            activeChar.sendPacket(SystemMessageId.CANNOT_DO_WHILE_FISHING_2);
+            activeChar.send(SystemMessageId.CANNOT_DO_WHILE_FISHING_2);
             return;
         }
         if (activeChar.isFlying()) {
@@ -113,7 +113,7 @@ public final class RequestDropItem extends L2GameClientPacket {
         // Cannot discard item that the skill is consuming
         if (activeChar.isCastingNow()) {
             if ((activeChar.getCurrentSkill() != null) && (activeChar.getCurrentSkill().getSkill().getItemConsumeId() == item.getId())) {
-                activeChar.sendPacket(SystemMessageId.CANNOT_DISCARD_THIS_ITEM);
+                activeChar.send(SystemMessageId.CANNOT_DISCARD_THIS_ITEM);
                 return;
             }
         }
@@ -121,7 +121,7 @@ public final class RequestDropItem extends L2GameClientPacket {
         // Cannot discard item that the skill is consuming
         if (activeChar.isCastingSimultaneouslyNow()) {
             if ((activeChar.getLastSimultaneousSkillCast() != null) && (activeChar.getLastSimultaneousSkillCast().getItemConsumeId() == item.getId())) {
-                activeChar.sendPacket(SystemMessageId.CANNOT_DISCARD_THIS_ITEM);
+                activeChar.send(SystemMessageId.CANNOT_DISCARD_THIS_ITEM);
                 return;
             }
         }
@@ -130,7 +130,7 @@ public final class RequestDropItem extends L2GameClientPacket {
             if (Config.DEBUG) {
                 _log.finest(activeChar.getObjectId() + ":player tried to drop quest item");
             }
-            activeChar.sendPacket(SystemMessageId.CANNOT_DISCARD_EXCHANGE_ITEM);
+            activeChar.send(SystemMessageId.CANNOT_DISCARD_EXCHANGE_ITEM);
             return;
         }
 
@@ -138,7 +138,7 @@ public final class RequestDropItem extends L2GameClientPacket {
             if (Config.DEBUG) {
                 _log.finest(activeChar.getObjectId() + ": trying to drop too far away");
             }
-            activeChar.sendPacket(SystemMessageId.CANNOT_DISCARD_DISTANCE_TOO_FAR);
+            activeChar.send(SystemMessageId.CANNOT_DISCARD_DISTANCE_TOO_FAR);
             return;
         }
 
@@ -158,11 +158,11 @@ public final class RequestDropItem extends L2GameClientPacket {
                 itm.unChargeAllShots();
                 iu.addModifiedItem(itm);
             }
-            activeChar.sendPacket(iu);
+            activeChar.send(iu);
             activeChar.broadcastUserInfo();
 
             ItemList il = new ItemList(activeChar, true);
-            activeChar.sendPacket(il);
+            activeChar.send(il);
         }
 
         L2ItemInstance dropedItem = activeChar.dropItem("Drop", _objectId, _count, _x, _y, _z, null, false, false);

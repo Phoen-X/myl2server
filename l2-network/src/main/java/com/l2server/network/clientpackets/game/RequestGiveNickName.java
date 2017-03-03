@@ -44,17 +44,17 @@ public class RequestGiveNickName extends L2GameClientPacket {
         // Noblesse can bestow a title to themselves
         if (activeChar.isNoble() && _target.equalsIgnoreCase(activeChar.getName())) {
             activeChar.setTitle(_title);
-            activeChar.sendPacket(SystemMessageId.TITLE_CHANGED);
+            activeChar.send(SystemMessageId.TITLE_CHANGED);
             activeChar.broadcastTitleInfo();
         } else {
             // Can the player change/give a title?
             if (!activeChar.hasClanPrivilege(ClanPrivilege.CL_GIVE_TITLE)) {
-                activeChar.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
+                activeChar.send(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
                 return;
             }
 
             if (activeChar.getClan().getLevel() < 3) {
-                activeChar.sendPacket(SystemMessageId.CLAN_LVL_3_NEEDED_TO_ENDOWE_TITLE);
+                activeChar.send(SystemMessageId.CLAN_LVL_3_NEEDED_TO_ENDOWE_TITLE);
                 return;
             }
 
@@ -64,13 +64,13 @@ public class RequestGiveNickName extends L2GameClientPacket {
                 if (member != null) {
                     // is target from the same clan?
                     member.setTitle(_title);
-                    member.sendPacket(SystemMessageId.TITLE_CHANGED);
+                    member.send(SystemMessageId.TITLE_CHANGED);
                     member.broadcastTitleInfo();
                 } else {
-                    activeChar.sendPacket(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
+                    activeChar.send(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
                 }
             } else {
-                activeChar.sendPacket(SystemMessageId.TARGET_MUST_BE_IN_CLAN);
+                activeChar.send(SystemMessageId.TARGET_MUST_BE_IN_CLAN);
             }
         }
     }

@@ -92,7 +92,7 @@ public class CharacterSelect extends L2GameClientPacket {
                         final NpcHtmlMessage msg = new NpcHtmlMessage();
                         msg.setFile(info.getHtmlPrefix(), "data/html/mods/IPRestriction.htm");
                         msg.replace("%max%", String.valueOf(AntiFeedManager.getInstance().getLimit(client, Config.L2JMOD_DUALBOX_CHECK_MAX_PLAYERS_PER_IP)));
-                        client.sendPacket(msg);
+                        client.send(msg);
                         return;
                     }
 
@@ -119,11 +119,11 @@ public class CharacterSelect extends L2GameClientPacket {
                         return;
                     }
 
-                    sendPacket(new SSQInfo());
+                    send(new SSQInfo());
 
                     client.setState(GameClientState.IN_GAME);
                     CharSelected cs = new CharSelected(cha, client.getSessionId().playOkID1);
-                    sendPacket(cs);
+                    send(cs);
                 }
             } finally {
                 client.getActiveCharLock().unlock();

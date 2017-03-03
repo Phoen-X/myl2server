@@ -54,35 +54,35 @@ public final class RequestMoveToLocationInVehicle extends L2GameClientPacket {
         }
 
         if ((Config.PLAYER_MOVEMENT_BLOCK_TIME > 0) && !activeChar.isGM() && (activeChar.getNotMoveUntil() > System.currentTimeMillis())) {
-            activeChar.sendPacket(SystemMessageId.CANNOT_MOVE_WHILE_SPEAKING_TO_AN_NPC);
-            activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+            activeChar.send(SystemMessageId.CANNOT_MOVE_WHILE_SPEAKING_TO_AN_NPC);
+            activeChar.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         if ((_targetX == _originX) && (_targetY == _originY) && (_targetZ == _originZ)) {
-            activeChar.sendPacket(new StopMoveInVehicle(activeChar, _boatId));
+            activeChar.send(new StopMoveInVehicle(activeChar, _boatId));
             return;
         }
 
         if (activeChar.isAttackingNow() && (activeChar.getActiveWeaponItem() != null) && (activeChar.getActiveWeaponItem().getItemType() == WeaponType.BOW)) {
-            activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+            activeChar.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         if (activeChar.isSitting() || activeChar.isMovementDisabled()) {
-            activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+            activeChar.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         if (activeChar.hasSummon()) {
-            activeChar.sendPacket(SystemMessageId.RELEASE_PET_ON_BOAT);
-            activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+            activeChar.send(SystemMessageId.RELEASE_PET_ON_BOAT);
+            activeChar.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         if (activeChar.isTransformed()) {
-            activeChar.sendPacket(SystemMessageId.CANT_POLYMORPH_ON_BOAT);
-            activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+            activeChar.send(SystemMessageId.CANT_POLYMORPH_ON_BOAT);
+            activeChar.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
@@ -90,13 +90,13 @@ public final class RequestMoveToLocationInVehicle extends L2GameClientPacket {
         if (activeChar.isInBoat()) {
             boat = activeChar.getBoat();
             if (boat.getObjectId() != _boatId) {
-                activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+                activeChar.send(ActionFailed.STATIC_PACKET);
                 return;
             }
         } else {
             boat = BoatManager.getInstance().getBoat(_boatId);
             if ((boat == null) || !boat.isInsideRadius(activeChar, 300, true, false)) {
-                activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+                activeChar.send(ActionFailed.STATIC_PACKET);
                 return;
             }
             activeChar.setVehicle(boat);

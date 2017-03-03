@@ -64,26 +64,26 @@ public final class RequestPartyMatchDetail extends L2GameClientPacket {
 
             _activeChar.setPartyRoom(_roomid);
 
-            _activeChar.sendPacket(new PartyMatchDetail(_activeChar, _room));
-            _activeChar.sendPacket(new ExPartyRoomMember(_activeChar, _room, 0));
+            _activeChar.send(new PartyMatchDetail(_activeChar, _room));
+            _activeChar.send(new ExPartyRoomMember(_activeChar, _room, 0));
 
             for (L2PcInstance _member : _room.getPartyMembers()) {
                 if (_member == null) {
                     continue;
                 }
 
-                _member.sendPacket(new ExManagePartyRoomMember(_activeChar, _room, 0));
+                _member.send(new ExManagePartyRoomMember(_activeChar, _room, 0));
 
                 SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_ENTERED_PARTY_ROOM);
                 sm.addCharName(_activeChar);
-                _member.sendPacket(sm);
+                _member.send(sm);
             }
             _room.addMember(_activeChar);
 
             // Info Broadcast
             _activeChar.broadcastUserInfo();
         } else {
-            _activeChar.sendPacket(SystemMessageId.CANT_ENTER_PARTY_ROOM);
+            _activeChar.send(SystemMessageId.CANT_ENTER_PARTY_ROOM);
         }
     }
     */

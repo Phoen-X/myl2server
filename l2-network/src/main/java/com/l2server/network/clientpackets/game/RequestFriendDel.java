@@ -52,14 +52,14 @@ public final class RequestFriendDel extends L2GameClientPacket {
         if (id == -1) {
             sm = SystemMessage.getSystemMessage(SystemMessageId.C1_NOT_ON_YOUR_FRIENDS_LIST);
             sm.addString(_name);
-            activeChar.sendPacket(sm);
+            activeChar.send(sm);
             return;
         }
 
         if (!activeChar.getFriendList().contains(id)) {
             sm = SystemMessage.getSystemMessage(SystemMessageId.C1_NOT_ON_YOUR_FRIENDS_LIST);
             sm.addString(_name);
-            activeChar.sendPacket(sm);
+            activeChar.send(sm);
             return;
         }
 
@@ -74,15 +74,15 @@ public final class RequestFriendDel extends L2GameClientPacket {
             // Player deleted from your friend list
             sm = SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_BEEN_DELETED_FROM_YOUR_FRIENDS_LIST);
             sm.addString(_name);
-            activeChar.sendPacket(sm);
+            activeChar.send(sm);
 
             activeChar.getFriendList().remove(Integer.valueOf(id));
-            activeChar.sendPacket(new FriendPacket(false, id));
+            activeChar.send(new FriendPacket(false, id));
 
             L2PcInstance player = L2World.getInstance().getPlayer(_name);
             if (player != null) {
                 player.getFriendList().remove(Integer.valueOf(activeChar.getObjectId()));
-                player.sendPacket(new FriendPacket(false, activeChar.getObjectId()));
+                player.send(new FriendPacket(false, activeChar.getObjectId()));
             }
         } catch (Exception e) {
             _log.log(Level.WARNING, "could not del friend objectid: ", e);

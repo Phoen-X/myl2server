@@ -43,17 +43,17 @@ public final class RequestFriendInvite extends L2GameClientPacket {
 
         // Target is not found in the game.
         if ((friend == null) || !friend.isOnline() || friend.isInvisible()) {
-            activeChar.sendPacket(SystemMessageId.THE_USER_YOU_REQUESTED_IS_NOT_IN_GAME);
+            activeChar.send(SystemMessageId.THE_USER_YOU_REQUESTED_IS_NOT_IN_GAME);
             return;
         }
         // You cannot add yourself to your own friend list.
         if (friend == activeChar) {
-            activeChar.sendPacket(SystemMessageId.YOU_CANNOT_ADD_YOURSELF_TO_OWN_FRIEND_LIST);
+            activeChar.send(SystemMessageId.YOU_CANNOT_ADD_YOURSELF_TO_OWN_FRIEND_LIST);
             return;
         }
         // Target is in olympiad.
         if (activeChar.isInOlympiadMode() || friend.isInOlympiadMode()) {
-            activeChar.sendPacket(SystemMessageId.A_USER_CURRENTLY_PARTICIPATING_IN_THE_OLYMPIAD_CANNOT_SEND_PARTY_AND_FRIEND_INVITATIONS);
+            activeChar.send(SystemMessageId.A_USER_CURRENTLY_PARTICIPATING_IN_THE_OLYMPIAD_CANNOT_SEND_PARTY_AND_FRIEND_INVITATIONS);
             return;
         }
         // Target blocked active player.
@@ -66,29 +66,29 @@ public final class RequestFriendInvite extends L2GameClientPacket {
         if (BlockList.isBlocked(activeChar, friend)) {
             sm = SystemMessage.getSystemMessage(SystemMessageId.BLOCKED_C1);
             sm.addCharName(friend);
-            activeChar.sendPacket(sm);
+            activeChar.send(sm);
             return;
         }
         // Target already in friend list.
         if (activeChar.getFriendList().contains(friend.getObjectId())) {
             sm = SystemMessage.getSystemMessage(SystemMessageId.S1_ALREADY_IN_FRIENDS_LIST);
             sm.addString(_name);
-            activeChar.sendPacket(sm);
+            activeChar.send(sm);
             return;
         }
         // Target is busy.
         if (friend.isProcessingRequest()) {
             sm = SystemMessage.getSystemMessage(SystemMessageId.C1_IS_BUSY_TRY_LATER);
             sm.addString(_name);
-            activeChar.sendPacket(sm);
+            activeChar.send(sm);
             return;
         }
         // Friend request sent.
         activeChar.onTransactionRequest(friend);
-        friend.sendPacket(new FriendAddRequest(activeChar.getName()));
+        friend.send(new FriendAddRequest(activeChar.getName()));
         sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_REQUESTED_C1_TO_BE_FRIEND);
         sm.addString(_name);
-        activeChar.sendPacket(sm);
+        activeChar.send(sm);
     }
     */
     @Override

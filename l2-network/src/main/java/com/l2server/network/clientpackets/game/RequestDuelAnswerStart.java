@@ -58,10 +58,10 @@ public final class RequestDuelAnswerStart extends L2GameClientPacket {
             if (requestor.isInDuel()) {
                 msg1 = SystemMessage.getSystemMessage(SystemMessageId.C1_CANNOT_DUEL_BECAUSE_C1_IS_ALREADY_ENGAGED_IN_A_DUEL);
                 msg1.addString(requestor.getName());
-                player.sendPacket(msg1);
+                player.send(msg1);
                 return;
             } else if (player.isInDuel()) {
-                player.sendPacket(SystemMessageId.YOU_ARE_UNABLE_TO_REQUEST_A_DUEL_AT_THIS_TIME);
+                player.send(SystemMessageId.YOU_ARE_UNABLE_TO_REQUEST_A_DUEL_AT_THIS_TIME);
                 return;
             }
 
@@ -79,14 +79,14 @@ public final class RequestDuelAnswerStart extends L2GameClientPacket {
                 msg2.addString(player.getName());
             }
 
-            player.sendPacket(msg1);
-            requestor.sendPacket(msg2);
+            player.send(msg1);
+            requestor.send(msg2);
 
             DuelManager.getInstance().addDuel(requestor, player, _partyDuel);
         } else if (_response == -1) {
             SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_IS_SET_TO_REFUSE_DUEL_REQUEST);
             sm.addPcName(player);
-            requestor.sendPacket(sm);
+            requestor.send(sm);
         } else {
             SystemMessage msg = null;
             if (_partyDuel == 1) {
@@ -95,7 +95,7 @@ public final class RequestDuelAnswerStart extends L2GameClientPacket {
                 msg = SystemMessage.getSystemMessage(SystemMessageId.C1_HAS_DECLINED_YOUR_CHALLENGE_TO_A_DUEL);
                 msg.addPcName(player);
             }
-            requestor.sendPacket(msg);
+            requestor.send(msg);
         }
 
         player.setActiveRequester(null);

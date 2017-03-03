@@ -127,7 +127,7 @@ public final class RequestBypassToServer extends L2GameClientPacket {
                     ConfirmDlg dlg = new ConfirmDlg(SystemMessageId.S1);
                     dlg.addString("Are you sure you want execute command " + _command.substring(6) + " ?");
                     activeChar.addAction(PlayerAction.ADMIN_COMMAND);
-                    activeChar.sendPacket(dlg);
+                    activeChar.send(dlg);
                 } else {
                     if (Config.GMAUDIT) {
                         GMAudit.auditGMAction(activeChar.getName() + " [" + activeChar.getObjectId() + "]", _command, (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target"));
@@ -155,7 +155,7 @@ public final class RequestBypassToServer extends L2GameClientPacket {
                     }
                 }
 
-                activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+                activeChar.send(ActionFailed.STATIC_PACKET);
             } else if (_command.startsWith("item_")) {
                 int endOfId = _command.indexOf('_', 5);
                 String id;
@@ -170,7 +170,7 @@ public final class RequestBypassToServer extends L2GameClientPacket {
                         item.onBypassFeedback(activeChar, _command.substring(endOfId + 1));
                     }
 
-                    activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+                    activeChar.send(ActionFailed.STATIC_PACKET);
                 } catch (NumberFormatException nfe) {
                     _log.log(Level.WARNING, "NFE for command [" + _command + "]", nfe);
                 }
@@ -240,7 +240,7 @@ public final class RequestBypassToServer extends L2GameClientPacket {
                 // item html
                 final NpcHtmlMessage msg = new NpcHtmlMessage(0, 1, sb.toString());
                 msg.disableValidation();
-                activeChar.sendPacket(msg);
+                activeChar.send(msg);
             }
         }
 

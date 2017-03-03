@@ -45,8 +45,8 @@ public final class RequestAnswerJoinAlly extends L2GameClientPacket {
         }
 
         if (_response == 0) {
-            activeChar.sendPacket(SystemMessageId.YOU_DID_NOT_RESPOND_TO_ALLY_INVITATION);
-            requestor.sendPacket(SystemMessageId.NO_RESPONSE_TO_ALLY_INVITATION);
+            activeChar.send(SystemMessageId.YOU_DID_NOT_RESPOND_TO_ALLY_INVITATION);
+            requestor.send(SystemMessageId.NO_RESPONSE_TO_ALLY_INVITATION);
         } else {
             if (!(requestor.getRequest().getRequestPacket() instanceof RequestJoinAlly)) {
                 return; // hax
@@ -56,8 +56,8 @@ public final class RequestAnswerJoinAlly extends L2GameClientPacket {
             // we must double check this cause of hack
             if (clan.checkAllyJoinCondition(requestor, activeChar)) {
                 // TODO: Need correct message id
-                requestor.sendPacket(SystemMessageId.YOU_HAVE_SUCCEEDED_INVITING_FRIEND);
-                activeChar.sendPacket(SystemMessageId.YOU_ACCEPTED_ALLIANCE);
+                requestor.send(SystemMessageId.YOU_HAVE_SUCCEEDED_INVITING_FRIEND);
+                activeChar.send(SystemMessageId.YOU_ACCEPTED_ALLIANCE);
 
                 activeChar.getClan().setAllyId(clan.getAllyId());
                 activeChar.getClan().setAllyName(clan.getAllyName());

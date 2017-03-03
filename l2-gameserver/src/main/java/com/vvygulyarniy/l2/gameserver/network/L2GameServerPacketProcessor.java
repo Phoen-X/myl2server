@@ -10,8 +10,10 @@ import com.vvygulyarniy.l2.domain.character.L2Character;
 import com.vvygulyarniy.l2.domain.character.info.CharacterAppearance;
 import com.vvygulyarniy.l2.domain.character.info.CharacterAppearance.Sex;
 import com.vvygulyarniy.l2.domain.character.profession.Profession;
+import com.vvygulyarniy.l2.domain.geo.Position;
 import com.vvygulyarniy.l2.gameserver.service.characters.CharacterCreationException;
 import com.vvygulyarniy.l2.gameserver.service.characters.CharacterRepository;
+import com.vvygulyarniy.l2.gameserver.world.L2World;
 import com.vvygulyarniy.l2.gameserver.world.castle.CastleRegistry;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,10 +28,14 @@ import static com.vvygulyarniy.l2.domain.sevensigns.SevenSignsWinner.NONE;
 public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
     private final CharacterRepository characterRepository;
     private final CastleRegistry castleRegistry;
+    private final L2World world;
 
-    public L2GameServerPacketProcessor(CharacterRepository characterRepository, CastleRegistry castleRegistry) {
+    public L2GameServerPacketProcessor(CharacterRepository characterRepository,
+                                       CastleRegistry castleRegistry,
+                                       L2World world) {
         this.characterRepository = characterRepository;
         this.castleRegistry = castleRegistry;
+        this.world = world;
     }
 
     @Override
@@ -40,9 +46,7 @@ public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
             client.close((L2GameServerPacket) null);
         } else {
             log.info("Client {} protocol version: {}", client, packet.getVersion());
-
-            client.setProtocolVersion(packet.getVersion());
-            client.sendPacket(new KeyPacket(client.enableCrypt(), 1));
+            client.send(new KeyPacket(client.enableCrypt(), 1));
 
         }
     }
@@ -55,13 +59,13 @@ public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
         client.setAccountName(packet.getLoginName());
         client.setAccountCharacters(characterRepository.findByAccount(client.getAccountName()));
         CharSelectionInfo charList = buildCharSelectionInfo(client);
-        client.sendPacket(charList);
+        client.send(charList);
     }
 
     @Override
     public void process(NewCharacter packet, L2GameClient client) {
         NewCharacterSuccess responsePacket = new NewCharacterSuccess(Arrays.asList(Profession.values()));
-        client.sendPacket(responsePacket);
+        client.send(responsePacket);
     }
 
     @Override
@@ -70,16 +74,16 @@ public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
         try {
             L2Character character = characterRepository.createCharacter(client, Profession.byId(packet.getClassId()), packet.getName(), appearance);
             client.addCharacter(character);
-            client.sendPacket(new CharCreateOk());
+            client.send(new CharCreateOk());
         } catch (CharacterCreationException e) {
-            client.sendPacket(new CharCreateFail(e.getReasonId()));
+            client.send(new CharCreateFail(e.getReasonId()));
         }
 
     }
 
     @Override
     public void process(RequestGotoLobby packet, L2GameClient client) {
-        client.sendPacket(buildCharSelectionInfo(client));
+        client.send(buildCharSelectionInfo(client));
     }
 
     @Override
@@ -95,9 +99,9 @@ public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
     @Override
     public void process(final CharacterSelect packet, L2GameClient client) {
         client.selectCharacter(packet.getSlotId());
-        client.sendPacket(new SSQInfo(NONE));
+        client.send(new SSQInfo(NONE));
         client.setState(IN_GAME);
-        client.sendPacket(new CharSelected(getCharacterData(client.getActiveCharacter()), client.getSessionId().playOkID1));
+        client.send(new CharSelected(client.getActiveCharacter(), client.getSessionId().playOkID1));
     }
 
     @Override
@@ -107,16 +111,18 @@ public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
             client.closeNow();
         }
 
-        client.sendPacket(new UserInfo(activeCharacter));
-        client.sendPacket(new ItemList(getCharacterData(activeCharacter), false));
-        //client.sendPacket(new ExQuestItemList());
+        world.addCharacter(activeCharacter);
+
+        client.send(new UserInfo(activeCharacter));
+        client.send(new ItemList(activeCharacter, false));
+        //client.send(new ExQuestItemList());
     }
 
     @Override
     public void process(RequestKeyMapping requestKeyMapping, L2GameClient client) {
 
         /*if (Config.STORE_UI_SETTINGS) {
-            activeChar.sendPacket(new ExUISetting(activeChar));
+            activeChar.send(new ExUISetting(activeChar));
         }*/
     }
 
@@ -125,42 +131,31 @@ public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
         if (client == null) {
             return;
         }
-        client.sendPacket(new ExSendManorList(castleRegistry.findAll()));
+        client.send(new ExSendManorList(castleRegistry.findAll()));
     }
 
     @Override
     public void process(ValidatePosition validatePosition, L2GameClient client) {
-        client.sendPacket(new ValidateLocation(client.getActiveCharacter().getId(), client.getActiveCharacter().getPosition()));
+        client.getActiveCharacter().setPosition(validatePosition.getPosition());
+        client.send(new ValidateLocation(client.getActiveCharacter().getId(), validatePosition.getPosition()));
     }
 
     @Override
     public void process(RequestShowMiniMap requestShowMiniMap, L2GameClient client) {
-        client.sendPacket(new ShowMiniMap(1665));
+        client.send(new ShowMiniMap(1665));
     }
 
     @Override
     public void process(RequestAllFortressInfo requestAllFortressInfo, L2GameClient client) {
-        client.sendPacket(ExShowFortressInfo.STATIC_PACKET);
+        client.send(ExShowFortressInfo.STATIC_PACKET);
     }
 
-    private L2CharData getCharacterData(L2Character ch) {
-
-        return L2CharData.builder()
-                .accessLevel(1)
-                .name(ch.getNickName())
-                .hairStyle(ch.getAppearance().getHairStyle())
-                .hairColor(ch.getAppearance().getHairColor())
-                .sex(ch.getAppearance().getSex().ordinal())
-                .classId(ch.getProfession().getId())
-                .level(ch.getLevel())
-                .currentHp(100)
-                .maxHp(100)
-                .currentMp(100)
-                .maxMp(200)
-                .exp(0)
-                .objectId(1)
-                .race(ch.getProfession().getRace().ordinal())
-                .build();
+    @Override
+    public void process(MoveBackwardToLocation packet, L2GameClient client) {
+        client.getActiveCharacter()
+              .setMoveTarget(new Position(packet.getTargetX(), packet.getTargetY(), packet.getTargetZ()));
+        client.send(new ValidateLocation(client.getActiveCharacter().getId(),
+                                         client.getActiveCharacter().getPosition()));
     }
 
     private CharSelectionInfo buildCharSelectionInfo(L2GameClient client) {

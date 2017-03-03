@@ -49,29 +49,29 @@ public final class AllyDismiss extends L2GameClientPacket {
             return;
         }
         if (player.getClan() == null) {
-            player.sendPacket(SystemMessageId.YOU_ARE_NOT_A_CLAN_MEMBER);
+            player.send(SystemMessageId.YOU_ARE_NOT_A_CLAN_MEMBER);
             return;
         }
         L2Clan leaderClan = player.getClan();
         if (leaderClan.getAllyId() == 0) {
-            player.sendPacket(SystemMessageId.NO_CURRENT_ALLIANCES);
+            player.send(SystemMessageId.NO_CURRENT_ALLIANCES);
             return;
         }
         if (!player.isClanLeader() || (leaderClan.getId() != leaderClan.getAllyId())) {
-            player.sendPacket(SystemMessageId.FEATURE_ONLY_FOR_ALLIANCE_LEADER);
+            player.send(SystemMessageId.FEATURE_ONLY_FOR_ALLIANCE_LEADER);
             return;
         }
         L2Clan clan = ClanTable.getInstance().getClanByName(_clanName);
         if (clan == null) {
-            player.sendPacket(SystemMessageId.CLAN_DOESNT_EXISTS);
+            player.send(SystemMessageId.CLAN_DOESNT_EXISTS);
             return;
         }
         if (clan.getId() == leaderClan.getId()) {
-            player.sendPacket(SystemMessageId.ALLIANCE_LEADER_CANT_WITHDRAW);
+            player.send(SystemMessageId.ALLIANCE_LEADER_CANT_WITHDRAW);
             return;
         }
         if (clan.getAllyId() != leaderClan.getAllyId()) {
-            player.sendPacket(SystemMessageId.DIFFERENT_ALLIANCE);
+            player.send(SystemMessageId.DIFFERENT_ALLIANCE);
             return;
         }
 
@@ -85,7 +85,7 @@ public final class AllyDismiss extends L2GameClientPacket {
         clan.setAllyPenaltyExpiryTime(currentTime + (Config.ALT_ALLY_JOIN_DAYS_WHEN_DISMISSED * 86400000L), L2Clan.PENALTY_TYPE_CLAN_DISMISSED); // 24*60*60*1000 = 86400000
         clan.updateClanInDB();
 
-        player.sendPacket(SystemMessageId.YOU_HAVE_EXPELED_A_CLAN);
+        player.send(SystemMessageId.YOU_HAVE_EXPELED_A_CLAN);
     }
 */
 }

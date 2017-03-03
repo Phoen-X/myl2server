@@ -60,28 +60,28 @@ public class MoveToLocationInAirShip extends L2GameClientPacket {
         }
 
         if ((_targetX == _originX) && (_targetY == _originY) && (_targetZ == _originZ)) {
-            activeChar.sendPacket(new StopMoveInVehicle(activeChar, _shipId));
+            activeChar.send(new StopMoveInVehicle(activeChar, _shipId));
             return;
         }
 
         if (activeChar.isAttackingNow() && (activeChar.getActiveWeaponItem() != null) && (activeChar.getActiveWeaponItem().getItemType() == WeaponType.BOW)) {
-            activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+            activeChar.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         if (activeChar.isSitting() || activeChar.isMovementDisabled()) {
-            activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+            activeChar.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         if (!activeChar.isInAirShip()) {
-            activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+            activeChar.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         final L2AirShipInstance airShip = activeChar.getAirShip();
         if (airShip.getObjectId() != _shipId) {
-            activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+            activeChar.send(ActionFailed.STATIC_PACKET);
             return;
         }
 

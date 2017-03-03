@@ -79,23 +79,23 @@ public final class RequestGiveItemToPet extends L2GameClientPacket {
         }
 
         if (item.isHeroItem() || !item.isDropable() || !item.isDestroyable() || !item.isTradeable()) {
-            player.sendPacket(SystemMessageId.ITEM_NOT_FOR_PETS);
+            player.send(SystemMessageId.ITEM_NOT_FOR_PETS);
             return;
         }
 
         final L2PetInstance pet = (L2PetInstance) player.getSummon();
         if (pet.isDead()) {
-            player.sendPacket(SystemMessageId.CANNOT_GIVE_ITEMS_TO_DEAD_PET);
+            player.send(SystemMessageId.CANNOT_GIVE_ITEMS_TO_DEAD_PET);
             return;
         }
 
         if (!pet.getInventory().validateCapacity(item)) {
-            player.sendPacket(SystemMessageId.YOUR_PET_CANNOT_CARRY_ANY_MORE_ITEMS);
+            player.send(SystemMessageId.YOUR_PET_CANNOT_CARRY_ANY_MORE_ITEMS);
             return;
         }
 
         if (!pet.getInventory().validateWeight(item, _amount)) {
-            player.sendPacket(SystemMessageId.UNABLE_TO_PLACE_ITEM_YOUR_PET_IS_TOO_ENCUMBERED);
+            player.send(SystemMessageId.UNABLE_TO_PLACE_ITEM_YOUR_PET_IS_TOO_ENCUMBERED);
             return;
         }
 

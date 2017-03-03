@@ -45,14 +45,14 @@ public final class RequestGetOffVehicle extends L2GameClientPacket {
             return;
         }
         if (!activeChar.isInBoat() || (activeChar.getBoat().getObjectId() != _boatId) || activeChar.getBoat().isMoving() || !activeChar.isInsideRadius(_x, _y, _z, 1000, true, false)) {
-            sendPacket(ActionFailed.STATIC_PACKET);
+            send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         activeChar.broadcastPacket(new StopMoveInVehicle(activeChar, _boatId));
         activeChar.setVehicle(null);
         activeChar.setInVehiclePosition(null);
-        sendPacket(ActionFailed.STATIC_PACKET);
+        send(ActionFailed.STATIC_PACKET);
         activeChar.broadcastPacket(new GetOffVehicle(activeChar.getObjectId(), _boatId, _x, _y, _z));
         activeChar.setXYZ(_x, _y, _z);
         activeChar.setInsideZone(ZoneId.PEACE, false);

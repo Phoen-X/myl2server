@@ -18,17 +18,18 @@
  */
 package com.l2server.network.serverpackets.game;
 
+import com.vvygulyarniy.l2.domain.character.L2Character;
 import lombok.ToString;
 
 import java.nio.ByteBuffer;
 
 @ToString
 public final class ItemList extends L2GameServerPacket {
-    private final L2CharData activeChar;
+    private final L2Character activeChar;
     //private final List<L2ItemInstance> _items = new ArrayList<>();
     private final boolean _showWindow;
 
-    public ItemList(L2CharData activeChar, boolean showWindow) {
+    public ItemList(L2Character activeChar, boolean showWindow) {
         this.activeChar = activeChar;
         _showWindow = showWindow;
 
@@ -52,6 +53,6 @@ public final class ItemList extends L2GameServerPacket {
 
     /*@Override
     public void runImpl() {
-        getClient().sendPacket(new ExQuestItemList(activeChar));
+        getClient().send(new ExQuestItemList(activeChar));
     }*/
 }

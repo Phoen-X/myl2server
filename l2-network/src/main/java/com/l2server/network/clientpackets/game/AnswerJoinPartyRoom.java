@@ -48,12 +48,12 @@ public final class AnswerJoinPartyRoom extends L2GameClientPacket {
         L2PcInstance partner = player.getActiveRequester();
         if (partner == null) {
             // Partner hasn't been found, cancel the invitation
-            player.sendPacket(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
+            player.send(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
             player.setActiveRequester(null);
             return;
         } else if (L2World.getInstance().getPlayer(partner.getObjectId()) == null) {
             // Partner hasn't been found, cancel the invitation
-            player.sendPacket(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
+            player.send(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
             player.setActiveRequester(null);
             return;
         }
@@ -71,26 +71,26 @@ public final class AnswerJoinPartyRoom extends L2GameClientPacket {
 
                 player.setPartyRoom(partner.getPartyRoom());
 
-                player.sendPacket(new PartyMatchDetail(player, room));
-                player.sendPacket(new ExPartyRoomMember(player, room, 0));
+                player.send(new PartyMatchDetail(player, room));
+                player.send(new ExPartyRoomMember(player, room, 0));
 
                 for (L2PcInstance member : room.getPartyMembers()) {
                     if (member == null) {
                         continue;
                     }
 
-                    member.sendPacket(new ExManagePartyRoomMember(player, room, 0));
-                    member.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.C1_ENTERED_PARTY_ROOM).addPcName(player));
+                    member.send(new ExManagePartyRoomMember(player, room, 0));
+                    member.send(SystemMessage.getSystemMessage(SystemMessageId.C1_ENTERED_PARTY_ROOM).addPcName(player));
                 }
                 room.addMember(player);
 
                 // Info Broadcast
                 player.broadcastUserInfo();
             } else {
-                player.sendPacket(SystemMessageId.CANT_ENTER_PARTY_ROOM);
+                player.send(SystemMessageId.CANT_ENTER_PARTY_ROOM);
             }
         } else {
-            partner.sendPacket(SystemMessageId.PARTY_MATCHING_REQUEST_NO_RESPONSE);
+            partner.send(SystemMessageId.PARTY_MATCHING_REQUEST_NO_RESPONSE);
         }
 
         // reset transaction timers

@@ -41,6 +41,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class L2LoginServer {
 
+    public static final int LOGIN_SERVER_PORT = 2106;
     private static L2LoginServer _instance;
     private SelectorThread<L2LoginClient> _selectorThread;
 
@@ -75,20 +76,20 @@ public final class L2LoginServer {
         try {
             ServerBootstrap b = new ServerBootstrap(); // (2)
             b.group(bossGroup, workerGroup)
-                    .channel(NioServerSocketChannel.class) // (3)
-                    .childHandler(new ChannelInitializer<SocketChannel>() { // (4)
-                        @Override
-                        public void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new LoginServerClientPacketDecoder(),
-                                    new LoginServerServerPacketEncoder(),
-                                    new NettyLoginServerHandler(LoginController.getInstance(), packetProcessor));
-                        }
-                    })
-                    .option(ChannelOption.SO_BACKLOG, 128)          // (5)
-                    .childOption(ChannelOption.SO_KEEPALIVE, true); // (6)
+             .channel(NioServerSocketChannel.class) // (3)
+             .childHandler(new ChannelInitializer<SocketChannel>() { // (4)
+                 @Override
+                 public void initChannel(SocketChannel ch) throws Exception {
+                     ch.pipeline().addLast(new LoginServerClientPacketDecoder(),
+                                           new LoginServerServerPacketEncoder(),
+                                           new NettyLoginServerHandler(LoginController.getInstance(), packetProcessor));
+                 }
+             })
+             .option(ChannelOption.SO_BACKLOG, 128)          // (5)
+             .childOption(ChannelOption.SO_KEEPALIVE, true); // (6)
 
             // Bind and start to accept incoming connections.
-            ChannelFuture f = b.bind(2106).sync(); // (7)
+            ChannelFuture f = b.bind(LOGIN_SERVER_PORT).sync(); // (7)
 
             // Wait until the server socket is closed.
             // In this example, this does not happen, but you can do that to gracefully

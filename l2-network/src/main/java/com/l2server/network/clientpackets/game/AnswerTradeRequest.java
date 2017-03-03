@@ -45,22 +45,22 @@ public final class AnswerTradeRequest extends L2GameClientPacket {
         }
 
         if (!player.getAccessLevel().allowTransaction()) {
-            player.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
-            sendPacket(ActionFailed.STATIC_PACKET);
+            player.send(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
+            send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         L2PcInstance partner = player.getActiveRequester();
         if (partner == null) {
             // Trade partner not found, cancel trade
-            player.sendPacket(new TradeDone(0));
-            player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME));
+            player.send(new TradeDone(0));
+            player.send(SystemMessage.getSystemMessage(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME));
             player.setActiveRequester(null);
             return;
         } else if (L2World.getInstance().getPlayer(partner.getObjectId()) == null) {
             // Trade partner not found, cancel trade
-            player.sendPacket(new TradeDone(0));
-            player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME));
+            player.send(new TradeDone(0));
+            player.send(SystemMessage.getSystemMessage(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME));
             player.setActiveRequester(null);
             return;
         }
@@ -70,7 +70,7 @@ public final class AnswerTradeRequest extends L2GameClientPacket {
         } else {
             SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.C1_DENIED_TRADE_REQUEST);
             msg.addString(player.getName());
-            partner.sendPacket(msg);
+            partner.send(msg);
         }
 
         // Clears requesting status

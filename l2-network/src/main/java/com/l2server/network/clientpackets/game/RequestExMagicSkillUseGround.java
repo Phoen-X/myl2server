@@ -58,7 +58,7 @@ public final class RequestExMagicSkillUseGround extends L2GameClientPacket {
         // Get the level of the used skill
         int level = activeChar.getSkillLevel(_skillId);
         if (level <= 0) {
-            activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+            activeChar.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
@@ -75,7 +75,7 @@ public final class RequestExMagicSkillUseGround extends L2GameClientPacket {
 
             activeChar.useMagic(skill, _ctrlPressed, _shiftPressed);
         } else {
-            activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+            activeChar.send(ActionFailed.STATIC_PACKET);
             _log.warning("No skill found with id " + _skillId + " and level " + level + " !!");
         }
     }*/

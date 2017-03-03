@@ -52,13 +52,13 @@ public class AnswerCoupleAction extends L2GameClientPacket {
         }
         if (_answer == 0) // cancel
         {
-            target.sendPacket(SystemMessageId.COUPLE_ACTION_DENIED);
+            target.send(SystemMessageId.COUPLE_ACTION_DENIED);
         } else if (_answer == 1) // approve
         {
             final int distance = (int) activeChar.calculateDistance(target, false, false);
             if ((distance > 125) || (distance < 15) || (activeChar.getObjectId() == target.getObjectId())) {
-                sendPacket(SystemMessageId.TARGET_DO_NOT_MEET_LOC_REQUIREMENTS);
-                target.sendPacket(SystemMessageId.TARGET_DO_NOT_MEET_LOC_REQUIREMENTS);
+                send(SystemMessageId.TARGET_DO_NOT_MEET_LOC_REQUIREMENTS);
+                target.send(SystemMessageId.TARGET_DO_NOT_MEET_LOC_REQUIREMENTS);
                 return;
             }
             int heading = Util.calculateHeadingFrom(activeChar, target);
@@ -73,7 +73,7 @@ public class AnswerCoupleAction extends L2GameClientPacket {
         {
             SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_IS_SET_TO_REFUSE_COUPLE_ACTIONS);
             sm.addPcName(activeChar);
-            target.sendPacket(sm);
+            target.send(sm);
         }
         target.setMultiSocialAction(0, 0);
     }

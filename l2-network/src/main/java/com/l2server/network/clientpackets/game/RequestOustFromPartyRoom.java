@@ -55,25 +55,25 @@ public final class RequestOustFromPartyRoom extends L2GameClientPacket {
         }
 
         if (player.isInParty() && member.isInParty() && (player.getParty().getLeaderObjectId() == member.getParty().getLeaderObjectId())) {
-            player.sendPacket(SystemMessageId.CANNOT_DISMISS_PARTY_MEMBER);
+            player.send(SystemMessageId.CANNOT_DISMISS_PARTY_MEMBER);
         } else {
             // Remove member from party room
             room.deleteMember(member);
             member.setPartyRoom(0);
 
             // Close the PartyRoom window
-            member.sendPacket(new ExClosePartyRoom());
+            member.send(new ExClosePartyRoom());
 
             // Add player back on waiting list
             PartyMatchWaitingList.getInstance().addPlayer(member);
 
             // Send Room list
             int loc = 0; // TODO: Closes town
-            member.sendPacket(new ListPartyWating(member, 0, loc, member.getLevel()));
+            member.send(new ListPartyWating(member, 0, loc, member.getLevel()));
 
             // Clean player's LFP title
             member.broadcastUserInfo();
-            member.sendPacket(SystemMessageId.OUSTED_FROM_PARTY_ROOM);
+            member.send(SystemMessageId.OUSTED_FROM_PARTY_ROOM);
         }
     }
     */

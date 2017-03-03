@@ -38,29 +38,29 @@ public final class RequestPetGetItem extends L2GameClientPacket {
         L2World world = L2World.getInstance();
         L2ItemInstance item = (L2ItemInstance) world.findObject(_objectId);
         if ((item == null) || (getActiveChar() == null) || !getActiveChar().hasPet()) {
-            sendPacket(ActionFailed.STATIC_PACKET);
+            send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         final int castleId = MercTicketManager.getInstance().getTicketCastleId(item.getId());
         if (castleId > 0) {
-            sendPacket(ActionFailed.STATIC_PACKET);
+            send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         if (FortSiegeManager.getInstance().isCombat(item.getId())) {
-            sendPacket(ActionFailed.STATIC_PACKET);
+            send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         final L2PetInstance pet = (L2PetInstance) getClient().getActiveChar().getSummon();
         if (pet.isDead() || pet.isOutOfControl()) {
-            sendPacket(ActionFailed.STATIC_PACKET);
+            send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         if (pet.isUncontrollable()) {
-            sendPacket(SystemMessageId.WHEN_YOUR_PETS_HUNGER_GAUGE_IS_AT_0_YOU_CANNOT_USE_YOUR_PET);
+            send(SystemMessageId.WHEN_YOUR_PETS_HUNGER_GAUGE_IS_AT_0_YOU_CANNOT_USE_YOUR_PET);
             return;
         }
 

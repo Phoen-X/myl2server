@@ -118,14 +118,14 @@ public class RequestPackageSend extends L2GameClientPacket {
 
         // Item Max Limit Check
         if (!warehouse.validateCapacity(slots)) {
-            player.sendPacket(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED);
+            player.send(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED);
             warehouse.deleteMe();
             return;
         }
 
         // Check if enough adena and charge the fee
         if ((currentAdena < fee) || !player.reduceAdena(warehouse.getName(), fee, manager, false)) {
-            player.sendPacket(SystemMessageId.YOU_NOT_ENOUGH_ADENA);
+            player.send(SystemMessageId.YOU_NOT_ENOUGH_ADENA);
             warehouse.deleteMe();
             return;
         }
@@ -159,12 +159,12 @@ public class RequestPackageSend extends L2GameClientPacket {
         warehouse.deleteMe();
 
         // Send updated item list to the player
-        sendPacket(playerIU != null ? playerIU : new ItemList(player, false));
+        send(playerIU != null ? playerIU : new ItemList(player, false));
 
         // Update current load status on player
         final StatusUpdate su = new StatusUpdate(player);
         su.addAttribute(StatusUpdate.CUR_LOAD, player.getCurrentLoad());
-        sendPacket(su);
+        send(su);
     }
     */
     @Override

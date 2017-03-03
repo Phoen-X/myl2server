@@ -146,14 +146,14 @@ public final class Say2 extends L2GameClientPacket {
 
         if ((_type < 0) || (_type >= CHAT_NAMES.length)) {
             _log.warning("Say2: Invalid type: " + _type + " Player : " + activeChar.getName() + " text: " + String.valueOf(_text));
-            activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+            activeChar.send(ActionFailed.STATIC_PACKET);
             activeChar.logout();
             return;
         }
 
         if (_text.isEmpty()) {
             _log.warning(activeChar.getName() + ": sending empty text. Possible packet hack!");
-            activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+            activeChar.send(ActionFailed.STATIC_PACKET);
             activeChar.logout();
             return;
         }
@@ -162,7 +162,7 @@ public final class Say2 extends L2GameClientPacket {
         // July 11, 2011 - Verified on High Five 4 official client as 105.
         // Allow higher limit if player shift some item (text is longer then).
         if (!activeChar.isGM() && (((_text.indexOf(8) >= 0) && (_text.length() > 500)) || ((_text.indexOf(8) < 0) && (_text.length() > 105)))) {
-            activeChar.sendPacket(SystemMessageId.DONT_SPAM);
+            activeChar.send(SystemMessageId.DONT_SPAM);
             return;
         }
 
@@ -172,17 +172,17 @@ public final class Say2 extends L2GameClientPacket {
         }
 
         if (activeChar.isCursedWeaponEquipped() && ((_type == TRADE) || (_type == SHOUT))) {
-            activeChar.sendPacket(SystemMessageId.SHOUT_AND_TRADE_CHAT_CANNOT_BE_USED_WHILE_POSSESSING_CURSED_WEAPON);
+            activeChar.send(SystemMessageId.SHOUT_AND_TRADE_CHAT_CANNOT_BE_USED_WHILE_POSSESSING_CURSED_WEAPON);
             return;
         }
 
         if (activeChar.isChatBanned() && (_text.charAt(0) != '.')) {
             if (activeChar.getEffectList().getFirstEffect(L2EffectType.CHAT_BLOCK) != null) {
-                activeChar.sendPacket(SystemMessageId.YOU_HAVE_BEEN_REPORTED_SO_CHATTING_NOT_ALLOWED);
+                activeChar.send(SystemMessageId.YOU_HAVE_BEEN_REPORTED_SO_CHATTING_NOT_ALLOWED);
             } else {
                 for (int chatId : Config.BAN_CHAT_CHANNELS) {
                     if (_type == chatId) {
-                        activeChar.sendPacket(SystemMessageId.CHATTING_IS_CURRENTLY_PROHIBITED);
+                        activeChar.send(SystemMessageId.CHATTING_IS_CURRENTLY_PROHIBITED);
                     }
                 }
             }

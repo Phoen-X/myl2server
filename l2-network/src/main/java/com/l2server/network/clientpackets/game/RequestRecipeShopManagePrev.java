@@ -41,11 +41,11 @@ public final class RequestRecipeShopManagePrev extends L2GameClientPacket {
         if ((player == null)) {
             return;
         } else if (player.isAlikeDead() || (player.getTarget() == null) || !player.getTarget().isPlayer()) {
-            sendPacket(ActionFailed.STATIC_PACKET);
+            send(ActionFailed.STATIC_PACKET);
             return;
         }
 
-        player.sendPacket(new RecipeShopSellList(player, player.getTarget().getActingPlayer()));
+        player.send(new RecipeShopSellList(player, player.getTarget().getActingPlayer()));
     }
     */
     @Override

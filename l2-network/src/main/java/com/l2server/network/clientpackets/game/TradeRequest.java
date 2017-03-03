@@ -44,7 +44,7 @@ public final class TradeRequest extends L2GameClientPacket {
 
         if (!player.getAccessLevel().allowTransaction()) {
             player.sendMessage("Transactions are disabled for your current Access Level.");
-            sendPacket(ActionFailed.STATIC_PACKET);
+            send(ActionFailed.STATIC_PACKET);
             return;
         }
 
@@ -52,8 +52,8 @@ public final class TradeRequest extends L2GameClientPacket {
         if (info != null) {
             for (AbstractEffect effect : info.getEffects()) {
                 if (!effect.checkCondition(BotReportTable.TRADE_ACTION_BLOCK_ID)) {
-                    player.sendPacket(SystemMessageId.YOU_HAVE_BEEN_REPORTED_SO_ACTIONS_NOT_ALLOWED);
-                    player.sendPacket(ActionFailed.STATIC_PACKET);
+                    player.send(SystemMessageId.YOU_HAVE_BEEN_REPORTED_SO_ACTIONS_NOT_ALLOWED);
+                    player.send(ActionFailed.STATIC_PACKET);
                     return;
                 }
             }
@@ -70,12 +70,12 @@ public final class TradeRequest extends L2GameClientPacket {
         // If target and acting player are the same, trade request is ignored
         // and the following system message is sent to acting player.
         if (target.getObjectId() == player.getObjectId()) {
-            player.sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
+            player.send(SystemMessageId.TARGET_IS_INCORRECT);
             return;
         }
 
         if (!target.isPlayer()) {
-            player.sendPacket(SystemMessageId.INCORRECT_TARGET);
+            player.send(SystemMessageId.INCORRECT_TARGET);
             return;
         }
 
@@ -91,8 +91,8 @@ public final class TradeRequest extends L2GameClientPacket {
                 if (!effect.checkCondition(BotReportTable.TRADE_ACTION_BLOCK_ID)) {
                     final SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_REPORTED_AND_IS_BEING_INVESTIGATED);
                     sm.addCharName(partner);
-                    player.sendPacket(sm);
-                    player.sendPacket(ActionFailed.STATIC_PACKET);
+                    player.send(sm);
+                    player.send(ActionFailed.STATIC_PACKET);
                     return;
                 }
             }
@@ -115,7 +115,7 @@ public final class TradeRequest extends L2GameClientPacket {
         }
 
         if ((player.getPrivateStoreType() != PrivateStoreType.NONE) || (partner.getPrivateStoreType() != PrivateStoreType.NONE)) {
-            player.sendPacket(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);
+            player.send(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);
             return;
         }
 
@@ -123,7 +123,7 @@ public final class TradeRequest extends L2GameClientPacket {
             if (Config.DEBUG) {
                 _log.fine("Already trading with someone else.");
             }
-            player.sendPacket(SystemMessageId.ALREADY_TRADING);
+            player.send(SystemMessageId.ALREADY_TRADING);
             return;
         }
 
@@ -134,7 +134,7 @@ public final class TradeRequest extends L2GameClientPacket {
             }
             sm = SystemMessage.getSystemMessage(SystemMessageId.C1_IS_BUSY_TRY_LATER);
             sm.addString(partner.getName());
-            player.sendPacket(sm);
+            player.send(sm);
             return;
         }
 
@@ -146,20 +146,20 @@ public final class TradeRequest extends L2GameClientPacket {
         if (BlockList.isBlocked(partner, player)) {
             sm = SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_ADDED_YOU_TO_IGNORE_LIST);
             sm.addCharName(partner);
-            player.sendPacket(sm);
+            player.send(sm);
             return;
         }
 
         if (player.calculateDistance(partner, true, false) > 150) {
-            player.sendPacket(SystemMessageId.TARGET_TOO_FAR);
+            player.send(SystemMessageId.TARGET_TOO_FAR);
             return;
         }
 
         player.onTransactionRequest(partner);
-        partner.sendPacket(new SendTradeRequest(player.getObjectId()));
+        partner.send(new SendTradeRequest(player.getObjectId()));
         sm = SystemMessage.getSystemMessage(SystemMessageId.REQUEST_C1_FOR_TRADE);
         sm.addString(partner.getName());
-        player.sendPacket(sm);
+        player.send(sm);
     }
     */
     @Override

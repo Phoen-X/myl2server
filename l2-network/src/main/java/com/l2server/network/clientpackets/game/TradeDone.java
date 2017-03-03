@@ -64,7 +64,7 @@ public final class TradeDone extends L2GameClientPacket {
             if ((trade.getPartner() == null) || (L2World.getInstance().getPlayer(trade.getPartner().getObjectId()) == null)) {
                 // Trade partner not found, cancel trade
                 player.cancelActiveTrade();
-                player.sendPacket(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
+                player.send(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
                 return;
             }
 
@@ -74,7 +74,7 @@ public final class TradeDone extends L2GameClientPacket {
 
             if (!player.getAccessLevel().allowTransaction()) {
                 player.cancelActiveTrade();
-                player.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
+                player.send(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
                 return;
             }
 

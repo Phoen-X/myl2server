@@ -73,13 +73,13 @@ public final class RequestSellItem extends L2GameClientPacket {
         }
 
         if (_items == null) {
-            sendPacket(ActionFailed.STATIC_PACKET);
+            send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         // Alt game - Karma punishment
         if (!Config.ALT_GAME_KARMA_PLAYER_CAN_SHOP && (player.getKarma() > 0)) {
-            sendPacket(ActionFailed.STATIC_PACKET);
+            send(ActionFailed.STATIC_PACKET);
             return;
         }
 
@@ -87,19 +87,19 @@ public final class RequestSellItem extends L2GameClientPacket {
         L2Character merchant = null;
         if (!player.isGM()) {
             if ((target == null) || (!player.isInsideRadius(target, INTERACTION_DISTANCE, true, false)) || (player.getInstanceId() != target.getInstanceId())) {
-                sendPacket(ActionFailed.STATIC_PACKET);
+                send(ActionFailed.STATIC_PACKET);
                 return;
             }
             if (target instanceof L2MerchantInstance) {
                 merchant = (L2Character) target;
             } else {
-                sendPacket(ActionFailed.STATIC_PACKET);
+                send(ActionFailed.STATIC_PACKET);
                 return;
             }
         }
 
         if ((merchant == null) && !player.isGM()) {
-            sendPacket(ActionFailed.STATIC_PACKET);
+            send(ActionFailed.STATIC_PACKET);
             return;
         }
 
@@ -111,7 +111,7 @@ public final class RequestSellItem extends L2GameClientPacket {
 
         if (merchant != null) {
             if (!buyList.isNpcAllowed(merchant.getId())) {
-                sendPacket(ActionFailed.STATIC_PACKET);
+                send(ActionFailed.STATIC_PACKET);
                 return;
             }
         }
@@ -142,8 +142,8 @@ public final class RequestSellItem extends L2GameClientPacket {
         // Update current load as well
         StatusUpdate su = new StatusUpdate(player);
         su.addAttribute(StatusUpdate.CUR_LOAD, player.getCurrentLoad());
-        player.sendPacket(su);
-        player.sendPacket(new ExBuySellList(player, true));
+        player.send(su);
+        player.send(new ExBuySellList(player, true));
     }
 
 */

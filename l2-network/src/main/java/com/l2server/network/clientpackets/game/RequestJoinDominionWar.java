@@ -50,16 +50,16 @@ public final class RequestJoinDominionWar extends L2GameClientPacket {
         int castleId = _territoryId - 80;
 
         if (TerritoryWarManager.getInstance().getIsRegistrationOver()) {
-            activeChar.sendPacket(SystemMessageId.NOT_TERRITORY_REGISTRATION_PERIOD);
+            activeChar.send(SystemMessageId.NOT_TERRITORY_REGISTRATION_PERIOD);
             return;
         } else if ((clan != null) && (TerritoryWarManager.getInstance().getTerritory(castleId).getOwnerClan() == clan)) {
-            activeChar.sendPacket(SystemMessageId.THE_TERRITORY_OWNER_CLAN_CANNOT_PARTICIPATE_AS_MERCENARIES);
+            activeChar.send(SystemMessageId.THE_TERRITORY_OWNER_CLAN_CANNOT_PARTICIPATE_AS_MERCENARIES);
             return;
         }
 
         if (_isClan == 0x01) {
             if (!activeChar.hasClanPrivilege(ClanPrivilege.CS_MANAGE_SIEGE)) {
-                activeChar.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
+                activeChar.send(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
                 return;
             }
 
@@ -69,10 +69,10 @@ public final class RequestJoinDominionWar extends L2GameClientPacket {
 
             if (_isJoining == 1) {
                 if (System.currentTimeMillis() < clan.getDissolvingExpiryTime()) {
-                    activeChar.sendPacket(SystemMessageId.CANT_PARTICIPATE_IN_SIEGE_WHILE_DISSOLUTION_IN_PROGRESS);
+                    activeChar.send(SystemMessageId.CANT_PARTICIPATE_IN_SIEGE_WHILE_DISSOLUTION_IN_PROGRESS);
                     return;
                 } else if (TerritoryWarManager.getInstance().checkIsRegistered(-1, clan)) {
-                    activeChar.sendPacket(SystemMessageId.YOU_ALREADY_REQUESTED_TW_REGISTRATION);
+                    activeChar.send(SystemMessageId.YOU_ALREADY_REQUESTED_TW_REGISTRATION);
                     return;
                 }
                 TerritoryWarManager.getInstance().registerClan(castleId, clan);
@@ -86,10 +86,10 @@ public final class RequestJoinDominionWar extends L2GameClientPacket {
             }
             if (_isJoining == 1) {
                 if (TerritoryWarManager.getInstance().checkIsRegistered(-1, activeChar.getObjectId())) {
-                    activeChar.sendPacket(SystemMessageId.YOU_ALREADY_REQUESTED_TW_REGISTRATION);
+                    activeChar.send(SystemMessageId.YOU_ALREADY_REQUESTED_TW_REGISTRATION);
                     return;
                 } else if ((clan != null) && TerritoryWarManager.getInstance().checkIsRegistered(-1, clan)) {
-                    activeChar.sendPacket(SystemMessageId.YOU_ALREADY_REQUESTED_TW_REGISTRATION);
+                    activeChar.send(SystemMessageId.YOU_ALREADY_REQUESTED_TW_REGISTRATION);
                     return;
                 }
                 TerritoryWarManager.getInstance().registerMerc(castleId, activeChar);
@@ -97,7 +97,7 @@ public final class RequestJoinDominionWar extends L2GameClientPacket {
                 TerritoryWarManager.getInstance().removeMerc(castleId, activeChar);
             }
         }
-        activeChar.sendPacket(new ExShowDominionRegistry(castleId, activeChar));
+        activeChar.send(new ExShowDominionRegistry(castleId, activeChar));
     }
     */
 

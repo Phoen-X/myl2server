@@ -57,10 +57,10 @@ public final class RequestWithDrawPremiumItem extends L2GameClientPacket {
             Util.handleIllegalPlayerAction(activeChar, "[RequestWithDrawPremiumItem] Player: " + activeChar.getName() + " try to get item with empty list!", Config.DEFAULT_PUNISH);
             return;
         } else if ((activeChar.getWeightPenalty() >= 3) || !activeChar.isInventoryUnder90(false)) {
-            activeChar.sendPacket(SystemMessageId.YOU_CANNOT_RECEIVE_THE_VITAMIN_ITEM);
+            activeChar.send(SystemMessageId.YOU_CANNOT_RECEIVE_THE_VITAMIN_ITEM);
             return;
         } else if (activeChar.isProcessingTransaction()) {
-            activeChar.sendPacket(SystemMessageId.YOU_CANNOT_RECEIVE_A_VITAMIN_ITEM_DURING_AN_EXCHANGE);
+            activeChar.send(SystemMessageId.YOU_CANNOT_RECEIVE_A_VITAMIN_ITEM_DURING_AN_EXCHANGE);
             return;
         }
 
@@ -84,9 +84,9 @@ public final class RequestWithDrawPremiumItem extends L2GameClientPacket {
         }
 
         if (activeChar.getPremiumItemList().isEmpty()) {
-            activeChar.sendPacket(SystemMessageId.THERE_ARE_NO_MORE_VITAMIN_ITEMS_TO_BE_FOUND);
+            activeChar.send(SystemMessageId.THERE_ARE_NO_MORE_VITAMIN_ITEMS_TO_BE_FOUND);
         } else {
-            activeChar.sendPacket(new ExGetPremiumItemList(activeChar));
+            activeChar.send(new ExGetPremiumItemList(activeChar));
         }
     }
 */

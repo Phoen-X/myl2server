@@ -68,35 +68,35 @@ public class SetPrivateStoreListSell extends L2GameClientPacket {
         }
 
         if (_items == null) {
-            player.sendPacket(SystemMessageId.INCORRECT_ITEM_COUNT);
+            player.send(SystemMessageId.INCORRECT_ITEM_COUNT);
             player.setPrivateStoreType(PrivateStoreType.NONE);
             player.broadcastUserInfo();
             return;
         }
 
         if (!player.getAccessLevel().allowTransaction()) {
-            player.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
+            player.send(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
             return;
         }
 
         if (AttackStanceTaskManager.getInstance().hasAttackStanceTask(player) || player.isInDuel()) {
-            player.sendPacket(SystemMessageId.CANT_OPERATE_PRIVATE_STORE_DURING_COMBAT);
-            player.sendPacket(new PrivateStoreManageListSell(player, _packageSale));
-            player.sendPacket(ActionFailed.STATIC_PACKET);
+            player.send(SystemMessageId.CANT_OPERATE_PRIVATE_STORE_DURING_COMBAT);
+            player.send(new PrivateStoreManageListSell(player, _packageSale));
+            player.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         if (player.isInsideZone(ZoneId.NO_STORE)) {
-            player.sendPacket(new PrivateStoreManageListSell(player, _packageSale));
-            player.sendPacket(SystemMessageId.NO_PRIVATE_STORE_HERE);
-            player.sendPacket(ActionFailed.STATIC_PACKET);
+            player.send(new PrivateStoreManageListSell(player, _packageSale));
+            player.send(SystemMessageId.NO_PRIVATE_STORE_HERE);
+            player.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         // Check maximum number of allowed slots for pvt shops
         if (_items.length > player.getPrivateSellStoreLimit()) {
-            player.sendPacket(new PrivateStoreManageListSell(player, _packageSale));
-            player.sendPacket(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED);
+            player.send(new PrivateStoreManageListSell(player, _packageSale));
+            player.send(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED);
             return;
         }
 

@@ -47,19 +47,19 @@ public final class RequestRestart extends L2GameClientPacket {
         }
 
         if ((player.getActiveEnchantItemId() != L2PcInstance.ID_NONE) || (player.getActiveEnchantAttrItemId() != L2PcInstance.ID_NONE)) {
-            sendPacket(RestartResponse.valueOf(false));
+            send(RestartResponse.valueOf(false));
             return;
         }
 
         if (player.isLocked()) {
             _log.warning("Player " + player.getName() + " tried to restart during class change.");
-            sendPacket(RestartResponse.valueOf(false));
+            send(RestartResponse.valueOf(false));
             return;
         }
 
         if (player.getPrivateStoreType() != PrivateStoreType.NONE) {
             player.sendMessage("Cannot restart while trading");
-            sendPacket(RestartResponse.valueOf(false));
+            send(RestartResponse.valueOf(false));
             return;
         }
 
@@ -68,8 +68,8 @@ public final class RequestRestart extends L2GameClientPacket {
                 _log.fine("Player " + player.getName() + " tried to logout while fighting.");
             }
 
-            player.sendPacket(SystemMessageId.CANT_RESTART_WHILE_FIGHTING);
-            sendPacket(RestartResponse.valueOf(false));
+            player.send(SystemMessageId.CANT_RESTART_WHILE_FIGHTING);
+            send(RestartResponse.valueOf(false));
             return;
         }
 
@@ -79,7 +79,7 @@ public final class RequestRestart extends L2GameClientPacket {
         if (player.isFestivalParticipant()) {
             if (SevenSignsFestival.getInstance().isFestivalInitialized()) {
                 player.sendMessage("You cannot restart while you are a participant in a festival.");
-                sendPacket(RestartResponse.valueOf(false));
+                send(RestartResponse.valueOf(false));
                 return;
             }
 
@@ -91,7 +91,7 @@ public final class RequestRestart extends L2GameClientPacket {
         }
 
         if (player.isBlockedFromExit()) {
-            sendPacket(RestartResponse.valueOf(false));
+            send(RestartResponse.valueOf(false));
             return;
         }
 
@@ -118,11 +118,11 @@ public final class RequestRestart extends L2GameClientPacket {
         // return the client to the authed status
         client.setState(GameClientState.AUTHED);
 
-        sendPacket(RestartResponse.valueOf(true));
+        send(RestartResponse.valueOf(true));
 
         // send char list
         final CharSelectionInfo cl = new CharSelectionInfo(client.getAccountName(), client.getSessionId().playOkID1);
-        sendPacket(cl);
+        send(cl);
         client.setCharSelection(cl.getCharInfo());
     }
     */

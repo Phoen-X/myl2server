@@ -56,22 +56,22 @@ public final class RequestPostAttachment extends L2GameClientPacket {
         }
 
         if (!activeChar.isInsideZone(ZoneId.PEACE)) {
-            activeChar.sendPacket(SystemMessageId.CANT_RECEIVE_NOT_IN_PEACE_ZONE);
+            activeChar.send(SystemMessageId.CANT_RECEIVE_NOT_IN_PEACE_ZONE);
             return;
         }
 
         if (activeChar.getActiveTradeList() != null) {
-            activeChar.sendPacket(SystemMessageId.CANT_RECEIVE_DURING_EXCHANGE);
+            activeChar.send(SystemMessageId.CANT_RECEIVE_DURING_EXCHANGE);
             return;
         }
 
         if (activeChar.isEnchanting()) {
-            activeChar.sendPacket(SystemMessageId.CANT_RECEIVE_DURING_ENCHANT);
+            activeChar.send(SystemMessageId.CANT_RECEIVE_DURING_ENCHANT);
             return;
         }
 
         if (activeChar.getPrivateStoreType() != PrivateStoreType.NONE) {
-            activeChar.sendPacket(SystemMessageId.CANT_RECEIVE_PRIVATE_STORE);
+            activeChar.send(SystemMessageId.CANT_RECEIVE_PRIVATE_STORE);
             return;
         }
 
@@ -128,19 +128,19 @@ public final class RequestPostAttachment extends L2GameClientPacket {
 
         // Item Max Limit Check
         if (!activeChar.getInventory().validateCapacity(slots)) {
-            activeChar.sendPacket(SystemMessageId.CANT_RECEIVE_INVENTORY_FULL);
+            activeChar.send(SystemMessageId.CANT_RECEIVE_INVENTORY_FULL);
             return;
         }
 
         // Weight limit Check
         if (!activeChar.getInventory().validateWeight(weight)) {
-            activeChar.sendPacket(SystemMessageId.CANT_RECEIVE_INVENTORY_FULL);
+            activeChar.send(SystemMessageId.CANT_RECEIVE_INVENTORY_FULL);
             return;
         }
 
         long adena = msg.getReqAdena();
         if ((adena > 0) && !activeChar.reduceAdena("PayMail", adena, null, true)) {
-            activeChar.sendPacket(SystemMessageId.CANT_RECEIVE_NO_ADENA);
+            activeChar.send(SystemMessageId.CANT_RECEIVE_NO_ADENA);
             return;
         }
 
@@ -172,14 +172,14 @@ public final class RequestPostAttachment extends L2GameClientPacket {
             SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_ACQUIRED_S2_S1);
             sm.addItemName(item.getId());
             sm.addLong(count);
-            activeChar.sendPacket(sm);
+            activeChar.send(sm);
         }
 
         // Send updated item list to the player
         if (playerIU != null) {
-            activeChar.sendPacket(playerIU);
+            activeChar.send(playerIU);
         } else {
-            activeChar.sendPacket(new ItemList(activeChar, false));
+            activeChar.send(new ItemList(activeChar, false));
         }
 
         msg.removeAttachments();
@@ -187,7 +187,7 @@ public final class RequestPostAttachment extends L2GameClientPacket {
         // Update current load status on player
         StatusUpdate su = new StatusUpdate(activeChar);
         su.addAttribute(StatusUpdate.CUR_LOAD, activeChar.getCurrentLoad());
-        activeChar.sendPacket(su);
+        activeChar.send(su);
 
         SystemMessage sm;
         final L2PcInstance sender = L2World.getInstance().getPlayer(msg.getSenderId());
@@ -197,7 +197,7 @@ public final class RequestPostAttachment extends L2GameClientPacket {
                 sm = SystemMessage.getSystemMessage(SystemMessageId.PAYMENT_OF_S1_ADENA_COMPLETED_BY_S2);
                 sm.addLong(adena);
                 sm.addCharName(activeChar);
-                sender.sendPacket(sm);
+                sender.send(sm);
             } else {
                 L2ItemInstance paidAdena = ItemTable.getInstance().createItem("PayMail", ADENA_ID, adena, activeChar, null);
                 paidAdena.setOwnerId(msg.getSenderId());
@@ -208,11 +208,11 @@ public final class RequestPostAttachment extends L2GameClientPacket {
         } else if (sender != null) {
             sm = SystemMessage.getSystemMessage(SystemMessageId.S1_ACQUIRED_ATTACHED_ITEM);
             sm.addCharName(activeChar);
-            sender.sendPacket(sm);
+            sender.send(sm);
         }
 
-        activeChar.sendPacket(new ExChangePostState(true, _msgId, Message.READED));
-        activeChar.sendPacket(SystemMessageId.MAIL_SUCCESSFULLY_RECEIVED);
+        activeChar.send(new ExChangePostState(true, _msgId, Message.READED));
+        activeChar.send(SystemMessageId.MAIL_SUCCESSFULLY_RECEIVED);
     }
     */
     @Override

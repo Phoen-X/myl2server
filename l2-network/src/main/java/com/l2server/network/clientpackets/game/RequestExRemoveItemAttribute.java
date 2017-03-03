@@ -60,11 +60,11 @@ public class RequestExRemoveItemAttribute extends L2GameClientPacket {
                 targetItem.getElemental(_element).removeBonus(activeChar);
             }
             targetItem.clearElementAttr(_element);
-            activeChar.sendPacket(new UserInfo(activeChar));
+            activeChar.send(new UserInfo(activeChar));
 
             InventoryUpdate iu = new InventoryUpdate();
             iu.addModifiedItem(targetItem);
-            activeChar.sendPacket(iu);
+            activeChar.send(iu);
             SystemMessage sm;
             byte realElement = targetItem.isArmor() ? Elementals.getOppositeElement(_element) : _element;
             if (targetItem.getEnchantLevel() > 0) {
@@ -91,10 +91,10 @@ public class RequestExRemoveItemAttribute extends L2GameClientPacket {
                     sm.addElemental(Elementals.getOppositeElement(realElement));
                 }
             }
-            activeChar.sendPacket(sm);
-            activeChar.sendPacket(new ExBaseAttributeCancelResult(targetItem.getObjectId(), _element));
+            activeChar.send(sm);
+            activeChar.send(new ExBaseAttributeCancelResult(targetItem.getObjectId(), _element));
         } else {
-            activeChar.sendPacket(SystemMessageId.YOU_DO_NOT_HAVE_ENOUGH_FUNDS_TO_CANCEL_ATTRIBUTE);
+            activeChar.send(SystemMessageId.YOU_DO_NOT_HAVE_ENOUGH_FUNDS_TO_CANCEL_ATTRIBUTE);
         }
     }*/
 

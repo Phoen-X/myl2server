@@ -67,9 +67,9 @@ public final class RequestAcquireSkill extends L2GameClientPacket {
             }
 
             if (count == 0) {
-                activeChar.sendPacket(SystemMessageId.NO_MORE_SKILLS_TO_LEARN);
+                activeChar.send(SystemMessageId.NO_MORE_SKILLS_TO_LEARN);
             } else {
-                activeChar.sendPacket(asl);
+                activeChar.send(asl);
             }
         }
 
@@ -118,7 +118,7 @@ public final class RequestAcquireSkill extends L2GameClientPacket {
                 return;
             } else if (prevSkillLevel != (_level - 1)) {
                 // The previous level skill has not been learned.
-                activeChar.sendPacket(SystemMessageId.PREVIOUS_LEVEL_SKILL_NOT_LEARNED);
+                activeChar.send(SystemMessageId.PREVIOUS_LEVEL_SKILL_NOT_LEARNED);
                 Util.handleIllegalPlayerAction(activeChar, "Player " + activeChar.getName() + " is requesting skill Id: " + _id + " level " + _level + " without knowing it's previous level!", IllegalActionPunishmentType.NONE);
                 return;
             }
@@ -139,7 +139,7 @@ public final class RequestAcquireSkill extends L2GameClientPacket {
             case TRANSFORM: {
                 // Hack check.
                 if (!canTransform(activeChar)) {
-                    activeChar.sendPacket(SystemMessageId.NOT_COMPLETED_QUEST_FOR_SKILL_ACQUISITION);
+                    activeChar.send(SystemMessageId.NOT_COMPLETED_QUEST_FOR_SKILL_ACQUISITION);
                     Util.handleIllegalPlayerAction(activeChar, "Player " + activeChar.getName() + " is requesting skill Id: " + _id + " level " + _level + " without required quests!", IllegalActionPunishmentType.NONE);
                     return;
                 }
@@ -167,7 +167,7 @@ public final class RequestAcquireSkill extends L2GameClientPacket {
                         for (ItemHolder item : s.getRequiredItems()) {
                             if (!activeChar.destroyItemByItemId("Consume", item.getId(), item.getCount(), trainer, false)) {
                                 // Doesn't have required item.
-                                activeChar.sendPacket(SystemMessageId.ITEM_OR_PREREQUISITES_MISSING_TO_LEARN_SKILL);
+                                activeChar.send(SystemMessageId.ITEM_OR_PREREQUISITES_MISSING_TO_LEARN_SKILL);
                                 L2VillageMasterInstance.showPledgeSkillList(activeChar);
                                 return;
                             }
@@ -175,7 +175,7 @@ public final class RequestAcquireSkill extends L2GameClientPacket {
                             final SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S2_S1_DISAPPEARED);
                             sm.addItemName(item.getId());
                             sm.addLong(item.getCount());
-                            activeChar.sendPacket(sm);
+                            activeChar.send(sm);
                         }
                     }
 
@@ -183,17 +183,17 @@ public final class RequestAcquireSkill extends L2GameClientPacket {
 
                     final SystemMessage cr = SystemMessage.getSystemMessage(SystemMessageId.S1_DEDUCTED_FROM_CLAN_REP);
                     cr.addInt(repCost);
-                    activeChar.sendPacket(cr);
+                    activeChar.send(cr);
 
                     clan.addNewSkill(skill);
 
                     clan.broadcastToOnlineMembers(new PledgeSkillList(clan));
 
-                    activeChar.sendPacket(new AcquireSkillDone());
+                    activeChar.send(new AcquireSkillDone());
 
                     L2VillageMasterInstance.showPledgeSkillList(activeChar);
                 } else {
-                    activeChar.sendPacket(SystemMessageId.ACQUIRE_SKILL_FAILED_BAD_CLAN_REP_SCORE);
+                    activeChar.send(SystemMessageId.ACQUIRE_SKILL_FAILED_BAD_CLAN_REP_SCORE);
                     L2VillageMasterInstance.showPledgeSkillList(activeChar);
                 }
                 break;
@@ -210,39 +210,39 @@ public final class RequestAcquireSkill extends L2GameClientPacket {
 
                 // Hack check. Check if SubPledge can accept the new skill:
                 if (!clan.isLearnableSubPledgeSkill(skill, _subType)) {
-                    activeChar.sendPacket(SystemMessageId.SQUAD_SKILL_ALREADY_ACQUIRED);
+                    activeChar.send(SystemMessageId.SQUAD_SKILL_ALREADY_ACQUIRED);
                     Util.handleIllegalPlayerAction(activeChar, "Player " + activeChar.getName() + " is requesting skill Id: " + _id + " level " + _level + " without knowing it's previous level!", IllegalActionPunishmentType.NONE);
                     return;
                 }
 
                 final int repCost = s.getLevelUpSp();
                 if (clan.getReputationScore() < repCost) {
-                    activeChar.sendPacket(SystemMessageId.ACQUIRE_SKILL_FAILED_BAD_CLAN_REP_SCORE);
+                    activeChar.send(SystemMessageId.ACQUIRE_SKILL_FAILED_BAD_CLAN_REP_SCORE);
                     return;
                 }
 
                 for (ItemHolder item : s.getRequiredItems()) {
                     if (!activeChar.destroyItemByItemId("SubSkills", item.getId(), item.getCount(), trainer, false)) {
-                        activeChar.sendPacket(SystemMessageId.ITEM_OR_PREREQUISITES_MISSING_TO_LEARN_SKILL);
+                        activeChar.send(SystemMessageId.ITEM_OR_PREREQUISITES_MISSING_TO_LEARN_SKILL);
                         return;
                     }
 
                     final SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S2_S1_DISAPPEARED);
                     sm.addItemName(item.getId());
                     sm.addLong(item.getCount());
-                    activeChar.sendPacket(sm);
+                    activeChar.send(sm);
                 }
 
                 if (repCost > 0) {
                     clan.takeReputationScore(repCost, true);
                     final SystemMessage cr = SystemMessage.getSystemMessage(SystemMessageId.S1_DEDUCTED_FROM_CLAN_REP);
                     cr.addInt(repCost);
-                    activeChar.sendPacket(cr);
+                    activeChar.send(cr);
                 }
 
                 clan.addNewSkill(skill, _subType);
                 clan.broadcastToOnlineMembers(new PledgeSkillList(clan));
-                activeChar.sendPacket(new AcquireSkillDone());
+                activeChar.send(new AcquireSkillDone());
 
                 showSubUnitSkillList(activeChar);
                 break;
@@ -256,7 +256,7 @@ public final class RequestAcquireSkill extends L2GameClientPacket {
             case SUBCLASS: {
                 // Hack check.
                 if (activeChar.isSubClassActive()) {
-                    activeChar.sendPacket(SystemMessageId.SKILL_NOT_FOR_SUBCLASS);
+                    activeChar.send(SystemMessageId.SKILL_NOT_FOR_SUBCLASS);
                     Util.handleIllegalPlayerAction(activeChar, "Player " + activeChar.getName() + " is requesting skill Id: " + _id + " level " + _level + " while Sub-Class is active!", IllegalActionPunishmentType.NONE);
                     return;
                 }
@@ -264,7 +264,7 @@ public final class RequestAcquireSkill extends L2GameClientPacket {
                 // Certification Skills - Exploit fix
                 if ((prevSkillLevel == -1) && (_level > 1)) {
                     // The previous level skill has not been learned.
-                    activeChar.sendPacket(SystemMessageId.PREVIOUS_LEVEL_SKILL_NOT_LEARNED);
+                    activeChar.send(SystemMessageId.PREVIOUS_LEVEL_SKILL_NOT_LEARNED);
                     Util.handleIllegalPlayerAction(activeChar, "Player " + activeChar.getName() + " is requesting skill Id: " + _id + " level " + _level + " without knowing it's previous level!", IllegalActionPunishmentType.NONE);
                     return;
                 }
@@ -309,7 +309,7 @@ public final class RequestAcquireSkill extends L2GameClientPacket {
                 }
 
                 // Player doesn't have required item.
-                activeChar.sendPacket(SystemMessageId.ITEM_OR_PREREQUISITES_MISSING_TO_LEARN_SKILL);
+                activeChar.send(SystemMessageId.ITEM_OR_PREREQUISITES_MISSING_TO_LEARN_SKILL);
                 showSkillList(trainer, activeChar);
                 break;
             }
@@ -331,7 +331,7 @@ public final class RequestAcquireSkill extends L2GameClientPacket {
             if ((s.getSkillId() == _id) && (s.getSkillLevel() == _level)) {
                 // Hack check.
                 if (s.getGetLevel() > player.getLevel()) {
-                    player.sendPacket(SystemMessageId.YOU_DONT_MEET_SKILL_LEVEL_REQUIREMENTS);
+                    player.send(SystemMessageId.YOU_DONT_MEET_SKILL_LEVEL_REQUIREMENTS);
                     Util.handleIllegalPlayerAction(player, "Player " + player.getName() + ", level " + player.getLevel() + " is requesting skill Id: " + _id + " level " + _level + " without having minimum required level, " + s.getGetLevel() + "!", IllegalActionPunishmentType.NONE);
                     return false;
                 }
@@ -339,7 +339,7 @@ public final class RequestAcquireSkill extends L2GameClientPacket {
                 // First it checks that the skill require SP and the player has enough SP to learn it.
                 final int levelUpSp = s.getCalculatedLevelUpSp(player.getClassId(), player.getLearningClass());
                 if ((levelUpSp > 0) && (levelUpSp > player.getSp())) {
-                    player.sendPacket(SystemMessageId.NOT_ENOUGH_SP_TO_LEARN_SKILL);
+                    player.send(SystemMessageId.NOT_ENOUGH_SP_TO_LEARN_SKILL);
                     showSkillList(trainer, player);
                     return false;
                 }
@@ -353,9 +353,9 @@ public final class RequestAcquireSkill extends L2GameClientPacket {
                     for (SkillHolder skill : s.getPreReqSkills()) {
                         if (player.getSkillLevel(skill.getSkillId()) != skill.getSkillLvl()) {
                             if (skill.getSkillId() == CommonSkill.ONYX_BEAST_TRANSFORMATION.getId()) {
-                                player.sendPacket(SystemMessageId.YOU_MUST_LEARN_ONYX_BEAST_SKILL);
+                                player.send(SystemMessageId.YOU_MUST_LEARN_ONYX_BEAST_SKILL);
                             } else {
-                                player.sendPacket(SystemMessageId.ITEM_OR_PREREQUISITES_MISSING_TO_LEARN_SKILL);
+                                player.send(SystemMessageId.ITEM_OR_PREREQUISITES_MISSING_TO_LEARN_SKILL);
                             }
                             return false;
                         }
@@ -370,7 +370,7 @@ public final class RequestAcquireSkill extends L2GameClientPacket {
                         reqItemCount = player.getInventory().getInventoryItemCount(item.getId(), -1);
                         if (reqItemCount < item.getCount()) {
                             // Player doesn't have required item.
-                            player.sendPacket(SystemMessageId.ITEM_OR_PREREQUISITES_MISSING_TO_LEARN_SKILL);
+                            player.send(SystemMessageId.ITEM_OR_PREREQUISITES_MISSING_TO_LEARN_SKILL);
                             showSkillList(trainer, player);
                             return false;
                         }
@@ -387,7 +387,7 @@ public final class RequestAcquireSkill extends L2GameClientPacket {
                     player.setSp(player.getSp() - levelUpSp);
                     final StatusUpdate su = new StatusUpdate(player);
                     su.addAttribute(StatusUpdate.SP, player.getSp());
-                    player.sendPacket(su);
+                    player.send(su);
                 }
                 return true;
             }
@@ -399,9 +399,9 @@ public final class RequestAcquireSkill extends L2GameClientPacket {
         // Send message.
         final SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.LEARNED_SKILL_S1);
         sm.addSkillName(skill);
-        player.sendPacket(sm);
+        player.send(sm);
 
-        player.sendPacket(new AcquireSkillDone());
+        player.send(new AcquireSkillDone());
 
         player.addSkill(skill, true);
         player.sendSkillList();
@@ -411,7 +411,7 @@ public final class RequestAcquireSkill extends L2GameClientPacket {
 
         // If skill is expand type then sends packet:
         if ((_id >= 1368) && (_id <= 1372)) {
-            player.sendPacket(new ExStorageMaxCount(player));
+            player.send(new ExStorageMaxCount(player));
         }
 
         // Notify scripts of the skill learn.

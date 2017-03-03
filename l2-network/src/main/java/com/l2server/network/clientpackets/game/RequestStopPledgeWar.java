@@ -48,19 +48,19 @@ public final class RequestStopPledgeWar extends L2GameClientPacket {
 
         if (clan == null) {
             player.sendMessage("No such clan.");
-            player.sendPacket(ActionFailed.STATIC_PACKET);
+            player.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         if (!playerClan.isAtWarWith(clan.getId())) {
             player.sendMessage("You aren't at war with this clan.");
-            player.sendPacket(ActionFailed.STATIC_PACKET);
+            player.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         // Check if player who does the request has the correct rights to do it
         if (!player.hasClanPrivilege(ClanPrivilege.CL_PLEDGE_WAR)) {
-            player.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
+            player.send(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
             return;
         }
 
@@ -71,7 +71,7 @@ public final class RequestStopPledgeWar extends L2GameClientPacket {
         // if(leader != null && leader.isOnline() == 0)
         // {
         // player.sendMessage("Clan leader isn't online.");
-        // player.sendPacket(ActionFailed.STATIC_PACKET);
+        // player.send(ActionFailed.STATIC_PACKET);
         // return;
         // }
 
@@ -79,7 +79,7 @@ public final class RequestStopPledgeWar extends L2GameClientPacket {
         // {
         // SystemMessage sm = SystemMessage.getSystemMessage(SystemMessage.S1_IS_BUSY_TRY_LATER);
         // sm.addString(leader.getName());
-        // player.sendPacket(sm);
+        // player.send(sm);
         // return;
         // }
 
@@ -88,7 +88,7 @@ public final class RequestStopPledgeWar extends L2GameClientPacket {
                 continue;
             }
             if (AttackStanceTaskManager.getInstance().hasAttackStanceTask(member.getPlayerInstance())) {
-                player.sendPacket(SystemMessageId.CANT_STOP_CLAN_WAR_WHILE_IN_COMBAT);
+                player.send(SystemMessageId.CANT_STOP_CLAN_WAR_WHILE_IN_COMBAT);
                 return;
             }
         }

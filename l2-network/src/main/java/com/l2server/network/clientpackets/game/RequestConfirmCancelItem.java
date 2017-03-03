@@ -53,12 +53,12 @@ public final class RequestConfirmCancelItem extends L2GameClientPacket {
         }
 
         if (!item.isAugmented()) {
-            activeChar.sendPacket(SystemMessageId.AUGMENTATION_REMOVAL_CAN_ONLY_BE_DONE_ON_AN_AUGMENTED_ITEM);
+            activeChar.send(SystemMessageId.AUGMENTATION_REMOVAL_CAN_ONLY_BE_DONE_ON_AN_AUGMENTED_ITEM);
             return;
         }
 
         if (item.isPvp() && !Config.ALT_ALLOW_AUGMENT_PVP_ITEMS) {
-            activeChar.sendPacket(SystemMessageId.THIS_IS_NOT_A_SUITABLE_ITEM);
+            activeChar.send(SystemMessageId.THIS_IS_NOT_A_SUITABLE_ITEM);
             return;
         }
 
@@ -102,7 +102,7 @@ public final class RequestConfirmCancelItem extends L2GameClientPacket {
                 return;
         }
 
-        activeChar.sendPacket(new ExPutItemResultForVariationCancel(item, price));
+        activeChar.send(new ExPutItemResultForVariationCancel(item, price));
     }
     */
     @Override

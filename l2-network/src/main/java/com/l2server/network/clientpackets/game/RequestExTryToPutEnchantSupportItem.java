@@ -51,7 +51,7 @@ public class RequestExTryToPutEnchantSupportItem extends L2GameClientPacket {
 
             if ((item == null) || (scroll == null) || (support == null)) {
                 // message may be custom
-                activeChar.sendPacket(SystemMessageId.INAPPROPRIATE_ENCHANT_CONDITION);
+                activeChar.send(SystemMessageId.INAPPROPRIATE_ENCHANT_CONDITION);
                 activeChar.setActiveEnchantSupportItemId(L2PcInstance.ID_NONE);
                 return;
             }
@@ -61,13 +61,13 @@ public class RequestExTryToPutEnchantSupportItem extends L2GameClientPacket {
 
             if ((scrollTemplate == null) || (supportTemplate == null) || !scrollTemplate.isValid(item, supportTemplate)) {
                 // message may be custom
-                activeChar.sendPacket(SystemMessageId.INAPPROPRIATE_ENCHANT_CONDITION);
+                activeChar.send(SystemMessageId.INAPPROPRIATE_ENCHANT_CONDITION);
                 activeChar.setActiveEnchantSupportItemId(L2PcInstance.ID_NONE);
-                activeChar.sendPacket(new ExPutEnchantSupportItemResult(0));
+                activeChar.send(new ExPutEnchantSupportItemResult(0));
                 return;
             }
             activeChar.setActiveEnchantSupportItemId(support.getObjectId());
-            activeChar.sendPacket(new ExPutEnchantSupportItemResult(_supportObjectId));
+            activeChar.send(new ExPutEnchantSupportItemResult(_supportObjectId));
         }
     }
     */

@@ -45,10 +45,10 @@ public class RequestFortressMapInfo extends L2GameClientPacket {
                 return;
             }
 
-            sendPacket(ActionFailed.STATIC_PACKET);
+            send(ActionFailed.STATIC_PACKET);
             return;
         }
-        sendPacket(new ExShowFortressMapInfo(fort));
+        send(new ExShowFortressMapInfo(fort));
     }
     */
     @Override

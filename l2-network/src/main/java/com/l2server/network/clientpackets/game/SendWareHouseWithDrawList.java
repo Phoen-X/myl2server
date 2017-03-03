@@ -97,7 +97,7 @@ public final class SendWareHouseWithDrawList extends L2GameClientPacket {
             }
         } else {
             if ((warehouse instanceof ClanWarehouse) && !player.isClanLeader()) {
-                player.sendPacket(SystemMessageId.ONLY_CLAN_LEADER_CAN_RETRIEVE_ITEMS_FROM_CLAN_WAREHOUSE);
+                player.send(SystemMessageId.ONLY_CLAN_LEADER_CAN_RETRIEVE_ITEMS_FROM_CLAN_WAREHOUSE);
                 return;
             }
         }
@@ -123,13 +123,13 @@ public final class SendWareHouseWithDrawList extends L2GameClientPacket {
 
         // Item Max Limit Check
         if (!player.getInventory().validateCapacity(slots)) {
-            player.sendPacket(SystemMessageId.SLOTS_FULL);
+            player.send(SystemMessageId.SLOTS_FULL);
             return;
         }
 
         // Weight limit Check
         if (!player.getInventory().validateWeight(weight)) {
-            player.sendPacket(SystemMessageId.WEIGHT_LIMIT_EXCEEDED);
+            player.send(SystemMessageId.WEIGHT_LIMIT_EXCEEDED);
             return;
         }
 
@@ -158,15 +158,15 @@ public final class SendWareHouseWithDrawList extends L2GameClientPacket {
 
         // Send updated item list to the player
         if (playerIU != null) {
-            player.sendPacket(playerIU);
+            player.send(playerIU);
         } else {
-            player.sendPacket(new ItemList(player, false));
+            player.send(new ItemList(player, false));
         }
 
         // Update current load status on player
         StatusUpdate su = new StatusUpdate(player);
         su.addAttribute(StatusUpdate.CUR_LOAD, player.getCurrentLoad());
-        player.sendPacket(su);
+        player.send(su);
     }
     */
     @Override

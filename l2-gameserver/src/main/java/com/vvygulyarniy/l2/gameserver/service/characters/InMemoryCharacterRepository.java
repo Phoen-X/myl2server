@@ -23,13 +23,13 @@ public class InMemoryCharacterRepository implements CharacterRepository {
 
     {
         L2Character newChar = new L2Character(characters.size() + 1, "asd", Profession.ELF_FIGHTER,
-                new CharacterAppearance(CharacterAppearance.Sex.MALE, (byte) 1, (byte) 1, (byte) 1),
-                "test", 1);
+                                              new CharacterAppearance(CharacterAppearance.Sex.MALE, (byte) 1, (byte) 1, (byte) 1),
+                                              "test_character", 1);
         newChar.setMaxHp(100);
         newChar.setCurrHp(100);
         newChar.setCurrMp(199);
         newChar.setMaxMp(200);
-        newChar.setPosition(new Position(-45616, 111024, -3808));
+        newChar.setPosition(new Position(20378, 43627, -2806));
         characters.add(newChar);
     }
 
@@ -44,7 +44,7 @@ public class InMemoryCharacterRepository implements CharacterRepository {
         newChar.setCurrHp(100);
         newChar.setMaxMp(199);
         newChar.setCurrMp(200);
-        newChar.setPosition(new Position(104, 8000, -2000));
+        newChar.setPosition(new Position(20401, 43622, -1508));
         characters.add(newChar);
         log.info("Character created: {}", newChar);
         return newChar;

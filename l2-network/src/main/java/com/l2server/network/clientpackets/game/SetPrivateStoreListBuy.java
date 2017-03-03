@@ -79,21 +79,21 @@ public final class SetPrivateStoreListBuy extends L2GameClientPacket {
         }
 
         if (!player.getAccessLevel().allowTransaction()) {
-            player.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
+            player.send(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
             return;
         }
 
         if (AttackStanceTaskManager.getInstance().hasAttackStanceTask(player) || player.isInDuel()) {
-            player.sendPacket(SystemMessageId.CANT_OPERATE_PRIVATE_STORE_DURING_COMBAT);
-            player.sendPacket(new PrivateStoreManageListBuy(player));
-            player.sendPacket(ActionFailed.STATIC_PACKET);
+            player.send(SystemMessageId.CANT_OPERATE_PRIVATE_STORE_DURING_COMBAT);
+            player.send(new PrivateStoreManageListBuy(player));
+            player.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         if (player.isInsideZone(ZoneId.NO_STORE)) {
-            player.sendPacket(new PrivateStoreManageListBuy(player));
-            player.sendPacket(SystemMessageId.NO_PRIVATE_STORE_HERE);
-            player.sendPacket(ActionFailed.STATIC_PACKET);
+            player.send(new PrivateStoreManageListBuy(player));
+            player.send(SystemMessageId.NO_PRIVATE_STORE_HERE);
+            player.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
@@ -102,8 +102,8 @@ public final class SetPrivateStoreListBuy extends L2GameClientPacket {
 
         // Check maximum number of allowed slots for pvt shops
         if (_items.length > player.getPrivateBuyStoreLimit()) {
-            player.sendPacket(new PrivateStoreManageListBuy(player));
-            player.sendPacket(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED);
+            player.send(new PrivateStoreManageListBuy(player));
+            player.send(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED);
             return;
         }
 
@@ -123,8 +123,8 @@ public final class SetPrivateStoreListBuy extends L2GameClientPacket {
 
         // Check for available funds
         if (totalCost > player.getAdena()) {
-            player.sendPacket(new PrivateStoreManageListBuy(player));
-            player.sendPacket(SystemMessageId.THE_PURCHASE_PRICE_IS_HIGHER_THAN_MONEY);
+            player.send(new PrivateStoreManageListBuy(player));
+            player.send(SystemMessageId.THE_PURCHASE_PRICE_IS_HIGHER_THAN_MONEY);
             return;
         }
 

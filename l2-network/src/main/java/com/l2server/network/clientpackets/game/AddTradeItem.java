@@ -64,14 +64,14 @@ public final class AddTradeItem extends L2GameClientPacket {
 			{
 				_log.warning("Character:" + player.getName() + " requested invalid trade object: " + _objectId);
 			}
-			player.sendPacket(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
+			player.send(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
 			player.cancelActiveTrade();
 			return;
 		}
 		
 		if (trade.isConfirmed() || partner.getActiveTradeList().isConfirmed())
 		{
-			player.sendPacket(SystemMessageId.CANNOT_ADJUST_ITEMS_AFTER_TRADE_CONFIRMED);
+			player.send(SystemMessageId.CANNOT_ADJUST_ITEMS_AFTER_TRADE_CONFIRMED);
 			return;
 		}
 		
@@ -84,15 +84,15 @@ public final class AddTradeItem extends L2GameClientPacket {
 		
 		if (!player.validateItemManipulation(_objectId, "trade"))
 		{
-			player.sendPacket(SystemMessageId.NOTHING_HAPPENED);
+			player.send(SystemMessageId.NOTHING_HAPPENED);
 			return;
 		}
 		
 		final TradeItem item = trade.addItem(_objectId, _count);
 		if (item != null)
 		{
-			player.sendPacket(new TradeOwnAdd(item));
-			trade.getPartner().sendPacket(new TradeOtherAdd(item));
+			player.send(new TradeOwnAdd(item));
+			trade.getPartner().send(new TradeOtherAdd(item));
 		}
 	}*/
 

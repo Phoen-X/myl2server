@@ -47,12 +47,12 @@ public class RequestAskJoinPartyRoom extends L2GameClientPacket {
         if (target != null) {
             if (!target.isProcessingRequest()) {
                 player.onTransactionRequest(target);
-                target.sendPacket(new ExAskJoinPartyRoom(player.getName()));
+                target.send(new ExAskJoinPartyRoom(player.getName()));
             } else {
-                player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.C1_IS_BUSY_TRY_LATER).addPcName(target));
+                player.send(SystemMessage.getSystemMessage(SystemMessageId.C1_IS_BUSY_TRY_LATER).addPcName(target));
             }
         } else {
-            player.sendPacket(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
+            player.send(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
         }
     }*/
 

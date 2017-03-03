@@ -5,6 +5,7 @@ import com.l2server.network.coders.gameserver.GameServerClientPacketEncoder;
 import com.vvygulyarniy.l2.gameserver.network.L2GameServerPacketProcessor;
 import com.vvygulyarniy.l2.gameserver.network.netty.GameServerPacketHandler;
 import com.vvygulyarniy.l2.gameserver.service.characters.InMemoryCharacterRepository;
+import com.vvygulyarniy.l2.gameserver.world.L2World;
 import com.vvygulyarniy.l2.gameserver.world.castle.CastleRegistry;
 import com.vvygulyarniy.l2.gameserver.world.castle.HardCodedCastleRegistry;
 import io.netty.bootstrap.ServerBootstrap;
@@ -34,8 +35,11 @@ public class GameServer {
     private static void startNettyHandler() throws InterruptedException {
         CastleRegistry castleRegistry = new HardCodedCastleRegistry();
         InMemoryCharacterRepository characterRepository = new InMemoryCharacterRepository();
+        L2World world = new L2World();
+
         L2GameServerPacketProcessor packetProcessor = new L2GameServerPacketProcessor(characterRepository,
-                                                                                      castleRegistry);
+                                                                                      castleRegistry,
+                                                                                      world);
         EventLoopGroup bossGroup = new NioEventLoopGroup(); // (1)
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {

@@ -59,41 +59,41 @@ public final class RequestGMCommand extends L2GameClientPacket {
         switch (_command) {
             case 1: // player status
             {
-                sendPacket(new GMViewCharacterInfo(player));
-                sendPacket(new GMHennaInfo(player));
+                send(new GMViewCharacterInfo(player));
+                send(new GMHennaInfo(player));
                 break;
             }
             case 2: // player clan
             {
                 if ((player != null) && (player.getClan() != null)) {
-                    sendPacket(new GMViewPledgeInfo(player.getClan(), player));
+                    send(new GMViewPledgeInfo(player.getClan(), player));
                 }
                 break;
             }
             case 3: // player skills
             {
-                sendPacket(new GMViewSkillInfo(player));
+                send(new GMViewSkillInfo(player));
                 break;
             }
             case 4: // player quests
             {
-                sendPacket(new GmViewQuestInfo(player));
+                send(new GmViewQuestInfo(player));
                 break;
             }
             case 5: // player inventory
             {
-                sendPacket(new GMViewItemList(player));
-                sendPacket(new GMHennaInfo(player));
+                send(new GMViewItemList(player));
+                send(new GMHennaInfo(player));
                 break;
             }
             case 6: // player warehouse
             {
                 // gm warehouse view to be implemented
                 if (player != null) {
-                    sendPacket(new GMViewWarehouseWithdrawList(player));
+                    send(new GMViewWarehouseWithdrawList(player));
                     // clan warehouse
                 } else {
-                    sendPacket(new GMViewWarehouseWithdrawList(clan));
+                    send(new GMViewWarehouseWithdrawList(clan));
                 }
                 break;
             }

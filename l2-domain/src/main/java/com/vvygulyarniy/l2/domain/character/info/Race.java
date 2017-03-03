@@ -52,4 +52,8 @@ public enum Race {
     public static Race valueOf(int id) {
         return Race.values()[id];
     }
+
+    public int getId() {
+        return ordinal();
+    }
 }

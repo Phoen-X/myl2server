@@ -44,9 +44,9 @@ public final class RequestVoteNew extends L2GameClientPacket {
 
         if (!(object instanceof L2PcInstance)) {
             if (object == null) {
-                activeChar.sendPacket(SystemMessageId.SELECT_TARGET);
+                activeChar.send(SystemMessageId.SELECT_TARGET);
             } else {
-                activeChar.sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
+                activeChar.send(SystemMessageId.TARGET_IS_INCORRECT);
             }
             return;
         }
@@ -58,17 +58,17 @@ public final class RequestVoteNew extends L2GameClientPacket {
         }
 
         if (target == activeChar) {
-            activeChar.sendPacket(SystemMessageId.YOU_CANNOT_RECOMMEND_YOURSELF);
+            activeChar.send(SystemMessageId.YOU_CANNOT_RECOMMEND_YOURSELF);
             return;
         }
 
         if (activeChar.getRecomLeft() <= 0) {
-            activeChar.sendPacket(SystemMessageId.YOU_CURRENTLY_DO_NOT_HAVE_ANY_RECOMMENDATIONS);
+            activeChar.send(SystemMessageId.YOU_CURRENTLY_DO_NOT_HAVE_ANY_RECOMMENDATIONS);
             return;
         }
 
         if (target.getRecomHave() >= 255) {
-            activeChar.sendPacket(SystemMessageId.YOUR_TARGET_NO_LONGER_RECEIVE_A_RECOMMENDATION);
+            activeChar.send(SystemMessageId.YOUR_TARGET_NO_LONGER_RECEIVE_A_RECOMMENDATION);
             return;
         }
 
@@ -77,18 +77,18 @@ public final class RequestVoteNew extends L2GameClientPacket {
         SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_RECOMMENDED_C1_YOU_HAVE_S2_RECOMMENDATIONS_LEFT);
         sm.addPcName(target);
         sm.addInt(activeChar.getRecomLeft());
-        activeChar.sendPacket(sm);
+        activeChar.send(sm);
 
         sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_BEEN_RECOMMENDED_BY_C1);
         sm.addPcName(activeChar);
-        target.sendPacket(sm);
+        target.send(sm);
 
-        activeChar.sendPacket(new UserInfo(activeChar));
-        sendPacket(new ExBrExtraUserInfo(activeChar));
+        activeChar.send(new UserInfo(activeChar));
+        send(new ExBrExtraUserInfo(activeChar));
         target.broadcastUserInfo();
 
-        activeChar.sendPacket(new ExVoteSystemInfo(activeChar));
-        target.sendPacket(new ExVoteSystemInfo(target));
+        activeChar.send(new ExVoteSystemInfo(activeChar));
+        target.send(new ExVoteSystemInfo(target));
     }
 */
 

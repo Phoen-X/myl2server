@@ -65,8 +65,8 @@ public final class RequestWithdrawPartyRoom extends L2GameClientPacket {
             _activeChar.setPartyRoom(0);
             // _activeChar.setPartyMatching(0);
 
-            _activeChar.sendPacket(new ExClosePartyRoom());
-            _activeChar.sendPacket(SystemMessageId.PARTY_ROOM_EXITED);
+            _activeChar.send(new ExClosePartyRoom());
+            _activeChar.send(SystemMessageId.PARTY_ROOM_EXITED);
         }
     }
     */

@@ -49,7 +49,7 @@ public final class RequestSentPost extends L2GameClientPacket {
         }
 
         if (!activeChar.isInsideZone(ZoneId.PEACE) && msg.hasAttachments()) {
-            activeChar.sendPacket(SystemMessageId.CANT_USE_MAIL_OUTSIDE_PEACE_ZONE);
+            activeChar.send(SystemMessageId.CANT_USE_MAIL_OUTSIDE_PEACE_ZONE);
             return;
         }
 
@@ -62,7 +62,7 @@ public final class RequestSentPost extends L2GameClientPacket {
             return;
         }
 
-        activeChar.sendPacket(new ExReplySentPost(msg));
+        activeChar.send(new ExReplySentPost(msg));
     }
 
 */

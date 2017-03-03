@@ -53,7 +53,7 @@ public final class RequestMagicSkillUse extends L2GameClientPacket {
             if (skill == null) {
                 skill = activeChar.getTransformSkill(_magicId);
                 if (skill == null) {
-                    activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+                    activeChar.send(ActionFailed.STATIC_PACKET);
                     _log.warning("Skill Id " + _magicId + " not found in player : " + activeChar);
                     return;
                 }
@@ -62,13 +62,13 @@ public final class RequestMagicSkillUse extends L2GameClientPacket {
 
         // Avoid Use of Skills in AirShip.
         if (activeChar.isPlayable() && activeChar.isInAirShip()) {
-            activeChar.sendPacket(SystemMessageId.ACTION_PROHIBITED_WHILE_MOUNTED_OR_ON_AN_AIRSHIP);
-            activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+            activeChar.send(SystemMessageId.ACTION_PROHIBITED_WHILE_MOUNTED_OR_ON_AN_AIRSHIP);
+            activeChar.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
         if ((activeChar.isTransformed() || activeChar.isInStance()) && !activeChar.hasTransformSkill(skill.getId())) {
-            activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+            activeChar.send(ActionFailed.STATIC_PACKET);
             return;
         }
 
