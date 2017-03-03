@@ -20,6 +20,7 @@ package com.l2server.network.clientpackets.game;
 
 import com.l2server.network.GameServerPacketProcessor;
 import com.l2server.network.L2GameClient;
+import com.vvygulyarniy.l2.domain.geo.Position;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -36,24 +37,17 @@ import java.nio.BufferUnderflowException;
 @Getter
 public class MoveBackwardToLocation extends L2GameClientPacket {
     // cdddddd
-    private int targetX;
-    private int targetY;
-    private int targetZ;
-    private int originX;
-    private int originY;
-    private int originZ;
+    private Position origin;
+    private Position target;
 
     @SuppressWarnings("unused")
     private int moveMovement;
 
     @Override
     protected void readImpl() {
-        targetX = readD();
-        targetY = readD();
-        targetZ = readD();
-        originX = readD();
-        originY = readD();
-        originZ = readD();
+        this.target = new Position(readD(), readD(), readD());
+        this.origin = new Position(readD(), readD(), readD());
+
         try {
             moveMovement = readD(); // is 0 if cursor keys are used 1 if mouse is used
         } catch (BufferUnderflowException e) {

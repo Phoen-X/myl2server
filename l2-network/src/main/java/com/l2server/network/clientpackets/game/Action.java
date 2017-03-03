@@ -20,8 +20,10 @@ package com.l2server.network.clientpackets.game;
 
 import com.l2server.network.GameServerPacketProcessor;
 import com.l2server.network.L2GameClient;
+import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+@ToString
 public final class Action extends L2GameClientPacket {
 
     private int _objectId;

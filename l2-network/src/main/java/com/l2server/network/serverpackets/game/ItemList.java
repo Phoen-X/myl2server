@@ -18,34 +18,31 @@
  */
 package com.l2server.network.serverpackets.game;
 
-import com.vvygulyarniy.l2.domain.character.L2Character;
+import com.vvygulyarniy.l2.domain.item.L2Item;
 import lombok.ToString;
 
 import java.nio.ByteBuffer;
+import java.util.List;
 
+/**
+ * Packet gives simple (non-quest) inventory list.
+ */
 @ToString
 public final class ItemList extends L2GameServerPacket {
-    private final L2Character activeChar;
-    //private final List<L2ItemInstance> _items = new ArrayList<>();
+    private final List<L2Item> items;
     private final boolean _showWindow;
 
-    public ItemList(L2Character activeChar, boolean showWindow) {
-        this.activeChar = activeChar;
+    public ItemList(final List<L2Item> items, boolean showWindow) {
+        this.items = items;
         _showWindow = showWindow;
-
-        /*for (L2ItemInstance item : activeChar.getInventory().getItems()) {
-            if (!item.isQuestItem()) {
-                _items.add(item);
-            }
-        }*/
     }
 
     @Override
     protected final void writeImpl(final ByteBuffer buffer) {
         writeC(buffer, 0x11);
         writeH(buffer, _showWindow ? 0x01 : 0x00);
-        writeH(buffer, 0); // _items.size()
-        /*for (L2ItemInstance item : _items) {
+        writeH(buffer, items.size()); // items.size()
+        /*for (L2ItemInstance item : items) {
             writeItem(item);
         }
         writeInventoryBlock(activeChar.getInventory());*/

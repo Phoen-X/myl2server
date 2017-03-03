@@ -7,7 +7,6 @@ import lombok.Getter;
 @Getter
 public final class L2CharTemplate {
     private final ClassId classId;
-    private final Race race;
     private final int baseCon;
     private final int baseStr;
     private final int baseInt;

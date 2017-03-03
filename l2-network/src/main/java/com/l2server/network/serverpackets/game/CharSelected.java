@@ -50,8 +50,8 @@ public class CharSelected extends L2GameServerPacket {
         writeD(buffer, activeChar.getClanId());
         writeD(buffer, 0x00); // ??
         writeD(buffer, activeChar.getAppearance().getSex().getId());
-        writeD(buffer, activeChar.getProfession().getRace().getId());
-        writeD(buffer, activeChar.getProfession().getId());
+        writeD(buffer, activeChar.getClassId().getRace().getId());
+        writeD(buffer, activeChar.getClassId().getId());
         writeD(buffer, 0x01); // active ??
         writeD(buffer, activeChar.getPosition().getX());
         writeD(buffer, activeChar.getPosition().getY());
@@ -64,17 +64,17 @@ public class CharSelected extends L2GameServerPacket {
         writeD(buffer, activeChar.getLevel());
         writeD(buffer, activeChar.getKarma()); // thx evill33t
         writeD(buffer, activeChar.getPkKills());
-        writeD(buffer, activeChar.getProfession().getStats().get(INT));
-        writeD(buffer, activeChar.getProfession().getStats().get(STR));
-        writeD(buffer, activeChar.getProfession().getStats().get(CON));
-        writeD(buffer, activeChar.getProfession().getStats().get(MEN));
-        writeD(buffer, activeChar.getProfession().getStats().get(DEX));
-        writeD(buffer, activeChar.getProfession().getStats().get(WIT));
+        writeD(buffer, activeChar.getClassId().getBasicStatSet().get(INT));
+        writeD(buffer, activeChar.getClassId().getBasicStatSet().get(STR));
+        writeD(buffer, activeChar.getClassId().getBasicStatSet().get(CON));
+        writeD(buffer, activeChar.getClassId().getBasicStatSet().get(MEN));
+        writeD(buffer, activeChar.getClassId().getBasicStatSet().get(DEX));
+        writeD(buffer, activeChar.getClassId().getBasicStatSet().get(WIT));
 
         writeD(buffer, 100000 % (24 * 60)); // "reset" on 24th hour
         writeD(buffer, 0x00);
 
-        writeD(buffer, activeChar.getProfession().getId());
+        writeD(buffer, activeChar.getClassId().getId());
 
         writeD(buffer, 0x00);
         writeD(buffer, 0x00);

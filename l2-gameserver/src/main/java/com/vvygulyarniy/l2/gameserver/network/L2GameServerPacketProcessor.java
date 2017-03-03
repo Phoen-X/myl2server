@@ -10,19 +10,21 @@ import com.vvygulyarniy.l2.domain.character.L2Character;
 import com.vvygulyarniy.l2.domain.character.info.CharacterAppearance;
 import com.vvygulyarniy.l2.domain.character.info.CharacterAppearance.Sex;
 import com.vvygulyarniy.l2.domain.character.profession.Profession;
-import com.vvygulyarniy.l2.domain.geo.Position;
 import com.vvygulyarniy.l2.gameserver.service.characters.CharacterCreationException;
 import com.vvygulyarniy.l2.gameserver.service.characters.CharacterRepository;
 import com.vvygulyarniy.l2.gameserver.world.L2World;
 import com.vvygulyarniy.l2.gameserver.world.castle.CastleRegistry;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static com.l2server.network.L2GameClient.GameClientState.AUTHED;
 import static com.l2server.network.L2GameClient.GameClientState.IN_GAME;
+import static com.vvygulyarniy.l2.domain.character.info.ClassId.getClassId;
 import static com.vvygulyarniy.l2.domain.sevensigns.SevenSignsWinner.NONE;
+import static java.util.Comparator.comparing;
 
 @Slf4j
 public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
@@ -72,7 +74,10 @@ public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
     public void process(CharacterCreate packet, L2GameClient client) {
         CharacterAppearance appearance = new CharacterAppearance(Sex.valueOf(packet.getSex()), packet.getHairStyle(), packet.getHairColor(), packet.getFace());
         try {
-            L2Character character = characterRepository.createCharacter(client, Profession.byId(packet.getClassId()), packet.getName(), appearance);
+            L2Character character = characterRepository.createCharacter(client,
+                                                                        getClassId(packet.getClassId()),
+                                                                        packet.getName(),
+                                                                        appearance);
             client.addCharacter(character);
             client.send(new CharCreateOk());
         } catch (CharacterCreationException e) {
@@ -114,8 +119,9 @@ public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
         world.addCharacter(activeCharacter);
 
         client.send(new UserInfo(activeCharacter));
-        client.send(new ItemList(activeCharacter, false));
-        //client.send(new ExQuestItemList());
+        client.send(new ItemList(new ArrayList<>(), false));
+        client.send(new ExQuestItemList());
+
     }
 
     @Override
@@ -135,9 +141,9 @@ public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
     }
 
     @Override
-    public void process(ValidatePosition validatePosition, L2GameClient client) {
-        client.getActiveCharacter().setPosition(validatePosition.getPosition());
-        client.send(new ValidateLocation(client.getActiveCharacter().getId(), validatePosition.getPosition()));
+    public void process(ValidatePosition packet, L2GameClient client) {
+        client.getActiveCharacter().setPosition(packet.getPosition());
+        client.send(new ValidateLocation(client.getActiveCharacter().getId(), packet.getPosition()));
     }
 
     @Override
@@ -152,14 +158,21 @@ public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
 
     @Override
     public void process(MoveBackwardToLocation packet, L2GameClient client) {
-        client.getActiveCharacter()
-              .setMoveTarget(new Position(packet.getTargetX(), packet.getTargetY(), packet.getTargetZ()));
+        client.getActiveCharacter().setMoveTarget(packet.getTarget());
         client.send(new ValidateLocation(client.getActiveCharacter().getId(),
                                          client.getActiveCharacter().getPosition()));
     }
 
     private CharSelectionInfo buildCharSelectionInfo(L2GameClient client) {
         List<L2Character> accountChars = client.getAccountCharacters();
-        return new CharSelectionInfo(client.getAccountName(), client.getSessionId().playOkID1, accountChars, -1);
+        int activeCharId = accountChars.stream()
+                                       .sorted(comparing(L2Character::getId))
+                                       .findFirst()
+                                       .map(L2Character::getId)
+                                       .orElse(-1);
+        return new CharSelectionInfo(client.getAccountName(),
+                                     client.getSessionId().playOkID1,
+                                     accountChars,
+                                     activeCharId);
     }
 }

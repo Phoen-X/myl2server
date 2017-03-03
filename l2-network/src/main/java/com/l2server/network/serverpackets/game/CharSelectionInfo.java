@@ -19,10 +19,15 @@
 package com.l2server.network.serverpackets.game;
 
 import com.vvygulyarniy.l2.domain.character.L2Character;
+import com.vvygulyarniy.l2.domain.character.gear.PaperDoll;
+import com.vvygulyarniy.l2.domain.item.L2GearItem;
 import lombok.ToString;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @ToString
 public final class CharSelectionInfo extends L2GameServerPacket {
@@ -56,7 +61,7 @@ public final class CharSelectionInfo extends L2GameServerPacket {
         writeD(buffer, size);
 
         // Can prevent players from creating new characters (if 0); (if 1, the client will ask if chars may be created (0x13) Response: (0x0D) )
-        writeD(buffer, 1); //max char number per account
+        writeD(buffer, 3); //max char number per account
         writeC(buffer, 0x00);
         for (L2Character l2Char : chars) {
             writeS(buffer, l2Char.getNickName());
@@ -66,9 +71,9 @@ public final class CharSelectionInfo extends L2GameServerPacket {
             writeD(buffer, l2Char.getClanId());
             writeD(buffer, 0x00); // ??
             writeD(buffer, l2Char.getAppearance().getSex().ordinal());
-            writeD(buffer, l2Char.getProfession().getRace().ordinal());
+            writeD(buffer, l2Char.getClassId().getRace().ordinal());
 
-            writeD(buffer, l2Char.getProfession().getId());
+            writeD(buffer, l2Char.getClassId().getId());
 
             writeD(buffer, 0x01); // active ??
             writeD(buffer, l2Char.getPosition().getX());
@@ -94,9 +99,39 @@ public final class CharSelectionInfo extends L2GameServerPacket {
             writeD(buffer, 0x00);
             writeD(buffer, 0x00);
             writeD(buffer, 0x00);
+            PaperDoll doll = l2Char.getPaperDoll();
+            List<L2GearItem> wornItems = Arrays.asList(doll.getUnderwear(),
+                                                       doll.getRightEar(),
+                                                       doll.getLeftEar(),
+                                                       doll.getNecklace(),
+                                                       doll.getRightFinger(),
+                                                       doll.getLeftFinger(),
+                                                       doll.getHead(),
+                                                       doll.getRightHand(),
+                                                       doll.getLeftHand(),
+                                                       doll.getGloves(),
+                                                       doll.getChest(),
+                                                       doll.getLegs(),
+                                                       doll.getBoots(),
+                                                       doll.getCloak(),
+                                                       doll.getRightHandAdditional(),
+                                                       doll.getHairAccessory(),
+                                                       doll.getHairAccessory2(),
+                                                       doll.getRightBracelet(),
+                                                       doll.getLeftBracelet(),
+                                                       doll.getDecoration1(),
+                                                       doll.getDecoration2(),
+                                                       doll.getDecoration3(),
+                                                       doll.getDecoration4(),
+                                                       doll.getDecoration5(),
+                                                       doll.getDecoration6(),
+                                                       doll.getBelt());
 
-            for (int slotId = 0; slotId < l2Char.getPaperdoll().length; slotId++) {
-                writeD(buffer, l2Char.getPaperdoll()[slotId][0]);
+            List<Integer> wornItemsItemIds = wornItems.stream()
+                                                      .map(i -> i == null ? 0 : i.getItemId())
+                                                      .collect(toList());
+            for (Integer itemId : wornItemsItemIds) {
+                writeD(buffer, itemId);
             }
 
             writeD(buffer, l2Char.getAppearance().getHairStyle());
@@ -114,7 +149,7 @@ public final class CharSelectionInfo extends L2GameServerPacket {
             writeD(buffer, 0); // days left before
             // delete .. if != 0
             // then char is inactive
-            writeD(buffer, l2Char.getProfession().getId());
+            writeD(buffer, l2Char.getClassId().getId());
             writeD(buffer, l2Char.getId() == activeId ? 0x01 : 0x00); // c3 auto-select char
 
             writeC(buffer, 127);
@@ -123,7 +158,8 @@ public final class CharSelectionInfo extends L2GameServerPacket {
             // writeD(charInfoPackage.getAugmentationId());
 
             // writeD(charInfoPackage.getTransformId()); // Used to display Transformations
-            writeD(buffer, 0x00); // Currently on retail when you are on character select you don't see your transformation.
+            writeD(buffer,
+                   0x00); // Currently on retail when you are on character select you don't see your transformation.
 
             // Freya by Vistall:
             writeD(buffer, 0x00); // npdid - 16024 Tame Tiny Baby Kookaburra A9E89C

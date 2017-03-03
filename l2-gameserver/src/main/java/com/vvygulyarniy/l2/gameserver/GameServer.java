@@ -27,12 +27,12 @@ import java.io.IOException;
 public class GameServer {
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        log.info("Starting game server");
         startNettyHandler();
-        log.info("Started");
+
     }
 
     private static void startNettyHandler() throws InterruptedException {
+        log.info("Starting game server");
         CastleRegistry castleRegistry = new HardCodedCastleRegistry();
         InMemoryCharacterRepository characterRepository = new InMemoryCharacterRepository();
         L2World world = new L2World();
@@ -64,6 +64,7 @@ public class GameServer {
             // In this example, this does not happen, but you can do that to gracefully
             // shut down your server.
             f.channel().closeFuture().sync();
+            log.info("Started");
         } finally {
             workerGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();

@@ -15,8 +15,10 @@ public class CharacterAppearance {
     private final byte hairStyle;
     private final byte hairColor;
     private final byte face;
+    private final int nameColor = 0xFFFFFF;
+    private final int titleColor = 0x00FF00;
 
-    public static enum Sex {
+    public enum Sex {
         MALE, FEMALE, ETC;
 
         public static Sex valueOf(byte sexId) {

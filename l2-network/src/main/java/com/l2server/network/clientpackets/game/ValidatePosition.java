@@ -35,17 +35,18 @@ public class ValidatePosition extends L2GameClientPacket {
 
     @Getter
     private Position position;
-    private int _heading;
-    private int _data; // vehicle id
+    @Getter
+    private int vehicleId; // vehicle id
 
     @Override
     protected void readImpl() {
         int x = readD();
         int y = readD();
         int z = readD();
-        position = new Position(x, y, z);
-        _heading = readD();
-        _data = readD();
+        int heading = readD();
+        position = new Position(x, y, z, heading);
+
+        vehicleId = readD();
     }
 
 /*
@@ -81,7 +82,7 @@ public class ValidatePosition extends L2GameClientPacket {
                 // dz = _z - activeChar.getInVehiclePosition().getZ();
                 diffSq = ((dx * dx) + (dy * dy));
                 if (diffSq > 250000) {
-                    send(new GetOnVehicle(activeChar.getObjectId(), _data, activeChar.getInVehiclePosition()));
+                    send(new GetOnVehicle(activeChar.getObjectId(), vehicleId, activeChar.getInVehiclePosition()));
                 }
             }
             return;
@@ -96,7 +97,7 @@ public class ValidatePosition extends L2GameClientPacket {
             // diffSq = ((dx * dx) + (dy * dy));
             // if (diffSq > 250000)
             // {
-            // send(new GetOnVehicle(activeChar.getObjectId(), _data, activeChar.getInBoatPosition()));
+            // send(new GetOnVehicle(activeChar.getObjectId(), vehicleId, activeChar.getInBoatPosition()));
             // }
             // }
             return;

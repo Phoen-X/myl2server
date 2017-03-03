@@ -1,7 +1,9 @@
 package com.vvygulyarniy.l2.domain.character;
 
+import com.vvygulyarniy.l2.domain.character.gear.PaperDoll;
 import com.vvygulyarniy.l2.domain.character.info.CharacterAppearance;
-import com.vvygulyarniy.l2.domain.character.profession.Profession;
+import com.vvygulyarniy.l2.domain.character.info.ClassId;
+import com.vvygulyarniy.l2.domain.character.info.CollisionParams;
 import com.vvygulyarniy.l2.domain.geo.Position;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,11 +12,12 @@ import lombok.ToString;
 @Getter
 @ToString
 public class L2Character {
-    private final int[][] paperdoll = new int[26][3];
+    private final CollisionParams collisionParams;
+    private final PaperDoll paperDoll = new PaperDoll();
     private int id;
     private String accountName;
     private CharacterAppearance appearance;
-    private Profession profession;
+    private ClassId classId;
     private String nickName;
     private int level;
     private int exp;
@@ -38,22 +41,26 @@ public class L2Character {
     private int clanId;
     private int karma;
     private int pkKills;
-
     @Setter
     private Position position;
     private Position moveTarget;
-
     private int runSpeed = 100;
     private int walkSpeed = 50;
     private int swimRunSpeed = 50;
     private int swimWalkSpeed = 25;
 
 
-    public L2Character(int id, String accountName, Profession profession, CharacterAppearance appearance, String nickName, int level) {
+    public L2Character(int id,
+                       String accountName,
+                       ClassId classId,
+                       CharacterAppearance appearance,
+                       String nickName,
+                       int level) {
         this.id = id;
         this.accountName = accountName;
         this.appearance = appearance;
-        this.profession = profession;
+        this.classId = classId;
+        this.collisionParams = classId.getCollisionParams(appearance.getSex());
         this.nickName = nickName;
         this.level = level;
     }

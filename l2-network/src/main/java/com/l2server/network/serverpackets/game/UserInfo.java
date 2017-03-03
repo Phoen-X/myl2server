@@ -19,11 +19,16 @@
 package com.l2server.network.serverpackets.game;
 
 import com.vvygulyarniy.l2.domain.character.L2Character;
+import com.vvygulyarniy.l2.domain.character.gear.PaperDoll;
+import com.vvygulyarniy.l2.domain.item.L2GearItem;
 import lombok.ToString;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.vvygulyarniy.l2.domain.character.info.stat.BasicStat.*;
+import static java.util.stream.Collectors.toList;
 
 @ToString
 public final class UserInfo extends L2GameServerPacket {
@@ -74,24 +79,24 @@ public final class UserInfo extends L2GameServerPacket {
         writeD(buffer, activeChar.getPosition().getX());
         writeD(buffer, activeChar.getPosition().getY());
         writeD(buffer, activeChar.getPosition().getZ());
-        writeD(buffer, 0);
+        writeD(buffer, 0); //vehicle_id
 
         writeD(buffer, activeChar.getId());
         writeS(buffer, activeChar.getNickName());
-        writeD(buffer, activeChar.getProfession().getRace().ordinal());
-        writeD(buffer, activeChar.getAppearance().getSex().ordinal());
+        writeD(buffer, activeChar.getClassId().getRace().getId());
+        writeD(buffer, activeChar.getAppearance().getSex().getId());
 
-        writeD(buffer, activeChar.getProfession().getId());
+        writeD(buffer, activeChar.getClassId().getId());
 
         writeD(buffer, activeChar.getLevel());
         writeQ(buffer, activeChar.getExp());
-        writeF(buffer, 0); // High Five exp %
-        writeD(buffer, activeChar.getProfession().getStats().get(STR));
-        writeD(buffer, activeChar.getProfession().getStats().get(DEX));
-        writeD(buffer, activeChar.getProfession().getStats().get(CON));
-        writeD(buffer, activeChar.getProfession().getStats().get(INT));
-        writeD(buffer, activeChar.getProfession().getStats().get(WIT));
-        writeD(buffer, activeChar.getProfession().getStats().get(MEN));
+        writeF(buffer, 0); // High Five exp % (currExp / expToLvl)
+        writeD(buffer, activeChar.getClassId().getBasicStatSet().get(STR));
+        writeD(buffer, activeChar.getClassId().getBasicStatSet().get(DEX));
+        writeD(buffer, activeChar.getClassId().getBasicStatSet().get(CON));
+        writeD(buffer, activeChar.getClassId().getBasicStatSet().get(INT));
+        writeD(buffer, activeChar.getClassId().getBasicStatSet().get(WIT));
+        writeD(buffer, activeChar.getClassId().getBasicStatSet().get(MEN));
         writeD(buffer, activeChar.getMaxHp());
         writeD(buffer, Math.round(activeChar.getCurrHp()));
         writeD(buffer, activeChar.getMaxMp());
@@ -101,7 +106,51 @@ public final class UserInfo extends L2GameServerPacket {
         writeD(buffer, activeChar.getMaxLoad());
 
         writeD(buffer, 20); //_activeChar.getActiveWeaponItem() != null ? 40 : 20); // 20 no weapon, 40 weapon equipped
+        PaperDoll doll = activeChar.getPaperDoll();
+        List<L2GearItem> wornItems = Arrays.asList(doll.getUnderwear(),
+                                                   doll.getRightEar(),
+                                                   doll.getLeftEar(),
+                                                   doll.getNecklace(),
+                                                   doll.getRightFinger(),
+                                                   doll.getLeftFinger(),
+                                                   doll.getHead(),
+                                                   doll.getRightHand(),
+                                                   doll.getLeftHand(),
+                                                   doll.getGloves(),
+                                                   doll.getChest(),
+                                                   doll.getLegs(),
+                                                   doll.getBoots(),
+                                                   doll.getCloak(),
+                                                   doll.getRightHandAdditional(),
+                                                   doll.getHairAccessory(),
+                                                   doll.getHairAccessory2(),
+                                                   doll.getRightBracelet(),
+                                                   doll.getLeftBracelet(),
+                                                   doll.getDecoration1(),
+                                                   doll.getDecoration2(),
+                                                   doll.getDecoration3(),
+                                                   doll.getDecoration4(),
+                                                   doll.getDecoration5(),
+                                                   doll.getDecoration6(),
+                                                   doll.getBelt());
 
+        List<Integer> wornItemsObjectIds = wornItems.stream()
+                                                    .map(i -> i == null ? 0 : i.getObjectId())
+                                                    .collect(toList());
+        List<Integer> wornItemsItemIds = wornItems.stream().map(i -> i == null ? 0 : i.getItemId()).collect(toList());
+        List<Integer> wornItemsaugmentationIds = wornItems.stream()
+                                                          .map(i -> i == null ? 0 : i.getEnchantLevel())
+                                                          .collect(toList());
+
+        for (Integer objectId : wornItemsObjectIds) {
+            writeD(buffer, objectId);
+        }
+        for (Integer itemId : wornItemsItemIds) {
+            writeD(buffer, itemId);
+        }
+        for (Integer wornItemsaugmentationId : wornItemsaugmentationIds) {
+            writeD(buffer, wornItemsaugmentationId);
+        }
         /*for (int slot : getPaperdollOrder()) {
             writeD(_activeChar.getInventory().getPaperdollObjectId(slot));
         }
@@ -114,7 +163,7 @@ public final class UserInfo extends L2GameServerPacket {
             writeD(_activeChar.getInventory().getPaperdollAugmentationId(slot));
         }*/
 
-        /*writeD(_activeChar.getInventory().getTalismanSlots());*/
+        writeD(buffer, 0); //_activeChar.getInventory().getTalismanSlots()
         writeD(buffer, 1);//activeChar.getInventory().canEquipCloak() ? 1 : 0);
         writeD(buffer, 0); //(int) _activeChar.getPAtk(null));
         writeD(buffer, 0); //(int) _activeChar.getPAtkSpd());
@@ -143,8 +192,8 @@ public final class UserInfo extends L2GameServerPacket {
         writeF(buffer, _moveMultiplier);
         writeF(buffer, 1); //_activeChar.getAttackSpeedMultiplier());
 
-        writeF(buffer, 150); //_activeChar.getCollisionRadius());
-        writeF(buffer, 150); //_activeChar.getCollisionHeight());
+        writeF(buffer, activeChar.getCollisionParams().getRadius()); //_activeChar.getCollisionRadius());
+        writeF(buffer, activeChar.getCollisionParams().getHeight()); //_activeChar.getCollisionHeight());
 
         writeD(buffer, activeChar.getAppearance().getHairStyle());
         writeD(buffer, activeChar.getAppearance().getHairColor());
@@ -183,7 +232,8 @@ public final class UserInfo extends L2GameServerPacket {
 
         writeC(buffer, 0);//_activeChar.isInPartyMatchRoom() ? 1 : 0);
 
-        writeD(buffer, 0); //_activeChar.isInvisible() ? _activeChar.getAbnormalVisualEffects() | AbnormalVisualEffect.STEALTH.getMask() : _activeChar.getAbnormalVisualEffects());
+        writeD(buffer,
+               0); //_activeChar.isInvisible() ? _activeChar.getAbnormalVisualEffects() | AbnormalVisualEffect.STEALTH.getMask() : _activeChar.getAbnormalVisualEffects());
         writeC(buffer, 0); //_activeChar.isInsideZone(ZoneId.WATER) ? 1 : _activeChar.isFlyingMounted() ? 2 : 0);
 
         writeD(buffer, 0);//_activeChar.getClanPrivileges().getBitmask());
@@ -193,7 +243,7 @@ public final class UserInfo extends L2GameServerPacket {
         writeD(buffer, 0);//_activeChar.getMountNpcId() > 0 ? _activeChar.getMountNpcId() + 1000000 : 0);
         writeH(buffer, 60);//_activeChar.getInventoryLimit());
 
-        writeD(buffer, activeChar.getProfession().getId());
+        writeD(buffer, activeChar.getClassId().getId());
         writeD(buffer, 0x00);//0x00); // special effects? circles around player...
         writeD(buffer, activeChar.getMaxCp());
         writeD(buffer, activeChar.getCurrCp());
@@ -209,17 +259,18 @@ public final class UserInfo extends L2GameServerPacket {
         writeD(buffer, 0);//_activeChar.getFishx()); // fishing x
         writeD(buffer, 0);//_activeChar.getFishy()); // fishing y
         writeD(buffer, 0);//_activeChar.getFishz()); // fishing z
-        writeD(buffer, 0xFFFFFF);//activeChar.getAppearance().getNameColor());
+        writeD(buffer, activeChar.getAppearance().getNameColor());
 
         // new c5
-        writeC(buffer, 0);//_activeChar.isRunning() ? 0x01 : 0x00); // changes the Speed display on Status Window
+        writeC(buffer, 0x01);//_activeChar.isRunning() ? 0x01 : 0x00); // changes the Speed display on Status Window
 
         writeD(buffer, 0);//_activeChar.getPledgeClass()); // changes the text above CP on Status Window
         writeD(buffer, 0);//_activeChar.getPledgeType());
 
-        writeD(buffer, 0xFFFFFF);//_activeChar.getAppearance().getTitleColor());
+        writeD(buffer, activeChar.getAppearance().getTitleColor());//_activeChar.getAppearance().getTitleColor());
 
-        writeD(buffer, 0);//_activeChar.isCursedWeaponEquipped() ? CursedWeaponsManager.getInstance().getLevel(_activeChar.getCursedWeaponEquippedId()) : 0);
+        writeD(buffer,
+               0);//_activeChar.isCursedWeaponEquipped() ? CursedWeaponsManager.getInstance().getLevel(_activeChar.getCursedWeaponEquippedId()) : 0);
 
         // T1 Starts
         writeD(buffer, 0);//_activeChar.getTransformationDisplayId());

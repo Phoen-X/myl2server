@@ -4,7 +4,7 @@ import com.l2server.network.L2GameClient;
 import com.l2server.network.serverpackets.game.CharCreateFail;
 import com.vvygulyarniy.l2.domain.character.L2Character;
 import com.vvygulyarniy.l2.domain.character.info.CharacterAppearance;
-import com.vvygulyarniy.l2.domain.character.profession.Profession;
+import com.vvygulyarniy.l2.domain.character.info.ClassId;
 import com.vvygulyarniy.l2.domain.geo.Position;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,29 +22,40 @@ public class InMemoryCharacterRepository implements CharacterRepository {
     private final List<L2Character> characters = new ArrayList<>();
 
     {
-        L2Character newChar = new L2Character(characters.size() + 1, "asd", Profession.ELF_FIGHTER,
-                                              new CharacterAppearance(CharacterAppearance.Sex.MALE, (byte) 1, (byte) 1, (byte) 1),
+        L2Character newChar = new L2Character(characters.size() + 1, "asd", ClassId.elvenFighter,
+                                              new CharacterAppearance(CharacterAppearance.Sex.MALE,
+                                                                      (byte) 1,
+                                                                      (byte) 1,
+                                                                      (byte) 1),
                                               "test_character", 1);
         newChar.setMaxHp(100);
         newChar.setCurrHp(100);
         newChar.setCurrMp(199);
         newChar.setMaxMp(200);
-        newChar.setPosition(new Position(20378, 43627, -2806));
+        newChar.setPosition(new Position(108644, -173947, -466));
         characters.add(newChar);
     }
 
     @Override
-    public L2Character createCharacter(L2GameClient gameClient, Profession profession, String nickName, CharacterAppearance appearance) throws CharacterCreationException {
-        if ((profession == null) || (profession.getLevelFrom() > 0)) {
+    public L2Character createCharacter(L2GameClient gameClient,
+                                       ClassId classId,
+                                       String nickName,
+                                       CharacterAppearance appearance) throws CharacterCreationException {
+        if ((classId == null) || (classId.getParentClassId() != null)) {
             throw new CharacterCreationException(CharCreateFail.REASON_CREATION_FAILED);
         }
 
-        L2Character newChar = new L2Character(characters.size() + 1, gameClient.getAccountName(), profession, appearance, nickName, 1);
+        L2Character newChar = new L2Character(characters.size() + 1,
+                                              gameClient.getAccountName(),
+                                              classId,
+                                              appearance,
+                                              nickName,
+                                              1);
         newChar.setMaxHp(100);
         newChar.setCurrHp(100);
         newChar.setMaxMp(199);
         newChar.setCurrMp(200);
-        newChar.setPosition(new Position(20401, 43622, -1508));
+        newChar.setPosition(new Position(30378, 43627, -2806));
         characters.add(newChar);
         log.info("Character created: {}", newChar);
         return newChar;

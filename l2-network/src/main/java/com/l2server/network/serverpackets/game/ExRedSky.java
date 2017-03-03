@@ -18,28 +18,25 @@
  */
 package com.l2server.network.serverpackets.game;
 
-import com.vvygulyarniy.l2.domain.geo.Position;
 import lombok.ToString;
 
 import java.nio.ByteBuffer;
 
+/**
+ * @author KenM
+ */
 @ToString
-public final class ValidateLocation extends L2GameServerPacket {
-    private final int characterId;
-    private final Position position;
+public class ExRedSky extends L2GameServerPacket {
+    private final int _duration;
 
-    public ValidateLocation(int characterId, Position position) {
-        this.characterId = characterId;
-        this.position = position;
+    public ExRedSky(int duration) {
+        _duration = duration;
     }
 
     @Override
-    protected void writeImpl(ByteBuffer buffer) {
-        writeC(buffer, 0x79);
-        writeD(buffer, characterId);
-        writeD(buffer, position.getX());
-        writeD(buffer, position.getY());
-        writeD(buffer, position.getZ());
-        writeD(buffer, position.getHeading());
+    protected void writeImpl(final ByteBuffer buffer) {
+        writeC(buffer, 0xFE);
+        writeH(buffer, 0x41);
+        writeD(buffer, _duration);
     }
 }
