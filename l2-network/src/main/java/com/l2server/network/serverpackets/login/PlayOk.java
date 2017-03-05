@@ -20,12 +20,14 @@ package com.l2server.network.serverpackets.login;
 
 
 import com.l2server.network.SessionKey;
+import lombok.ToString;
 
 import java.nio.ByteBuffer;
 
 /**
  *
  */
+@ToString
 public final class PlayOk extends L2LoginServerPacket {
     private final int _playOk1, _playOk2;
 

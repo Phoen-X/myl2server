@@ -126,12 +126,19 @@ public final class ServerList extends L2LoginServerPacket {
         protected int _serverId;
         protected int _serverType;
 
-        public ServerData(L2LoginClient client, int id, int status, int port, boolean pvp, int serverType, int maxPlayers, int currentPlayers) {
+        public ServerData(byte[] serverIp,
+                          int id,
+                          int status,
+                          int port,
+                          boolean pvp,
+                          int serverType,
+                          int maxPlayers,
+                          int currentPlayers) {
             _ip = new byte[4];
-            _ip[0] = 127;
-            _ip[1] = 0;
-            _ip[2] = 0;
-            _ip[3] = 1;
+            _ip[0] = serverIp[0];
+            _ip[1] = serverIp[1];
+            _ip[2] = serverIp[2];
+            _ip[3] = serverIp[3];
 
             _port = port;
             _pvp = pvp;

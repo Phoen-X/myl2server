@@ -21,6 +21,7 @@ package com.l2server.network.clientpackets.login;
 
 import com.l2server.network.ClientPacketProcessor;
 import com.l2server.network.L2LoginClient;
+import lombok.ToString;
 
 /**
  * <pre>
@@ -30,6 +31,7 @@ import com.l2server.network.L2LoginClient;
  * c: server ID
  * </pre>
  */
+@ToString
 public class RequestServerLogin extends L2LoginClientPacket {
     private int _skey1;
     private int _skey2;

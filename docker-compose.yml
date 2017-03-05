@@ -1,0 +1,10 @@
+version: '2'
+services:
+  l2-loginserver:
+    image: "l2-loginserver:latest"
+    ports:
+     - "2106:2106"
+  l2-gameserver:
+    image: "l2-gameserver:latest"
+    ports:
+     - "9999:9999"

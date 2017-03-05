@@ -6,6 +6,7 @@ import com.vvygulyarniy.l2.domain.character.L2Character;
 import com.vvygulyarniy.l2.domain.character.info.CharacterAppearance;
 import com.vvygulyarniy.l2.domain.character.info.ClassId;
 import com.vvygulyarniy.l2.domain.geo.Position;
+import com.vvygulyarniy.l2.domain.item.L2GenericGearItem;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -32,7 +33,9 @@ public class InMemoryCharacterRepository implements CharacterRepository {
         newChar.setCurrHp(100);
         newChar.setCurrMp(199);
         newChar.setMaxMp(200);
-        newChar.setPosition(new Position(108844, -173347, -1000));
+        newChar.setPosition(new Position(143265, -110044, -3944));
+        newChar.getPaperDoll().wearRightHand(new L2GenericGearItem(1, 2369, "Squire's Sword", 0));
+        newChar.getPaperDoll().wearChest(new L2GenericGearItem(2, 1146, "Squire's Shirt", 0));
         characters.add(newChar);
     }
 

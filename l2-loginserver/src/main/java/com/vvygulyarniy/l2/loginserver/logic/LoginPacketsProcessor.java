@@ -13,9 +13,13 @@ import com.l2server.network.serverpackets.login.ServerList.ServerData;
 import com.vvygulyarniy.l2.loginserver.GameServerTable;
 import com.vvygulyarniy.l2.loginserver.LoginController;
 import com.vvygulyarniy.l2.loginserver.model.data.AccountInfo;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.crypto.Cipher;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,6 +31,7 @@ import static com.l2server.network.serverpackets.login.PlayFail.PlayFailReason.R
 /**
  * Created by Phoen-X on 16.02.2017.
  */
+@Slf4j
 public class LoginPacketsProcessor implements ClientPacketProcessor {
     private final GameServerTable gameServerTable;
 
@@ -37,9 +42,24 @@ public class LoginPacketsProcessor implements ClientPacketProcessor {
     @Override
     public void process(RequestServerList packet, L2LoginClient client) {
         if (client.getSessionKey().checkLoginPair(packet.getSessionKey1(), packet.getSessionKey2())) {
+            try {
+                InetAddress gameServerAddr = InetAddress.getByName("l2-gameserver");
+                byte[] serverIp = Arrays.copyOf(gameServerAddr.getAddress(), 4);
+                log.info("GameServer IP resolved: {}", Arrays.toString(serverIp));
+                List<ServerData> servers = Collections.singletonList(new ServerData(serverIp,
+                                                                                    1,
+                                                                                    ServerStatus.STATUS_GOOD,
+                                                                                    9999,
+                                                                                    false,
+                                                                                    1,
+                                                                                    100,
+                                                                                    0));
+                client.sendPacket(new ServerList(client, servers));
+            } catch (UnknownHostException e) {
+                log.error("Cannot resolve address of gameserver host", e);
+                client.close(REASON_ACCESS_FAILED);
+            }
 
-            List<ServerData> servers = Collections.singletonList(new ServerData(client, 1, ServerStatus.STATUS_GOOD, 9999, false, 1, 100, 0));
-            client.sendPacket(new ServerList(client, servers));
         } else {
             client.close(REASON_ACCESS_FAILED);
         }
@@ -86,8 +106,22 @@ public class LoginPacketsProcessor implements ClientPacketProcessor {
                 client.setAccount(info.getLogin());
                 client.setState(AUTHED_LOGIN);
                 client.setSessionKey(lc.assignSessionKeyToClient(info.getLogin(), client));
-                List<ServerData> servers = Collections.singletonList(new ServerData(client, 1, ServerStatus.STATUS_GOOD, 9999, false, 1, 100, 0));
-                client.sendPacket(new ServerList(client, servers));
+                try {
+                    InetAddress gameServerAddr = InetAddress.getByName("l2-gameserver");
+                    byte[] serverIp = Arrays.copyOf(gameServerAddr.getAddress(), 4);
+                    log.info("GameServer IP resolved: {}", Arrays.toString(serverIp));
+                    List<ServerData> servers = Collections.singletonList(new ServerData(serverIp,
+                                                                                        1,
+                                                                                        ServerStatus.STATUS_GOOD,
+                                                                                        9999,
+                                                                                        false,
+                                                                                        1,
+                                                                                        100,
+                                                                                        0));
+                    client.sendPacket(new ServerList(client, servers));
+                } catch (Exception e) {
+                    log.error("Cannot resolve gameserver IP", e);
+                }
                 break;
             case INVALID_PASSWORD:
                 client.close(REASON_USER_OR_PASS_WRONG);

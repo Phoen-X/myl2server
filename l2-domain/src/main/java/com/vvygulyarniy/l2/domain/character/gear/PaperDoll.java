@@ -1,7 +1,9 @@
 package com.vvygulyarniy.l2.domain.character.gear;
 
 import com.vvygulyarniy.l2.domain.item.L2GearItem;
+import lombok.ToString;
 
+@ToString
 public class PaperDoll {
     private L2GearItem underwear;
     private L2GearItem rightEar;
