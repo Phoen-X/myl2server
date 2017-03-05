@@ -35,7 +35,7 @@ public class GameServer {
         log.info("Starting game server");
         CastleRegistry castleRegistry = new HardCodedCastleRegistry();
         InMemoryCharacterRepository characterRepository = new InMemoryCharacterRepository();
-        L2World world = new L2World();
+        L2World world = new L2World(10);
 
         L2GameServerPacketProcessor packetProcessor = new L2GameServerPacketProcessor(characterRepository,
                                                                                       castleRegistry,

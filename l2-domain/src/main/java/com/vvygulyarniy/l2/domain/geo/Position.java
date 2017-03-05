@@ -22,4 +22,20 @@ public class Position {
         this.z = z;
         this.heading = heading;
     }
+
+    public double distanceTo(Position other) {
+        double x1 = x;
+        double y1 = y;
+        double z1 = z;
+
+        double x2 = other.getX();
+        double y2 = other.getY();
+        double z2 = other.getZ();
+
+        x1 -= x2;
+        y1 -= y2;
+        z1 -= z2;
+
+        return Math.sqrt(x1 * x1 + y1 * y1 + z1 * z1);
+    }
 }

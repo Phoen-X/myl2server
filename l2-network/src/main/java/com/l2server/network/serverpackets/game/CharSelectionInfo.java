@@ -102,10 +102,10 @@ public final class CharSelectionInfo extends L2GameServerPacket {
             PaperDoll doll = l2Char.getPaperDoll();
             List<L2GearItem> wornItems = Arrays.asList(doll.getUnderwear(),
                                                        doll.getRightEar(),
-                                                       doll.getLeftEar(),
+                                                       doll.getLeftEarring(),
                                                        doll.getNecklace(),
-                                                       doll.getRightFinger(),
-                                                       doll.getLeftFinger(),
+                                                       doll.getRightRing(),
+                                                       doll.getLeftRing(),
                                                        doll.getHead(),
                                                        doll.getRightHand(),
                                                        doll.getLeftHand(),

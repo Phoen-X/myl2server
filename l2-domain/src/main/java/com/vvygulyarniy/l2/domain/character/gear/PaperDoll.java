@@ -2,15 +2,12 @@ package com.vvygulyarniy.l2.domain.character.gear;
 
 import com.vvygulyarniy.l2.domain.item.L2GearItem;
 
-/**
- * Created by Phoen-X on 03.03.2017.
- */
 public class PaperDoll {
     private L2GearItem underwear;
     private L2GearItem rightEar;
     private L2GearItem leftEar;
     private L2GearItem necklace;
-    private L2GearItem rightFinger;
+    private L2GearItem rightRing;
     private L2GearItem leftFinger;
     private L2GearItem head;
     private L2GearItem rightHand;
@@ -58,15 +55,15 @@ public class PaperDoll {
         return rightEar;
     }
 
-    public L2GearItem getLeftEar() {
+    public L2GearItem getLeftEarring() {
         return leftEar;
     }
 
-    public L2GearItem getRightFinger() {
-        return rightFinger;
+    public L2GearItem getRightRing() {
+        return rightRing;
     }
 
-    public L2GearItem getLeftFinger() {
+    public L2GearItem getLeftRing() {
         return leftFinger;
     }
 
@@ -144,5 +141,53 @@ public class PaperDoll {
 
     public L2GearItem getBelt() {
         return belt;
+    }
+
+    public void wearLeftEarring(L2GearItem earring) {
+        this.leftEar = earring;
+    }
+
+    public void wearRightEarring(L2GearItem rightEarring) {
+        this.rightEar = rightEarring;
+    }
+
+    public void wearLeftRing(L2GearItem leftRing) {
+        this.leftFinger = leftRing;
+    }
+
+    public void wearChest(L2GearItem chest) {
+        this.chest = chest;
+    }
+
+    public void wearUnderwear(L2GearItem underwear) {
+        this.underwear = underwear;
+    }
+
+    public void wearRightRing(L2GearItem rightRing) {
+        this.rightRing = rightRing;
+    }
+
+    public void wearRightHand(L2GearItem rightHand) {
+        this.rightHand = rightHand;
+    }
+
+    public void wearLeftHand(L2GearItem leftHand) {
+        this.leftHand = leftHand;
+    }
+
+    public void wearGloves(L2GearItem gloves) {
+        this.gloves = gloves;
+    }
+
+    public void wearCloak(L2GearItem cloak) {
+        this.cloak = cloak;
+    }
+
+    public void wearLegs(L2GearItem legs) {
+        this.legs = legs;
+    }
+
+    public void wearBoots(L2GearItem boots) {
+        this.boots = boots;
     }
 }

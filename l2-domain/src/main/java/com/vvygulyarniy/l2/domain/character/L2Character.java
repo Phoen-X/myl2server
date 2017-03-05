@@ -1,5 +1,7 @@
 package com.vvygulyarniy.l2.domain.character;
 
+import com.vvygulyarniy.l2.domain.character.event.MoveStoppedEventListener;
+import com.vvygulyarniy.l2.domain.character.event.MoveStoppedEventListener.MoveStoppedEvent;
 import com.vvygulyarniy.l2.domain.character.gear.PaperDoll;
 import com.vvygulyarniy.l2.domain.character.info.CharacterAppearance;
 import com.vvygulyarniy.l2.domain.character.info.ClassId;
@@ -9,11 +11,15 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 @Getter
 @ToString
 public class L2Character {
     private final CollisionParams collisionParams;
     private final PaperDoll paperDoll = new PaperDoll();
+    private final Collection<MoveStoppedEventListener> moveStoppedListeners = new ArrayList<>();
     private int id;
     private String accountName;
     private CharacterAppearance appearance;
@@ -44,7 +50,8 @@ public class L2Character {
     @Setter
     private Position position;
     private Position moveTarget;
-    private int runSpeed = 100;
+    @Setter
+    private double runSpeed = 100;
     private int walkSpeed = 50;
     private int swimRunSpeed = 50;
     private int swimWalkSpeed = 25;
@@ -69,4 +76,14 @@ public class L2Character {
         this.moveTarget = moveTo;
     }
 
+    public void moveStopped() {
+        MoveStoppedEvent event = new MoveStoppedEvent(this, position);
+        moveTarget = null;
+        moveStoppedListeners.forEach(listener -> listener.movingStopped(event));
+    }
+
+
+    public void listenEvent(MoveStoppedEventListener moveStoppedEventListener) {
+        this.moveStoppedListeners.add(moveStoppedEventListener);
+    }
 }

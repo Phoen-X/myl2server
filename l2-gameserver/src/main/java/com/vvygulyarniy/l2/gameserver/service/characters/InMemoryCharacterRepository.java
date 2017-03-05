@@ -32,7 +32,7 @@ public class InMemoryCharacterRepository implements CharacterRepository {
         newChar.setCurrHp(100);
         newChar.setCurrMp(199);
         newChar.setMaxMp(200);
-        newChar.setPosition(new Position(108844, -173347, -1500));
+        newChar.setPosition(new Position(108844, -173347, -1000));
         characters.add(newChar);
     }
 

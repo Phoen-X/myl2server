@@ -109,10 +109,10 @@ public final class UserInfo extends L2GameServerPacket {
         PaperDoll doll = activeChar.getPaperDoll();
         List<L2GearItem> wornItems = Arrays.asList(doll.getUnderwear(),
                                                    doll.getRightEar(),
-                                                   doll.getLeftEar(),
+                                                   doll.getLeftEarring(),
                                                    doll.getNecklace(),
-                                                   doll.getRightFinger(),
-                                                   doll.getLeftFinger(),
+                                                   doll.getRightRing(),
+                                                   doll.getLeftRing(),
                                                    doll.getHead(),
                                                    doll.getRightHand(),
                                                    doll.getLeftHand(),
@@ -253,7 +253,8 @@ public final class UserInfo extends L2GameServerPacket {
 
         writeD(buffer, 0);//_activeChar.getClanCrestLargeId());
         writeC(buffer, 0);//_activeChar.isNoble() ? 1 : 0); // 0x01: symbol on char menu ctrl+I
-        writeC(buffer, 0);//_activeChar.isHero() || (_activeChar.isGM() && Config.GM_HERO_AURA) ? 1 : 0); // 0x01: Hero Aura
+        writeC(buffer,
+               0);//_activeChar.isHero() || (_activeChar.isGM() && Config.GM_HERO_AURA) ? 1 : 0); // 0x01: Hero Aura
 
         writeC(buffer, 0);//_activeChar.isFishing() ? 1 : 0); // Fishing Mode
         writeD(buffer, 0);//_activeChar.getFishx()); // fishing x

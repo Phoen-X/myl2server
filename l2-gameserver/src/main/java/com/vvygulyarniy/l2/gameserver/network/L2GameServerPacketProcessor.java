@@ -10,6 +10,7 @@ import com.vvygulyarniy.l2.domain.character.L2Character;
 import com.vvygulyarniy.l2.domain.character.info.CharacterAppearance;
 import com.vvygulyarniy.l2.domain.character.info.CharacterAppearance.Sex;
 import com.vvygulyarniy.l2.domain.character.profession.Profession;
+import com.vvygulyarniy.l2.domain.geo.Position;
 import com.vvygulyarniy.l2.gameserver.service.characters.CharacterCreationException;
 import com.vvygulyarniy.l2.gameserver.service.characters.CharacterRepository;
 import com.vvygulyarniy.l2.gameserver.world.L2World;
@@ -121,7 +122,8 @@ public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
         if (activeCharacter == null) {
             client.closeNow();
         } else {
-
+            activeCharacter.listenEvent((event) -> client.send(new StopMove(event.getL2Character().getId(),
+                                                                            event.getLastKnownPosition())));
             world.addCharacter(activeCharacter);
 
             client.send(new UserInfo(activeCharacter));
@@ -149,8 +151,9 @@ public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
 
     @Override
     public void process(ValidatePosition packet, L2GameClient client) {
-        client.getActiveCharacter().setPosition(packet.getPosition());
-        client.send(new ValidateLocation(client.getActiveCharacter().getId(), packet.getPosition()));
+        L2Character l2Char = client.getActiveCharacter();
+        Position validatedPosition = world.validateCharacterPosition(l2Char, packet.getPosition());
+        client.send(new ValidateLocation(l2Char.getId(), validatedPosition));
     }
 
     @Override
@@ -165,7 +168,7 @@ public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
 
     @Override
     public void process(MoveBackwardToLocation packet, L2GameClient client) {
-        client.getActiveCharacter().setMoveTarget(packet.getTarget());
+        world.move(client.getActiveCharacter(), packet.getTarget());
         client.send(new MoveToLocation(client.getActiveCharacter(),
                                        client.getActiveCharacter().getMoveTarget()));
     }
