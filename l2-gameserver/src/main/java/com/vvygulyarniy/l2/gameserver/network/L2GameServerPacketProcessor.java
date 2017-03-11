@@ -6,7 +6,7 @@ import com.l2server.network.L2GameClient;
 import com.l2server.network.SessionKey;
 import com.l2server.network.clientpackets.game.*;
 import com.l2server.network.serverpackets.game.*;
-import com.vvygulyarniy.l2.domain.character.L2Character;
+import com.vvygulyarniy.l2.domain.character.L2Player;
 import com.vvygulyarniy.l2.domain.character.info.CharacterAppearance;
 import com.vvygulyarniy.l2.domain.character.info.CharacterAppearance.Sex;
 import com.vvygulyarniy.l2.domain.character.profession.Profession;
@@ -81,10 +81,10 @@ public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
                                                                  packet.getHairColor(),
                                                                  packet.getFace());
         try {
-            L2Character character = characterRepository.createCharacter(client,
-                                                                        getClassId(packet.getClassId()),
-                                                                        packet.getName(),
-                                                                        appearance);
+            L2Player character = characterRepository.createCharacter(client,
+                                                                     getClassId(packet.getClassId()),
+                                                                     packet.getName(),
+                                                                     appearance);
             client.addCharacter(character);
             client.send(new CharCreateOk());
         } catch (CharacterCreationException e) {
@@ -118,7 +118,7 @@ public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
 
     @Override
     public void process(EnterWorld enterWorld, L2GameClient client) {
-        L2Character activeCharacter = client.getActiveCharacter();
+        L2Player activeCharacter = client.getActiveCharacter();
         if (activeCharacter == null) {
             client.closeNow();
         } else {
@@ -151,7 +151,7 @@ public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
 
     @Override
     public void process(ValidatePosition packet, L2GameClient client) {
-        L2Character l2Char = client.getActiveCharacter();
+        L2Player l2Char = client.getActiveCharacter();
         Position validatedPosition = world.validateCharacterPosition(l2Char, packet.getPosition());
         client.send(new ValidateLocation(l2Char.getId(), validatedPosition));
     }
@@ -174,11 +174,11 @@ public class L2GameServerPacketProcessor implements GameServerPacketProcessor {
     }
 
     private CharSelectionInfo buildCharSelectionInfo(L2GameClient client) {
-        List<L2Character> accountChars = client.getAccountCharacters();
+        List<L2Player> accountChars = client.getAccountCharacters();
         int activeCharId = accountChars.stream()
-                                       .sorted(comparing(L2Character::getId))
+                                       .sorted(comparing(L2Player::getId))
                                        .findFirst()
-                                       .map(L2Character::getId)
+                                       .map(L2Player::getId)
                                        .orElse(-1);
         return new CharSelectionInfo(client.getAccountName(),
                                      client.getSessionId().playOkID1,

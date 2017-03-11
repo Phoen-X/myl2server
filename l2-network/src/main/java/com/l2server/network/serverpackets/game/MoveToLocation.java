@@ -19,7 +19,7 @@
 package com.l2server.network.serverpackets.game;
 
 
-import com.vvygulyarniy.l2.domain.character.L2Character;
+import com.vvygulyarniy.l2.domain.character.L2Player;
 import com.vvygulyarniy.l2.domain.geo.Position;
 import lombok.ToString;
 
@@ -29,7 +29,7 @@ import java.nio.ByteBuffer;
 public final class MoveToLocation extends L2GameServerPacket {
     private final int _charObjId, _x, _y, _z, _xDst, _yDst, _zDst;
 
-    public MoveToLocation(L2Character cha, Position newPosition) {
+    public MoveToLocation(L2Player cha, Position newPosition) {
         _charObjId = cha.getId();
         _x = cha.getPosition().getPoint().getX();
         _y = cha.getPosition().getPoint().getY();

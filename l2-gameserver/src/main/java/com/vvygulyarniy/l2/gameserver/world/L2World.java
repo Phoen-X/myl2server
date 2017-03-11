@@ -1,6 +1,6 @@
 package com.vvygulyarniy.l2.gameserver.world;
 
-import com.vvygulyarniy.l2.domain.character.L2Character;
+import com.vvygulyarniy.l2.domain.character.L2Player;
 import com.vvygulyarniy.l2.domain.geo.Position;
 import com.vvygulyarniy.l2.gameserver.world.position.PositionManager;
 
@@ -19,7 +19,7 @@ public class L2World {
     private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(4);
     private final PositionManager positionManager;
     private final int ticksPerSecond;
-    private List<L2Character> onlineCharacters = new ArrayList<>();
+    private List<L2Player> onlineCharacters = new ArrayList<>();
 
     public L2World(int ticksPerSecond) {
         this.ticksPerSecond = ticksPerSecond;
@@ -29,16 +29,16 @@ public class L2World {
                                                  tickDelay, MILLISECONDS);
     }
 
-    public void move(L2Character l2Character, Position moveTo) {
-        l2Character.setMoveTarget(moveTo);
-        positionManager.startMoving(l2Character, Instant.now());
+    public void move(L2Player l2Player, Position moveTo) {
+        l2Player.setMoveTarget(moveTo);
+        positionManager.startMoving(l2Player, Instant.now());
     }
 
-    public void addCharacter(L2Character character) {
+    public void addCharacter(L2Player character) {
         onlineCharacters.add(character);
     }
 
-    public Position validateCharacterPosition(L2Character l2Char, Position position) {
+    public Position validateCharacterPosition(L2Player l2Char, Position position) {
         return positionManager.validatePosition(l2Char, position);
     }
 }

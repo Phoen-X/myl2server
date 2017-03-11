@@ -1,6 +1,6 @@
 package com.vvygulyarniy.l2.gameserver.world.position;
 
-import com.vvygulyarniy.l2.domain.character.L2Character;
+import com.vvygulyarniy.l2.domain.character.L2Player;
 import com.vvygulyarniy.l2.domain.character.info.CharacterAppearance;
 import com.vvygulyarniy.l2.domain.character.info.ClassId;
 import com.vvygulyarniy.l2.domain.geo.Position;
@@ -26,7 +26,7 @@ public class PositionManagerTest {
 
     @Test
     public void shouldHandleMovingStart() throws Exception {
-        L2Character l2Char = createTestChar();
+        L2Player l2Char = createTestChar();
         l2Char.setRunSpeed(100);
         l2Char.setPosition(new Position(0, 0, 0));
         l2Char.setMoveTarget(new Position(200, 200, 200));
@@ -36,7 +36,7 @@ public class PositionManagerTest {
 
     @Test
     public void shouldNotMoveTargetIfTimeIsEqualToMoveStartTime() throws Exception {
-        L2Character l2Char = createTestChar();
+        L2Player l2Char = createTestChar();
         l2Char.setRunSpeed(100);
         Position startPosition = new Position(0, 0, 0);
         Position targetPosition = new Position(200, 200, 200);
@@ -53,7 +53,7 @@ public class PositionManagerTest {
 
     @Test
     public void shouldMoveToTargetWhenTimeIsEnoughToReachIt() throws Exception {
-        L2Character l2Char = createTestChar();
+        L2Player l2Char = createTestChar();
         l2Char.setRunSpeed(100);
         Position startPosition = new Position(0, 0, 0);
         Position targetPosition = new Position(200, 200, 200);
@@ -70,7 +70,7 @@ public class PositionManagerTest {
 
     @Test
     public void shouldMoveToTargetByStepsEachUpdateIsCalled() throws Exception {
-        L2Character l2Char = createTestChar();
+        L2Player l2Char = createTestChar();
         l2Char.setRunSpeed(100);
         Position startPosition = new Position(0, 0, 0);
         Position targetPosition = new Position(0, 300, 0);
@@ -88,11 +88,11 @@ public class PositionManagerTest {
         assertThat(l2Char.getPosition()).isEqualTo(targetPosition);
     }
 
-    private L2Character createTestChar() {
-        return new L2Character(1,
-                               "test_acc",
-                               ClassId.elvenFighter,
-                               new CharacterAppearance(MALE, (byte) 0, (byte) 0, (byte) 0),
-                               "test_name", 10);
+    private L2Player createTestChar() {
+        return new L2Player(1,
+                            "test_acc",
+                            ClassId.elvenFighter,
+                            new CharacterAppearance(MALE, (byte) 0, (byte) 0, (byte) 0),
+                            "test_name", 10);
     }
 }

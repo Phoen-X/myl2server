@@ -18,7 +18,7 @@
  */
 package com.l2server.network.serverpackets.game;
 
-import com.vvygulyarniy.l2.domain.character.L2Character;
+import com.vvygulyarniy.l2.domain.character.L2Player;
 import com.vvygulyarniy.l2.domain.character.gear.PaperDoll;
 import com.vvygulyarniy.l2.domain.geo.Point;
 import com.vvygulyarniy.l2.domain.item.L2GearItem;
@@ -33,7 +33,7 @@ import static java.util.stream.Collectors.toList;
 
 @ToString
 public final class UserInfo extends L2GameServerPacket {
-    private final L2Character activeChar;
+    private final L2Player activeChar;
     private final int _runSpd, _walkSpd;
     private final int _swimRunSpd, _swimWalkSpd;
     private final int _flyRunSpd, _flyWalkSpd;
@@ -41,7 +41,7 @@ public final class UserInfo extends L2GameServerPacket {
     private int _relation;
     private int _airShipHelm;
 
-    public UserInfo(L2Character activeChar) {
+    public UserInfo(L2Player activeChar) {
         this.activeChar = activeChar;
 
         //int _territoryId = TerritoryWarManager.getInstance().getRegisteredTerritoryId(cha);
@@ -84,7 +84,7 @@ public final class UserInfo extends L2GameServerPacket {
         writeD(buffer, 0); //vehicle_id
 
         writeD(buffer, activeChar.getId());
-        writeS(buffer, activeChar.getNickName());
+        writeS(buffer, activeChar.getName());
         writeD(buffer, activeChar.getClassId().getRace().getId());
         writeD(buffer, activeChar.getAppearance().getSex().getId());
 

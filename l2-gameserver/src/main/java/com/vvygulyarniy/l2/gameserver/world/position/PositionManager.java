@@ -1,6 +1,6 @@
 package com.vvygulyarniy.l2.gameserver.world.position;
 
-import com.vvygulyarniy.l2.domain.character.L2Character;
+import com.vvygulyarniy.l2.domain.character.L2Player;
 import com.vvygulyarniy.l2.domain.geo.Point;
 import com.vvygulyarniy.l2.domain.geo.Position;
 import lombok.Data;
@@ -20,16 +20,16 @@ import static java.util.stream.Collectors.toList;
  */
 @Slf4j
 public class PositionManager {
-    private final Map<L2Character, MovingContext> movingObjects = new ConcurrentHashMap<>();
+    private final Map<L2Player, MovingContext> movingObjects = new ConcurrentHashMap<>();
 
 
     public void updatePositions(Instant now) {
-        List<L2Character> finishedMove = movingObjects.keySet()
-                                                      .stream()
-                                                      .filter(l2char -> l2char.getMoveTarget() == null || Objects.equals(
+        List<L2Player> finishedMove = movingObjects.keySet()
+                                                   .stream()
+                                                   .filter(l2char -> l2char.getMoveTarget() == null || Objects.equals(
                                                               l2char.getMoveTarget(),
                                                               l2char.getPosition()))
-                                                      .collect(toList());
+                                                   .collect(toList());
 
         finishedMove.forEach(l2char -> {
             log.info("Removing char {} from moving list", l2char.getId());
@@ -38,7 +38,7 @@ public class PositionManager {
         movingObjects.forEach((l2Char, moveContext) -> moveChar(l2Char, moveContext, now));
     }
 
-    public void startMoving(L2Character l2Char, Instant now) {
+    public void startMoving(L2Player l2Char, Instant now) {
         log.info("Character {} started moving", l2Char);
         MovingContext movingContext = new MovingContext();
         movingContext.setMoveStartTime(now);
@@ -46,7 +46,7 @@ public class PositionManager {
         movingObjects.put(l2Char, movingContext);
     }
 
-    private void moveChar(L2Character l2Char, MovingContext moveContext, Instant now) {
+    private void moveChar(L2Player l2Char, MovingContext moveContext, Instant now) {
         log.info("Moving char id: {}, Moving ({}) -> ({})",
                  new Object[]{l2Char.getId(), l2Char.getPosition(), l2Char.getMoveTarget()});
         Point current = l2Char.getPosition().getPoint();
@@ -69,7 +69,7 @@ public class PositionManager {
         moveContext.setLastUpdate(now);
     }
 
-    public Position validatePosition(L2Character l2Char, Position proposedPosition) {
+    public Position validatePosition(L2Player l2Char, Position proposedPosition) {
         Position currentPosition = l2Char.getPosition();
         Point currentPoint = currentPosition.getPoint();
         Point proposedPoint = proposedPosition.getPoint();

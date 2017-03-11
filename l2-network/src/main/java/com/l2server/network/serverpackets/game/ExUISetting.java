@@ -18,7 +18,7 @@
  */
 package com.l2server.network.serverpackets.game;
 
-import com.vvygulyarniy.l2.domain.character.L2Character;
+import com.vvygulyarniy.l2.domain.character.L2Player;
 import lombok.ToString;
 
 import java.nio.ByteBuffer;
@@ -31,7 +31,7 @@ public class ExUISetting extends L2GameServerPacket {
     /*private final UIKeysSettings _uiSettings;
     */private int buffsize, categories;
 
-    public ExUISetting(L2Character player) {
+    public ExUISetting(L2Player player) {
         /*_uiSettings = player.getUISettings();
         calcSize();*/
     }

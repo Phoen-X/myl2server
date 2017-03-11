@@ -18,7 +18,7 @@
  */
 package com.l2server.network.serverpackets.game;
 
-import com.vvygulyarniy.l2.domain.character.L2Character;
+import com.vvygulyarniy.l2.domain.character.L2Player;
 import lombok.ToString;
 
 import java.nio.ByteBuffer;
@@ -27,14 +27,14 @@ import static com.vvygulyarniy.l2.domain.character.info.stat.BasicStat.*;
 
 @ToString
 public class CharSelected extends L2GameServerPacket {
-    private final L2Character activeChar;
+    private final L2Player activeChar;
     private final int sessionId;
 
     /**
      * @param activeChar
      * @param sessionId
      */
-    public CharSelected(L2Character activeChar, int sessionId) {
+    public CharSelected(L2Player activeChar, int sessionId) {
         this.activeChar = activeChar;
         this.sessionId = sessionId;
     }
@@ -43,7 +43,7 @@ public class CharSelected extends L2GameServerPacket {
     protected final void writeImpl(final ByteBuffer buffer) {
         writeC(buffer, 0x0b);
 
-        writeS(buffer, activeChar.getNickName());
+        writeS(buffer, activeChar.getName());
         writeD(buffer, activeChar.getId());
         writeS(buffer, ""); // title
         writeD(buffer, sessionId);

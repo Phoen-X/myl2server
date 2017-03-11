@@ -18,7 +18,7 @@
  */
 package com.l2server.network.serverpackets.game;
 
-import com.vvygulyarniy.l2.domain.character.L2Character;
+import com.vvygulyarniy.l2.domain.character.L2Player;
 import com.vvygulyarniy.l2.domain.character.gear.PaperDoll;
 import com.vvygulyarniy.l2.domain.geo.Point;
 import com.vvygulyarniy.l2.domain.item.L2GearItem;
@@ -34,7 +34,7 @@ import static java.util.stream.Collectors.toList;
 public final class CharSelectionInfo extends L2GameServerPacket {
     private final String loginName;
     private final int sessionId;
-    private final List<L2Character> chars;
+    private final List<L2Player> chars;
     private int activeId;
 
     /**
@@ -43,7 +43,7 @@ public final class CharSelectionInfo extends L2GameServerPacket {
      * @param loginName
      * @param sessionId
      */
-    public CharSelectionInfo(String loginName, int sessionId, List<L2Character> chars, int activeCharId) {
+    public CharSelectionInfo(String loginName, int sessionId, List<L2Player> chars, int activeCharId) {
         this.sessionId = sessionId;
         this.loginName = loginName;
         this.chars = chars;
@@ -64,8 +64,8 @@ public final class CharSelectionInfo extends L2GameServerPacket {
         // Can prevent players from creating new characters (if 0); (if 1, the client will ask if chars may be created (0x13) Response: (0x0D) )
         writeD(buffer, 3); //max char number per account
         writeC(buffer, 0x00);
-        for (L2Character l2Char : chars) {
-            writeS(buffer, l2Char.getNickName());
+        for (L2Player l2Char : chars) {
+            writeS(buffer, l2Char.getName());
             writeD(buffer, l2Char.getId());
             writeS(buffer, loginName);
             writeD(buffer, sessionId);

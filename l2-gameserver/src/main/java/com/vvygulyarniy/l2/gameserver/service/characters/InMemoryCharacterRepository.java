@@ -2,7 +2,7 @@ package com.vvygulyarniy.l2.gameserver.service.characters;
 
 import com.l2server.network.L2GameClient;
 import com.l2server.network.serverpackets.game.CharCreateFail;
-import com.vvygulyarniy.l2.domain.character.L2Character;
+import com.vvygulyarniy.l2.domain.character.L2Player;
 import com.vvygulyarniy.l2.domain.character.info.CharacterAppearance;
 import com.vvygulyarniy.l2.domain.character.info.ClassId;
 import com.vvygulyarniy.l2.domain.geo.Position;
@@ -20,15 +20,15 @@ import static java.util.stream.Collectors.toList;
  */
 @Slf4j
 public class InMemoryCharacterRepository implements CharacterRepository {
-    private final List<L2Character> characters = new ArrayList<>();
+    private final List<L2Player> characters = new ArrayList<>();
 
     {
-        L2Character newChar = new L2Character(characters.size() + 1, "asd", ClassId.elvenFighter,
-                                              new CharacterAppearance(CharacterAppearance.Sex.MALE,
+        L2Player newChar = new L2Player(characters.size() + 1, "asd", ClassId.elvenFighter,
+                                        new CharacterAppearance(CharacterAppearance.Sex.MALE,
                                                                       (byte) 1,
                                                                       (byte) 1,
                                                                       (byte) 1),
-                                              "test_character", 1);
+                                        "test_character", 1);
         newChar.setMaxHp(100);
         newChar.setCurrHp(100);
         newChar.setCurrMp(199);
@@ -40,20 +40,20 @@ public class InMemoryCharacterRepository implements CharacterRepository {
     }
 
     @Override
-    public L2Character createCharacter(L2GameClient gameClient,
-                                       ClassId classId,
-                                       String nickName,
-                                       CharacterAppearance appearance) throws CharacterCreationException {
+    public L2Player createCharacter(L2GameClient gameClient,
+                                    ClassId classId,
+                                    String nickName,
+                                    CharacterAppearance appearance) throws CharacterCreationException {
         if ((classId == null) || (classId.getParentClassId() != null)) {
             throw new CharacterCreationException(CharCreateFail.REASON_CREATION_FAILED);
         }
 
-        L2Character newChar = new L2Character(characters.size() + 1,
-                                              gameClient.getAccountName(),
-                                              classId,
-                                              appearance,
-                                              nickName,
-                                              1);
+        L2Player newChar = new L2Player(characters.size() + 1,
+                                        gameClient.getAccountName(),
+                                        classId,
+                                        appearance,
+                                        nickName,
+                                        1);
         newChar.setMaxHp(100);
         newChar.setCurrHp(100);
         newChar.setMaxMp(199);
@@ -65,7 +65,7 @@ public class InMemoryCharacterRepository implements CharacterRepository {
     }
 
     @Override
-    public List<L2Character> findByAccount(String accountName) {
+    public List<L2Player> findByAccount(String accountName) {
         log.debug("Looking for characters for account {}", accountName);
         return characters.stream().filter(c -> Objects.equals(c.getAccountName(), accountName)).collect(toList());
     }

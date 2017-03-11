@@ -22,7 +22,7 @@ import com.l2server.network.serverpackets.game.L2GameServerPacket;
 import com.l2server.network.serverpackets.game.ServerClose;
 import com.l2server.network.util.crypt.BlowFishKeygen;
 import com.l2server.network.util.crypt.GameCrypt;
-import com.vvygulyarniy.l2.domain.character.L2Character;
+import com.vvygulyarniy.l2.domain.character.L2Player;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 
@@ -46,9 +46,8 @@ public final class L2GameClient {
     private String _accountName;
     private SessionKey _sessionId;
     private boolean _isAuthedGG;
-    private List<L2Character> accountCharacters = new ArrayList<>();
-    private L2Character activeCharacter = null;
-    private int[][] trace;
+    private List<L2Player> accountCharacters = new ArrayList<>();
+    private L2Player activeCharacter = null;
 
     public L2GameClient(ChannelHandlerContext networkContext) {
         this.networkContext = networkContext;
@@ -83,19 +82,19 @@ public final class L2GameClient {
         return true;
     }
 
-    public List<L2Character> getAccountCharacters() {
+    public List<L2Player> getAccountCharacters() {
         return new ArrayList<>(accountCharacters);
     }
 
-    public void setAccountCharacters(List<L2Character> accountCharacters) {
+    public void setAccountCharacters(List<L2Player> accountCharacters) {
         this.accountCharacters = accountCharacters;
     }
 
-    public void addCharacter(L2Character l2Character) {
-        this.accountCharacters.add(l2Character);
+    public void addCharacter(L2Player l2Player) {
+        this.accountCharacters.add(l2Player);
     }
 
-    public L2Character getActiveCharacter() {
+    public L2Player getActiveCharacter() {
         return activeCharacter;
     }
 
