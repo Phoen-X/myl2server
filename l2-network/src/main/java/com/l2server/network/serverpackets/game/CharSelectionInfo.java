@@ -20,6 +20,7 @@ package com.l2server.network.serverpackets.game;
 
 import com.vvygulyarniy.l2.domain.character.L2Character;
 import com.vvygulyarniy.l2.domain.character.gear.PaperDoll;
+import com.vvygulyarniy.l2.domain.geo.Point;
 import com.vvygulyarniy.l2.domain.item.L2GearItem;
 import lombok.ToString;
 
@@ -76,9 +77,10 @@ public final class CharSelectionInfo extends L2GameServerPacket {
             writeD(buffer, l2Char.getClassId().getId());
 
             writeD(buffer, 0x01); // active ??
-            writeD(buffer, l2Char.getPosition().getX());
-            writeD(buffer, l2Char.getPosition().getY());
-            writeD(buffer, l2Char.getPosition().getZ());
+            Point position = l2Char.getPosition().getPoint();
+            writeD(buffer, position.getX());
+            writeD(buffer, position.getY());
+            writeD(buffer, position.getZ());
 
             writeF(buffer, l2Char.getCurrHp());
             writeF(buffer, l2Char.getCurrMp());

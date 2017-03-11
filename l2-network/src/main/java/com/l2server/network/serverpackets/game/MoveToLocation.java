@@ -31,12 +31,12 @@ public final class MoveToLocation extends L2GameServerPacket {
 
     public MoveToLocation(L2Character cha, Position newPosition) {
         _charObjId = cha.getId();
-        _x = cha.getPosition().getX();
-        _y = cha.getPosition().getY();
-        _z = cha.getPosition().getZ();
-        _xDst = newPosition.getX();
-        _yDst = newPosition.getY();
-        _zDst = newPosition.getZ();
+        _x = cha.getPosition().getPoint().getX();
+        _y = cha.getPosition().getPoint().getY();
+        _z = cha.getPosition().getPoint().getZ();
+        _xDst = newPosition.getPoint().getX();
+        _yDst = newPosition.getPoint().getY();
+        _zDst = newPosition.getPoint().getZ();
     }
 
     @Override

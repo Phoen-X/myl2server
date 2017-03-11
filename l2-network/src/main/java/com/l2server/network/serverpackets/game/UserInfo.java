@@ -20,6 +20,7 @@ package com.l2server.network.serverpackets.game;
 
 import com.vvygulyarniy.l2.domain.character.L2Character;
 import com.vvygulyarniy.l2.domain.character.gear.PaperDoll;
+import com.vvygulyarniy.l2.domain.geo.Point;
 import com.vvygulyarniy.l2.domain.item.L2GearItem;
 import lombok.ToString;
 
@@ -76,9 +77,10 @@ public final class UserInfo extends L2GameServerPacket {
     protected final void writeImpl(final ByteBuffer buffer) {
         writeC(buffer, 0x32);
 
-        writeD(buffer, activeChar.getPosition().getX());
-        writeD(buffer, activeChar.getPosition().getY());
-        writeD(buffer, activeChar.getPosition().getZ());
+        Point position = activeChar.getPosition().getPoint();
+        writeD(buffer, position.getX());
+        writeD(buffer, position.getY());
+        writeD(buffer, position.getZ());
         writeD(buffer, 0); //vehicle_id
 
         writeD(buffer, activeChar.getId());

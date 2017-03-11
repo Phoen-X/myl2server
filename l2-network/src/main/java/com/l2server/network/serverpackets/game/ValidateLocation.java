@@ -37,9 +37,9 @@ public final class ValidateLocation extends L2GameServerPacket {
     protected void writeImpl(ByteBuffer buffer) {
         writeC(buffer, 0x79);
         writeD(buffer, characterId);
-        writeD(buffer, position.getX());
-        writeD(buffer, position.getY());
-        writeD(buffer, position.getZ());
+        writeD(buffer, position.getPoint().getX());
+        writeD(buffer, position.getPoint().getY());
+        writeD(buffer, position.getPoint().getZ());
         writeD(buffer, position.getHeading());
     }
 }

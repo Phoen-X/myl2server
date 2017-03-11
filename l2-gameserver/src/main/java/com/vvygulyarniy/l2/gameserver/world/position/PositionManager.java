@@ -1,6 +1,7 @@
 package com.vvygulyarniy.l2.gameserver.world.position;
 
 import com.vvygulyarniy.l2.domain.character.L2Character;
+import com.vvygulyarniy.l2.domain.geo.Point;
 import com.vvygulyarniy.l2.domain.geo.Position;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -12,8 +13,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static java.lang.Math.round;
-import static java.lang.Math.toIntExact;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -50,33 +49,20 @@ public class PositionManager {
     private void moveChar(L2Character l2Char, MovingContext moveContext, Instant now) {
         log.info("Moving char id: {}, Moving ({}) -> ({})",
                  new Object[]{l2Char.getId(), l2Char.getPosition(), l2Char.getMoveTarget()});
-        Position currPosition = l2Char.getPosition();
-        Position targetPosition = l2Char.getMoveTarget();
+        Point current = l2Char.getPosition().getPoint();
+        Point target = l2Char.getMoveTarget().getPoint();
 
         double pointsPerMillisecond = l2Char.getRunSpeed() / Duration.ofSeconds(1).toMillis();
         long millisSinceLastUpdate = Duration.between(moveContext.getLastUpdate(), now).toMillis();
 
         double lengthToGo = pointsPerMillisecond * millisSinceLastUpdate;
-        if (lengthToGo >= currPosition.distanceTo(targetPosition)) {
-            l2Char.setPosition(targetPosition);
+        if (lengthToGo >= current.distanceTo(target)) {
+            l2Char.setPosition(new Position(target, l2Char.getPosition().getHeading()));
             l2Char.moveStopped();
             log.info("Moving stopped for char {}", l2Char);
         } else {
-            double yLength = targetPosition.getY() - currPosition.getY();
-            double xLength = targetPosition.getX() - currPosition.getX();
-            double zLength = targetPosition.getZ() - currPosition.getZ();
-
-            double angleSin = yLength / currPosition.distanceTo(targetPosition);
-            double angleCos = xLength / currPosition.distanceTo(targetPosition);
-            double zAngleSin = zLength / currPosition.distanceTo(targetPosition);
-
-            double deltaX = lengthToGo * angleCos;
-            double deltaY = lengthToGo * angleSin;
-            double deltaZ = lengthToGo * zAngleSin;
-            int newX = toIntExact(round(currPosition.getX() + deltaX));
-            int newY = toIntExact(round(currPosition.getY() + deltaY));
-            int newZ = toIntExact(round(currPosition.getZ() + deltaZ));
-            Position newPosition = new Position(newX, newY, newZ);
+            Position newPosition = new Position(current.moveForwardTo(target, lengthToGo),
+                                                l2Char.getPosition().getHeading());
             log.info("New position {}", newPosition);
             l2Char.setPosition(newPosition);
         }
@@ -85,14 +71,16 @@ public class PositionManager {
 
     public Position validatePosition(L2Character l2Char, Position proposedPosition) {
         Position currentPosition = l2Char.getPosition();
-        if (currentPosition.distanceTo(proposedPosition) < 20) {
+        Point currentPoint = currentPosition.getPoint();
+        Point proposedPoint = proposedPosition.getPoint();
+        if (currentPoint.distanceTo(proposedPoint) < 20) {
             l2Char.setPosition(proposedPosition);
             return proposedPosition;
         } else {
             //TODO we have to make our own opinion, not to trust client side
-            l2Char.setPosition(new Position(currentPosition.getX(),
-                                            currentPosition.getY(),
-                                            proposedPosition.getZ(),
+            l2Char.setPosition(new Position(new Point(currentPoint.getX(),
+                                                      currentPoint.getY(),
+                                                      proposedPoint.getZ()),
                                             proposedPosition.getHeading()));
             return l2Char.getPosition();
         }

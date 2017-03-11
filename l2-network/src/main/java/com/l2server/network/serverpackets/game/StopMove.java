@@ -37,9 +37,9 @@ public final class StopMove extends L2GameServerPacket {
     protected final void writeImpl(final ByteBuffer buffer) {
         writeC(buffer, 0x47);
         writeD(buffer, objectId);
-        writeD(buffer, position.getX());
-        writeD(buffer, position.getY());
-        writeD(buffer, position.getZ());
+        writeD(buffer, position.getPoint().getX());
+        writeD(buffer, position.getPoint().getY());
+        writeD(buffer, position.getPoint().getZ());
         writeD(buffer, position.getHeading());
     }
 }

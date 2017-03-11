@@ -53,9 +53,9 @@ public class CharSelected extends L2GameServerPacket {
         writeD(buffer, activeChar.getClassId().getRace().getId());
         writeD(buffer, activeChar.getClassId().getId());
         writeD(buffer, 0x01); // active ??
-        writeD(buffer, activeChar.getPosition().getX());
-        writeD(buffer, activeChar.getPosition().getY());
-        writeD(buffer, activeChar.getPosition().getZ());
+        writeD(buffer, activeChar.getPosition().getPoint().getX());
+        writeD(buffer, activeChar.getPosition().getPoint().getY());
+        writeD(buffer, activeChar.getPosition().getPoint().getZ());
 
         writeF(buffer, activeChar.getCurrHp());
         writeF(buffer, activeChar.getCurrMp());
