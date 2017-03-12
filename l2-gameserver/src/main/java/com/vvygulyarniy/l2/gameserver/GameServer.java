@@ -1,9 +1,9 @@
 package com.vvygulyarniy.l2.gameserver;
 
-import com.l2server.network.coders.gameserver.GameServerClientPacketDecoder;
-import com.l2server.network.coders.gameserver.GameServerClientPacketEncoder;
-import com.vvygulyarniy.l2.gameserver.network.L2GameServerPacketProcessor;
-import com.vvygulyarniy.l2.gameserver.network.netty.GameServerPacketHandler;
+import com.vvygulyarniy.l2.gameserver.network.handler.NettyHandler;
+import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessorImpl;
+import com.vvygulyarniy.l2.gameserver.network.packet.coder.L2ClientPacketDecoder;
+import com.vvygulyarniy.l2.gameserver.network.packet.coder.L2ServerPacketEncoder;
 import com.vvygulyarniy.l2.gameserver.service.characters.InMemoryCharacterRepository;
 import com.vvygulyarniy.l2.gameserver.world.L2World;
 import com.vvygulyarniy.l2.gameserver.world.castle.CastleRegistry;
@@ -37,7 +37,7 @@ public class GameServer {
         InMemoryCharacterRepository characterRepository = new InMemoryCharacterRepository();
         L2World world = new L2World(10);
 
-        L2GameServerPacketProcessor packetProcessor = new L2GameServerPacketProcessor(characterRepository,
+        L2ClientPacketProcessorImpl packetProcessor = new L2ClientPacketProcessorImpl(characterRepository,
                                                                                       castleRegistry,
                                                                                       world);
         EventLoopGroup bossGroup = new NioEventLoopGroup(); // (1)
@@ -49,9 +49,9 @@ public class GameServer {
              .childHandler(new ChannelInitializer<SocketChannel>() { // (4)
                  @Override
                  public void initChannel(SocketChannel ch) throws Exception {
-                     ch.pipeline().addLast(new GameServerClientPacketDecoder(),
-                                           new GameServerClientPacketEncoder(),
-                                           new GameServerPacketHandler(packetProcessor));
+                     ch.pipeline().addLast(new L2ClientPacketDecoder(),
+                                           new L2ServerPacketEncoder(),
+                                           new NettyHandler(packetProcessor));
                  }
              })
              .option(ChannelOption.SO_BACKLOG, 128)          // (5)

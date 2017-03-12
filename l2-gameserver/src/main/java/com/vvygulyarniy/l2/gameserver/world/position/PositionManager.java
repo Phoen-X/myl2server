@@ -1,8 +1,9 @@
 package com.vvygulyarniy.l2.gameserver.world.position;
 
-import com.vvygulyarniy.l2.domain.character.L2Player;
 import com.vvygulyarniy.l2.domain.geo.Point;
 import com.vvygulyarniy.l2.domain.geo.Position;
+import com.vvygulyarniy.l2.gameserver.world.GameEventNotificator;
+import com.vvygulyarniy.l2.gameserver.world.character.L2Player;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,8 +21,12 @@ import static java.util.stream.Collectors.toList;
  */
 @Slf4j
 public class PositionManager {
+    private final GameEventNotificator notificator;
     private final Map<L2Player, MovingContext> movingObjects = new ConcurrentHashMap<>();
 
+    public PositionManager(GameEventNotificator notificator) {
+        this.notificator = notificator;
+    }
 
     public void updatePositions(Instant now) {
         List<L2Player> finishedMove = movingObjects.keySet()

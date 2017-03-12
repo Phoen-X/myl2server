@@ -3,7 +3,6 @@ package com.vvygulyarniy.l2.loginserver.logic;
 import com.l2server.network.ClientPacketProcessor;
 import com.l2server.network.L2LoginClient;
 import com.l2server.network.SessionKey;
-import com.l2server.network.clientpackets.game.ProtocolVersion;
 import com.l2server.network.clientpackets.login.AuthGameGuard;
 import com.l2server.network.clientpackets.login.RequestAuthLogin;
 import com.l2server.network.clientpackets.login.RequestServerList;
@@ -43,7 +42,7 @@ public class LoginPacketsProcessor implements ClientPacketProcessor {
     public void process(RequestServerList packet, L2LoginClient client) {
         if (client.getSessionKey().checkLoginPair(packet.getSessionKey1(), packet.getSessionKey2())) {
             try {
-                InetAddress gameServerAddr = InetAddress.getByName("l2-gameserver");
+                InetAddress gameServerAddr = InetAddress.getByName("localhost");
                 byte[] serverIp = Arrays.copyOf(gameServerAddr.getAddress(), 4);
                 log.info("GameServer IP resolved: {}", Arrays.toString(serverIp));
                 List<ServerData> servers = Collections.singletonList(new ServerData(serverIp,
@@ -63,11 +62,6 @@ public class LoginPacketsProcessor implements ClientPacketProcessor {
         } else {
             client.close(REASON_ACCESS_FAILED);
         }
-    }
-
-    @Override
-    public void process(ProtocolVersion packet, L2LoginClient client) {
-
     }
 
     @Override
@@ -107,7 +101,7 @@ public class LoginPacketsProcessor implements ClientPacketProcessor {
                 client.setState(AUTHED_LOGIN);
                 client.setSessionKey(lc.assignSessionKeyToClient(info.getLogin(), client));
                 try {
-                    InetAddress gameServerAddr = InetAddress.getByName("l2-gameserver");
+                    InetAddress gameServerAddr = InetAddress.getByName("localhost");
                     byte[] serverIp = Arrays.copyOf(gameServerAddr.getAddress(), 4);
                     log.info("GameServer IP resolved: {}", Arrays.toString(serverIp));
                     List<ServerData> servers = Collections.singletonList(new ServerData(serverIp,

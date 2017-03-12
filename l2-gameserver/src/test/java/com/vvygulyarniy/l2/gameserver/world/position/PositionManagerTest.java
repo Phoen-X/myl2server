@@ -1,16 +1,19 @@
 package com.vvygulyarniy.l2.gameserver.world.position;
 
-import com.vvygulyarniy.l2.domain.character.L2Player;
-import com.vvygulyarniy.l2.domain.character.info.CharacterAppearance;
-import com.vvygulyarniy.l2.domain.character.info.ClassId;
 import com.vvygulyarniy.l2.domain.geo.Position;
+import com.vvygulyarniy.l2.gameserver.world.GameEventNotificator;
+import com.vvygulyarniy.l2.gameserver.world.character.L2Player;
+import com.vvygulyarniy.l2.gameserver.world.character.info.CharacterAppearance;
+import com.vvygulyarniy.l2.gameserver.world.character.info.ClassId;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.time.Instant;
 
-import static com.vvygulyarniy.l2.domain.character.info.CharacterAppearance.Sex.MALE;
+import static com.vvygulyarniy.l2.gameserver.world.character.info.CharacterAppearance.Sex.MALE;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
+import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 /**
  * Created by Phoen-X on 03.03.2017.
@@ -18,10 +21,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PositionManagerTest {
 
     private PositionManager manager;
+    private GameEventNotificator gameEventNotificator;
 
     @BeforeMethod
     public void setUp() throws Exception {
-        manager = new PositionManager();
+        gameEventNotificator = mock(GameEventNotificator.class);
+        manager = new PositionManager(gameEventNotificator);
     }
 
     @Test
@@ -86,6 +91,24 @@ public class PositionManagerTest {
         assertThat(l2Char.getPosition()).isEqualTo(new Position(0, 200, 0));
         manager.updatePositions(now.plusSeconds(3));
         assertThat(l2Char.getPosition()).isEqualTo(targetPosition);
+    }
+
+    @Test
+    public void shouldNotifyPlayerWhenMoveFinished() throws Exception {
+        L2Player l2Char = createTestChar();
+        l2Char.setRunSpeed(50);
+        Position startPosition = new Position(0, 0, 0);
+        Position targetPosition = new Position(0, 50, 0);
+
+        l2Char.setPosition(startPosition);
+        l2Char.setMoveTarget(targetPosition);
+
+        Instant now = Instant.now();
+        manager.startMoving(l2Char, now);
+        manager.updatePositions(now.plusSeconds(1));
+        verify(gameEventNotificator, never()).notifyMoveFinished(l2Char);
+        manager.updatePositions(now.plusSeconds(2));
+        verify(gameEventNotificator, times(1)).notifyMoveFinished(l2Char);
     }
 
     private L2Player createTestChar() {
