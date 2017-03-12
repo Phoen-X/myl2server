@@ -32,8 +32,8 @@ public class PositionManager {
         List<L2Player> finishedMove = movingObjects.keySet()
                                                    .stream()
                                                    .filter(l2char -> l2char.getMoveTarget() == null || Objects.equals(
-                                                              l2char.getMoveTarget(),
-                                                              l2char.getPosition()))
+                                                           l2char.getMoveTarget(),
+                                                           l2char.getPosition()))
                                                    .collect(toList());
 
         finishedMove.forEach(l2char -> {
@@ -80,15 +80,15 @@ public class PositionManager {
         Point proposedPoint = proposedPosition.getPoint();
         if (currentPoint.distanceTo(proposedPoint) < 20) {
             l2Char.setPosition(proposedPosition);
-            return proposedPosition;
         } else {
             //TODO we have to make our own opinion, not to trust client side
             l2Char.setPosition(new Position(new Point(currentPoint.getX(),
                                                       currentPoint.getY(),
                                                       proposedPoint.getZ()),
                                             proposedPosition.getHeading()));
-            return l2Char.getPosition();
         }
+
+        return l2Char.getPosition();
     }
 
     @Data

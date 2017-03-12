@@ -33,7 +33,7 @@ public class InMemoryCharacterRepository implements CharacterRepository {
         newChar.setCurrHp(100);
         newChar.setCurrMp(199);
         newChar.setMaxMp(200);
-        newChar.setPosition(new Position(143265, -110044, -3944));
+        newChar.setPosition(new Position(15000, 119000, -11900));
         newChar.getPaperDoll().wearRightHand(new L2GenericGearItem(1, 2369, "Squire's Sword", 0));
         newChar.getPaperDoll().wearChest(new L2GenericGearItem(2, 1146, "Squire's Shirt", 0));
         characters.add(newChar);
