@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.vvygulyarniy.l2.gameserver.world.character.info.CharacterAppearance.Sex.MALE;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -23,11 +24,8 @@ public class InMemoryCharacterRepository implements CharacterRepository {
     private final List<L2Player> characters = new ArrayList<>();
 
     {
-        L2Player newChar = new L2Player(characters.size() + 1, "asd", ClassId.elvenFighter,
-                                        new CharacterAppearance(CharacterAppearance.Sex.MALE,
-                                                                      (byte) 1,
-                                                                      (byte) 1,
-                                                                      (byte) 1),
+        L2Player newChar = new L2Player(L2Player.ID_SEQUENCE.incrementAndGet(), "asd", ClassId.elvenFighter,
+                                        new CharacterAppearance(MALE, (byte) 1, (byte) 1, (byte) 1),
                                         "test_character", 1);
         newChar.setMaxHp(100);
         newChar.setCurrHp(100);

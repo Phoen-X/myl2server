@@ -18,11 +18,14 @@
  */
 package com.vvygulyarniy.l2.gameserver.network.packet.server;
 
+import lombok.ToString;
+
 import java.nio.ByteBuffer;
 
 /**
  * @author KenM
  */
+@ToString
 public class ExShowFortressInfo extends L2GameServerPacket {
     public static final ExShowFortressInfo STATIC_PACKET = new ExShowFortressInfo();
 

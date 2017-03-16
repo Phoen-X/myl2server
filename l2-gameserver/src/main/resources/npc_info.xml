@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<npc_info_list>
+    <npc id="20021" name="Some_mob" level="25" respawnTime="25">
+        <spawn_position x="15000" y="119000" z="-11900" heading="25317"/>
+    </npc>
+</npc_info_list>

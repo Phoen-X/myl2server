@@ -20,10 +20,12 @@ package com.vvygulyarniy.l2.gameserver.network.packet.client;
 
 import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
+import lombok.ToString;
 
 /**
  * @author l3x
  */
+@ToString
 public class RequestManorList extends L2GameClientPacket {
     @Override
     protected void readImpl() {

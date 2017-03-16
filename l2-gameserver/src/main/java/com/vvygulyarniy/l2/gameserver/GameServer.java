@@ -17,8 +17,10 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import lombok.extern.slf4j.Slf4j;
+import org.jdom2.JDOMException;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 /**
  * Created by Phoen-X on 16.02.2017.
@@ -26,12 +28,12 @@ import java.io.IOException;
 @Slf4j
 public class GameServer {
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws Exception {
         startNettyHandler();
 
     }
 
-    private static void startNettyHandler() throws InterruptedException {
+    private static void startNettyHandler() throws InterruptedException, JDOMException, IOException, URISyntaxException {
         log.info("Starting game server");
         CastleRegistry castleRegistry = new HardCodedCastleRegistry();
         InMemoryCharacterRepository characterRepository = new InMemoryCharacterRepository();

@@ -20,10 +20,12 @@ package com.vvygulyarniy.l2.gameserver.network.packet.client;
 
 import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
+import lombok.ToString;
 
 /**
  * @author KenM
  */
+@ToString
 public class RequestAllFortressInfo extends L2GameClientPacket {
     private static final String _C__D0_3D_REQUESTALLFORTRESSINFO = "[C] D0:3D RequestAllFortressInfo";
 

@@ -4,14 +4,18 @@ import com.vvygulyarniy.l2.domain.geo.Position;
 import com.vvygulyarniy.l2.gameserver.world.character.info.CollisionParams;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Phoen-X on 11.03.2017.
  */
+@ToString
 public abstract class L2Character {
+    public static final AtomicInteger ID_SEQUENCE = new AtomicInteger(1);
     @Getter
     protected final int id;
     @Getter

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<npc_info_list>
+    <npc id="1" name="Some Mob" level="13" respawnTime="30">
+        <spawn_position x="1" y="1" z="1" heading="13"/>
+    </npc>
+    <npc id="2" name="Some Mob 2" level="14" respawnTime="60">
+        <spawn_position x="2" y="2" z="2" heading="14"/>
+    </npc>
+</npc_info_list>
