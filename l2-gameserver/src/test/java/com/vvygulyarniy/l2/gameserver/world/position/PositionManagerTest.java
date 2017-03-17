@@ -1,10 +1,11 @@
 package com.vvygulyarniy.l2.gameserver.world.position;
 
+import com.google.common.eventbus.EventBus;
 import com.vvygulyarniy.l2.domain.geo.Position;
-import com.vvygulyarniy.l2.gameserver.world.GameEventNotificator;
 import com.vvygulyarniy.l2.gameserver.world.character.L2Player;
 import com.vvygulyarniy.l2.gameserver.world.character.info.CharacterAppearance;
 import com.vvygulyarniy.l2.gameserver.world.character.info.ClassId;
+import com.vvygulyarniy.l2.gameserver.world.event.MoveStoppedEvent;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -13,7 +14,6 @@ import java.time.Instant;
 import static com.vvygulyarniy.l2.gameserver.world.character.info.CharacterAppearance.Sex.MALE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
-import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 /**
  * Created by Phoen-X on 03.03.2017.
@@ -21,12 +21,12 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 public class PositionManagerTest {
 
     private PositionManager manager;
-    private GameEventNotificator gameEventNotificator;
+    private EventBus eventBus;
 
     @BeforeMethod
     public void setUp() throws Exception {
-        gameEventNotificator = mock(GameEventNotificator.class);
-        manager = new PositionManager(gameEventNotificator);
+        eventBus = mock(EventBus.class);
+        manager = new PositionManager(eventBus);
     }
 
     @Test
@@ -96,7 +96,7 @@ public class PositionManagerTest {
     @Test
     public void shouldNotifyPlayerWhenMoveFinished() throws Exception {
         L2Player l2Char = createTestChar();
-        l2Char.setRunSpeed(50);
+        l2Char.setRunSpeed(49);
         Position startPosition = new Position(0, 0, 0);
         Position targetPosition = new Position(0, 50, 0);
 
@@ -106,9 +106,9 @@ public class PositionManagerTest {
         Instant now = Instant.now();
         manager.startMoving(l2Char, now);
         manager.updatePositions(now.plusSeconds(1));
-        verify(gameEventNotificator, never()).notifyMoveFinished(l2Char);
+        verify(eventBus, never()).post(new MoveStoppedEvent(l2Char));
         manager.updatePositions(now.plusSeconds(2));
-        verify(gameEventNotificator, times(1)).notifyMoveFinished(l2Char);
+        verify(eventBus, times(1)).post(new MoveStoppedEvent(l2Char));
     }
 
     private L2Player createTestChar() {

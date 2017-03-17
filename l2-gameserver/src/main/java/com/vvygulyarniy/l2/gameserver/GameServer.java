@@ -1,5 +1,6 @@
 package com.vvygulyarniy.l2.gameserver;
 
+import com.vvygulyarniy.l2.gameserver.config.SpringConfig;
 import com.vvygulyarniy.l2.gameserver.network.handler.NettyHandler;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessorImpl;
 import com.vvygulyarniy.l2.gameserver.network.packet.coder.L2ClientPacketDecoder;
@@ -18,6 +19,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import lombok.extern.slf4j.Slf4j;
 import org.jdom2.JDOMException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -37,7 +40,8 @@ public class GameServer {
         log.info("Starting game server");
         CastleRegistry castleRegistry = new HardCodedCastleRegistry();
         InMemoryCharacterRepository characterRepository = new InMemoryCharacterRepository();
-        L2World world = new L2World(10);
+        ApplicationContext ctx = new AnnotationConfigApplicationContext(SpringConfig.class);
+        L2World world = ctx.getBean(L2World.class);
 
         L2ClientPacketProcessorImpl packetProcessor = new L2ClientPacketProcessorImpl(characterRepository,
                                                                                       castleRegistry,

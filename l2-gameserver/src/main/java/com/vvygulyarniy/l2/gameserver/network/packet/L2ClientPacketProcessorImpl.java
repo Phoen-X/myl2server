@@ -122,8 +122,6 @@ public class L2ClientPacketProcessorImpl implements L2ClientPacketProcessor {
             client.closeNow();
         } else {
             activeCharacter.setConnection(new NettyClientConnection(client.getNetworkContext()));
-            activeCharacter.listenEvent((event) -> client.send(new StopMove(event.getL2Character().getId(),
-                                                                            event.getLastKnownPosition())));
             world.enterWorld(activeCharacter);
         }
     }

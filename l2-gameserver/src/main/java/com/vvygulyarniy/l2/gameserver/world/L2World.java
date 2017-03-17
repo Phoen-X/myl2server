@@ -1,5 +1,6 @@
 package com.vvygulyarniy.l2.gameserver.world;
 
+import com.google.common.eventbus.EventBus;
 import com.vvygulyarniy.l2.domain.geo.Position;
 import com.vvygulyarniy.l2.gameserver.network.packet.server.AbstractNpcInfo.NpcInfo;
 import com.vvygulyarniy.l2.gameserver.network.packet.server.*;
@@ -30,6 +31,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  */
 @Slf4j
 public class L2World implements GameEventNotificator {
+    private final EventBus eventBus;
     private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(4);
     private final PositionManager positionManager;
     private final NpcSpawnManager spawnManager;
@@ -37,16 +39,18 @@ public class L2World implements GameEventNotificator {
     private List<L2Player> onlinePlayers = new ArrayList<>();
     private List<L2Npc> npcList = new ArrayList<>();
 
-    public L2World(int ticksPerSecond) throws JDOMException, IOException, URISyntaxException {
+    public L2World(EventBus eventBus, int ticksPerSecond) throws JDOMException, IOException, URISyntaxException {
+        this.eventBus = eventBus;
+        log.info("Even bus: {}", eventBus);
+        this.positionManager = new PositionManager(eventBus);
         this.ticksPerSecond = ticksPerSecond;
-        this.positionManager = new PositionManager(this);
         Path npcInfoFile = Paths.get(ClassLoader.getSystemResource("npc_info.xml").toURI());
         this.spawnManager = new NpcSpawnManager(this, new XmlNpcInfoRepository(new XmlNpcSpawnInfoParser(npcInfoFile)));
         int tickDelay = 1000 / this.ticksPerSecond;
         this.executorService.scheduleAtFixedRate(() -> positionManager.updatePositions(Instant.now()), 0,
                                                  tickDelay, MILLISECONDS);
-        this.executorService.scheduleAtFixedRate(spawnManager::spawnNpcs, 10000, tickDelay, MILLISECONDS);
-        this.executorService.scheduleAtFixedRate(this::notifyNpcs, 0, tickDelay, MILLISECONDS);
+        //this.executorService.scheduleAtFixedRate(spawnManager::spawnNpcs, 10000, tickDelay, MILLISECONDS);
+        //this.executorService.scheduleAtFixedRate(this::notifyNpcs, 0, tickDelay, MILLISECONDS);
     }
 
     private void notifyNpcs() {

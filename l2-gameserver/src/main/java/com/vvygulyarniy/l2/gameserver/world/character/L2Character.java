@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -20,7 +18,6 @@ public abstract class L2Character {
     protected final int id;
     @Getter
     protected final CollisionParams collisionParams;
-    protected final Collection<MoveStoppedEventListener> moveStoppedListeners = new ArrayList<>();
     @Getter
     protected String name;
     @Getter
@@ -61,15 +58,5 @@ public abstract class L2Character {
 
     public void setMoveTarget(Position moveTo) {
         this.moveTarget = moveTo;
-    }
-
-    public void moveStopped() {
-        MoveStoppedEventListener.MoveStoppedEvent event = new MoveStoppedEventListener.MoveStoppedEvent(this, position);
-        moveTarget = null;
-        moveStoppedListeners.forEach(listener -> listener.movingStopped(event));
-    }
-
-    public void listenEvent(MoveStoppedEventListener moveStoppedEventListener) {
-        this.moveStoppedListeners.add(moveStoppedEventListener);
     }
 }

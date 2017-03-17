@@ -1,45 +1,31 @@
 package com.vvygulyarniy.l2.gameserver.world.position;
 
+import com.google.common.eventbus.EventBus;
 import com.vvygulyarniy.l2.domain.geo.Point;
 import com.vvygulyarniy.l2.domain.geo.Position;
-import com.vvygulyarniy.l2.gameserver.world.GameEventNotificator;
 import com.vvygulyarniy.l2.gameserver.world.character.L2Player;
+import com.vvygulyarniy.l2.gameserver.world.event.MoveStoppedEvent;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * Phoen-X on 03.03.2017.
  */
 @Slf4j
 public class PositionManager {
-    private final GameEventNotificator notificator;
+    private final EventBus eventBus;
     private final Map<L2Player, MovingContext> movingObjects = new ConcurrentHashMap<>();
 
-    public PositionManager(GameEventNotificator notificator) {
-        this.notificator = notificator;
+    public PositionManager(EventBus eventBus) {
+        this.eventBus = eventBus;
     }
 
     public void updatePositions(Instant now) {
-        List<L2Player> finishedMove = movingObjects.keySet()
-                                                   .stream()
-                                                   .filter(l2char -> l2char.getMoveTarget() == null || Objects.equals(
-                                                           l2char.getMoveTarget(),
-                                                           l2char.getPosition()))
-                                                   .collect(toList());
-
-        finishedMove.forEach(l2char -> {
-            log.info("Removing char {} from moving list", l2char.getId());
-            movingObjects.remove(l2char);
-        });
         movingObjects.forEach((l2Char, moveContext) -> moveChar(l2Char, moveContext, now));
     }
 
@@ -63,7 +49,9 @@ public class PositionManager {
         double lengthToGo = pointsPerMillisecond * millisSinceLastUpdate;
         if (lengthToGo >= current.distanceTo(target)) {
             l2Char.setPosition(new Position(target, l2Char.getPosition().getHeading()));
-            l2Char.moveStopped();
+            l2Char.setMoveTarget(null);
+            eventBus.post(new MoveStoppedEvent(l2Char));
+            movingObjects.remove(l2Char);
             log.info("Moving stopped for char {}", l2Char);
         } else {
             Position newPosition = new Position(current.moveForwardTo(target, lengthToGo),
