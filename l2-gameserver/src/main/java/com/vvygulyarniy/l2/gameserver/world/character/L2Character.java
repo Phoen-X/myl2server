@@ -2,6 +2,7 @@ package com.vvygulyarniy.l2.gameserver.world.character;
 
 import com.vvygulyarniy.l2.domain.geo.Position;
 import com.vvygulyarniy.l2.gameserver.world.character.info.CollisionParams;
+import com.vvygulyarniy.l2.gameserver.world.character.info.stat.Gauge;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -19,21 +20,15 @@ public abstract class L2Character {
     @Getter
     protected final CollisionParams collisionParams;
     @Getter
+    protected final Gauge cp;
+    @Getter
+    protected final Gauge hp;
+    @Getter
+    protected final Gauge mp;
+    @Getter
     protected String name;
     @Getter
     protected int level;
-    @Setter
-    @Getter
-    protected int maxHp;
-    @Setter
-    @Getter
-    protected int currHp;
-    @Setter
-    @Getter
-    protected int maxMp;
-    @Setter
-    @Getter
-    protected int currMp;
     @Setter
     @Getter
     protected Position position;
@@ -49,11 +44,20 @@ public abstract class L2Character {
     @Getter
     protected int swimWalkSpeed = 25;
 
-    public L2Character(int id, String name, int level, CollisionParams collisionParams) {
+    public L2Character(int id,
+                       String name,
+                       int level,
+                       CollisionParams collisionParams,
+                       int maxCp,
+                       int maxHp,
+                       int maxMp) {
         this.id = id;
         this.name = name;
         this.level = level;
         this.collisionParams = collisionParams;
+        this.cp = new Gauge(maxCp / 2, maxCp, 3);
+        this.hp = new Gauge(maxHp / 2, maxHp, 3);
+        this.mp = new Gauge(maxMp, maxMp / 2, 3);
     }
 
     public void setMoveTarget(Position moveTo) {

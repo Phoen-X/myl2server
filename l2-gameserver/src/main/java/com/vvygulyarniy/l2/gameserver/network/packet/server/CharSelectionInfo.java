@@ -37,12 +37,6 @@ public final class CharSelectionInfo extends L2GameServerPacket {
     private final List<L2Player> chars;
     private int activeId;
 
-    /**
-     * Constructor for CharSelectionInfo.
-     *
-     * @param loginName
-     * @param sessionId
-     */
     public CharSelectionInfo(String loginName, int sessionId, List<L2Player> chars, int activeCharId) {
         this.sessionId = sessionId;
         this.loginName = loginName;
@@ -82,8 +76,8 @@ public final class CharSelectionInfo extends L2GameServerPacket {
             writeD(buffer, position.getY());
             writeD(buffer, position.getZ());
 
-            writeF(buffer, l2Char.getCurrHp());
-            writeF(buffer, l2Char.getCurrMp());
+            writeF(buffer, l2Char.getHp().getCurrValue());
+            writeF(buffer, l2Char.getMp().getCurrValue());
 
             writeD(buffer, l2Char.getSp());
             writeQ(buffer, l2Char.getExp());
@@ -140,8 +134,8 @@ public final class CharSelectionInfo extends L2GameServerPacket {
             writeD(buffer, l2Char.getAppearance().getHairColor());
             writeD(buffer, l2Char.getAppearance().getFace());
 
-            writeF(buffer, l2Char.getMaxHp()); // hp max
-            writeF(buffer, l2Char.getMaxMp()); // mp max
+            writeF(buffer, l2Char.getHp().getMaxValue()); // hp max
+            writeF(buffer, l2Char.getMp().getMaxValue()); // mp max
 
             /*long deleteTime = l2Char.getDeleteTimer();
             int deletedays = 0;

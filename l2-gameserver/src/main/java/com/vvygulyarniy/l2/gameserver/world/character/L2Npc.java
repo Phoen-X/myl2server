@@ -11,7 +11,7 @@ public class L2Npc extends L2Character {
     private final int npcId;
 
     public L2Npc(int id, int npcId, String name, int level, CollisionParams collisionParams) {
-        super(id, name, level, collisionParams);
+        super(id, name, level, collisionParams, 0, 100, 100);
         this.npcId = npcId;
     }
 

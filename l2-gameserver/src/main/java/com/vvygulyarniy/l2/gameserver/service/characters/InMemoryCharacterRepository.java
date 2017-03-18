@@ -27,10 +27,6 @@ public class InMemoryCharacterRepository implements CharacterRepository {
         L2Player newChar = new L2Player(L2Player.ID_SEQUENCE.incrementAndGet(), "asd", ClassId.elvenFighter,
                                         new CharacterAppearance(MALE, (byte) 1, (byte) 1, (byte) 1),
                                         "test_character", 1);
-        newChar.setMaxHp(100);
-        newChar.setCurrHp(100);
-        newChar.setCurrMp(199);
-        newChar.setMaxMp(200);
         newChar.setPosition(new Position(15000, 119000, -11900));
         newChar.getPaperDoll().wearRightHand(new L2GenericGearItem(1, 2369, "Squire's Sword", 0));
         newChar.getPaperDoll().wearChest(new L2GenericGearItem(2, 1146, "Squire's Shirt", 0));
@@ -52,10 +48,6 @@ public class InMemoryCharacterRepository implements CharacterRepository {
                                         appearance,
                                         nickName,
                                         1);
-        newChar.setMaxHp(100);
-        newChar.setCurrHp(100);
-        newChar.setMaxMp(199);
-        newChar.setCurrMp(200);
         newChar.setPosition(new Position(30378, 43627, -2806));
         characters.add(newChar);
         log.info("Character created: {}", newChar);

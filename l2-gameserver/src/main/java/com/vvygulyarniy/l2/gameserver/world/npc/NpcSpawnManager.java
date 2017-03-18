@@ -1,11 +1,12 @@
 package com.vvygulyarniy.l2.gameserver.world.npc;
 
-import com.vvygulyarniy.l2.gameserver.world.L2World;
+import com.google.common.eventbus.EventBus;
 import com.vvygulyarniy.l2.gameserver.world.character.L2Character;
 import com.vvygulyarniy.l2.gameserver.world.character.L2Npc;
 import com.vvygulyarniy.l2.gameserver.world.character.info.CollisionParams;
 import com.vvygulyarniy.l2.gameserver.world.config.npc.Npc;
 import com.vvygulyarniy.l2.gameserver.world.config.npc.NpcInfoRepository;
+import com.vvygulyarniy.l2.gameserver.world.event.npc.NpcSpawned;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
@@ -16,12 +17,12 @@ import java.util.Map;
  */
 @Slf4j
 public class NpcSpawnManager {
-    private final L2World world;
+    private final EventBus eventBus;
     private final NpcInfoRepository repo;
     private final Map<Npc, NpcSpawnInfo> npcMap = new HashMap<>();
 
-    public NpcSpawnManager(L2World world, NpcInfoRepository repo) {
-        this.world = world;
+    public NpcSpawnManager(EventBus eventBus, NpcInfoRepository repo) {
+        this.eventBus = eventBus;
         this.repo = repo;
     }
 
@@ -42,7 +43,7 @@ public class NpcSpawnManager {
                                       CollisionParams.collisionParams(24.5, 9));
         npcInstance.setPosition(npc.getSpawnPosition());
         npcMap.put(npc, new NpcSpawnInfo(npc, npcInstance));
-        world.spawnNpc(npcInstance);
+        eventBus.post(new NpcSpawned(npcInstance));
     }
 
 

@@ -26,12 +26,6 @@ public class L2Player extends L2Character {
     private int sp;
     @Setter
     @Getter
-    private int maxCp;
-    @Setter
-    @Getter
-    private int currCp;
-    @Setter
-    @Getter
     private int currLoad;
     @Setter
     @Getter
@@ -50,7 +44,7 @@ public class L2Player extends L2Character {
                     CharacterAppearance appearance,
                     String name,
                     int level) {
-        super(id, name, level, classId.getCollisionParams(appearance.getSex()));
+        super(id, name, level, classId.getCollisionParams(appearance.getSex()), 200, 100, 50);
         this.accountName = accountName;
         this.appearance = appearance;
         this.classId = classId;

@@ -99,10 +99,10 @@ public final class UserInfo extends L2GameServerPacket {
         writeD(buffer, activeChar.getClassId().getBasicStatSet().get(INT));
         writeD(buffer, activeChar.getClassId().getBasicStatSet().get(WIT));
         writeD(buffer, activeChar.getClassId().getBasicStatSet().get(MEN));
-        writeD(buffer, activeChar.getMaxHp());
-        writeD(buffer, Math.round(activeChar.getCurrHp()));
-        writeD(buffer, activeChar.getMaxMp());
-        writeD(buffer, Math.round(activeChar.getCurrMp()));
+        writeD(buffer, (int) activeChar.getHp().getMaxValue());
+        writeD(buffer, (int) activeChar.getHp().getCurrValue());
+        writeD(buffer, (int) activeChar.getMp().getMaxValue());
+        writeD(buffer, (int) activeChar.getMp().getCurrValue());
         writeD(buffer, activeChar.getSp());
         writeD(buffer, activeChar.getCurrLoad());
         writeD(buffer, activeChar.getMaxLoad());
@@ -247,8 +247,8 @@ public final class UserInfo extends L2GameServerPacket {
 
         writeD(buffer, activeChar.getClassId().getId());
         writeD(buffer, 0x00);//0x00); // special effects? circles around player...
-        writeD(buffer, activeChar.getMaxCp());
-        writeD(buffer, activeChar.getCurrCp());
+        writeD(buffer, (int) activeChar.getCp().getMaxValue());
+        writeD(buffer, (int) activeChar.getCp().getCurrValue());
         writeC(buffer, 0);//_activeChar.isMounted() || (_airShipHelm != 0) ? 0 : _activeChar.getEnchantEffect());
 
         writeC(buffer, 0);//_activeChar.getTeam().getId());
