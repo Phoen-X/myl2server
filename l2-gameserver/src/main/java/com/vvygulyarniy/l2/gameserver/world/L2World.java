@@ -1,7 +1,6 @@
 package com.vvygulyarniy.l2.gameserver.world;
 
 import com.google.common.eventbus.EventBus;
-import com.vvygulyarniy.l2.domain.geo.Position;
 import com.vvygulyarniy.l2.gameserver.network.packet.server.AbstractNpcInfo.NpcInfo;
 import com.vvygulyarniy.l2.gameserver.network.packet.server.ExQuestItemList;
 import com.vvygulyarniy.l2.gameserver.network.packet.server.ItemList;
@@ -11,9 +10,10 @@ import com.vvygulyarniy.l2.gameserver.world.character.L2Npc;
 import com.vvygulyarniy.l2.gameserver.world.character.L2Player;
 import com.vvygulyarniy.l2.gameserver.world.config.npc.XmlNpcInfoRepository;
 import com.vvygulyarniy.l2.gameserver.world.config.npc.XmlNpcSpawnInfoParser;
-import com.vvygulyarniy.l2.gameserver.world.event.SpawnEvent;
+import com.vvygulyarniy.l2.gameserver.world.event.PlayerEnteredWorldEvent;
 import com.vvygulyarniy.l2.gameserver.world.npc.NpcSpawnManager;
 import com.vvygulyarniy.l2.gameserver.world.position.PositionManager;
+import com.vvygulyarniy.l2.gameserver.world.time.GameTimeProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.jdom2.JDOMException;
 
@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -42,25 +41,23 @@ public class L2World {
     private List<L2Player> onlinePlayers = new ArrayList<>();
     private List<L2Npc> npcList = new ArrayList<>();
 
-    public L2World(EventBus eventBus, int ticksPerSecond) throws JDOMException, IOException, URISyntaxException {
+    public L2World(GameTimeProvider gameTimeProvider,
+                   EventBus eventBus,
+                   int ticksPerSecond) throws JDOMException, IOException, URISyntaxException {
         this.eventBus = eventBus;
         log.info("Even bus: {}", eventBus);
-        this.positionManager = new PositionManager(eventBus);
+
         this.ticksPerSecond = ticksPerSecond;
         Path npcInfoFile = Paths.get(ClassLoader.getSystemResource("npc_info.xml").toURI());
         this.spawnManager = new NpcSpawnManager(eventBus,
                                                 new XmlNpcInfoRepository(new XmlNpcSpawnInfoParser(npcInfoFile)));
         int tickDelay = 1000 / this.ticksPerSecond;
-        this.executorService.scheduleAtFixedRate(() -> positionManager.updatePositions(Instant.now()),
-                                                 0,
-                                                 tickDelay,
-                                                 MILLISECONDS);
+        this.positionManager = new PositionManager(gameTimeProvider,
+                                                   eventBus,
+                                                   executorService,
+                                                   tickDelay,
+                                                   MILLISECONDS);
         this.executorService.scheduleAtFixedRate(spawnManager::spawnNpcs, 30000, tickDelay, MILLISECONDS);
-    }
-
-    public void move(L2Player l2Player, Position moveTo) {
-        l2Player.setMoveTarget(moveTo);
-        positionManager.startMoving(l2Player, Instant.now());
     }
 
     public void enterWorld(L2Player player) {
@@ -69,7 +66,7 @@ public class L2World {
         player.send(new ItemList(new ArrayList<>(), false));
         player.send(new ExQuestItemList());
         player.send(new MoveToLocation(player, player.getPosition()));
-        eventBus.post(new SpawnEvent(player));
+        eventBus.post(new PlayerEnteredWorldEvent(player));
     }
 
     public void spawnNpc(L2Npc npcInstance) {
@@ -77,9 +74,6 @@ public class L2World {
         onlinePlayers.forEach(player -> player.send(new NpcInfo(npcInstance)));
     }
 
-    public Position validateCharacterPosition(L2Player l2Char, Position position) {
-        return positionManager.validatePosition(l2Char, position);
-    }
 
     public List<L2Player> getOnlinePlayers() {
         return new ArrayList<>(onlinePlayers);

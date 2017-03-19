@@ -6,11 +6,11 @@ import lombok.Getter;
 /**
  * Phoen-X on 18.03.2017.
  */
-public class SpawnEvent {
+public class PlayerEnteredWorldEvent {
     @Getter
     private final L2Character l2Character;
 
-    public SpawnEvent(L2Character l2Character) {
+    public PlayerEnteredWorldEvent(L2Character l2Character) {
         this.l2Character = l2Character;
     }
 }

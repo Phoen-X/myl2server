@@ -1,20 +1,22 @@
 package com.vvygulyarniy.l2.gameserver.network.packet;
 
 
+import com.google.common.eventbus.EventBus;
 import com.l2server.network.SessionKey;
-import com.vvygulyarniy.l2.domain.geo.Position;
 import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.NettyClientConnection;
 import com.vvygulyarniy.l2.gameserver.network.packet.client.*;
 import com.vvygulyarniy.l2.gameserver.network.packet.server.*;
 import com.vvygulyarniy.l2.gameserver.service.characters.CharacterCreationException;
 import com.vvygulyarniy.l2.gameserver.service.characters.CharacterRepository;
-import com.vvygulyarniy.l2.gameserver.world.L2World;
 import com.vvygulyarniy.l2.gameserver.world.castle.CastleRegistry;
 import com.vvygulyarniy.l2.gameserver.world.character.L2Player;
 import com.vvygulyarniy.l2.gameserver.world.character.info.CharacterAppearance;
 import com.vvygulyarniy.l2.gameserver.world.character.info.CharacterAppearance.Sex;
 import com.vvygulyarniy.l2.gameserver.world.character.profession.Profession;
+import com.vvygulyarniy.l2.gameserver.world.event.MoveRequested;
+import com.vvygulyarniy.l2.gameserver.world.event.PlayerEnteredWorldEvent;
+import com.vvygulyarniy.l2.gameserver.world.event.PositionValidationRequested;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
@@ -30,14 +32,14 @@ import static java.util.Comparator.comparing;
 public class L2ClientPacketProcessorImpl implements L2ClientPacketProcessor {
     private final CharacterRepository characterRepository;
     private final CastleRegistry castleRegistry;
-    private final L2World world;
+    private final EventBus eventBus;
 
     public L2ClientPacketProcessorImpl(CharacterRepository characterRepository,
                                        CastleRegistry castleRegistry,
-                                       L2World world) {
+                                       EventBus eventBus) {
         this.characterRepository = characterRepository;
         this.castleRegistry = castleRegistry;
-        this.world = world;
+        this.eventBus = eventBus;
     }
 
     @Override
@@ -122,7 +124,7 @@ public class L2ClientPacketProcessorImpl implements L2ClientPacketProcessor {
             client.closeNow();
         } else {
             activeCharacter.setConnection(new NettyClientConnection(client.getNetworkContext()));
-            world.enterWorld(activeCharacter);
+            eventBus.post(new PlayerEnteredWorldEvent(activeCharacter));
         }
     }
 
@@ -145,8 +147,8 @@ public class L2ClientPacketProcessorImpl implements L2ClientPacketProcessor {
     @Override
     public void process(ValidatePosition packet, L2GameClient client) {
         L2Player l2Char = client.getActiveCharacter();
-        Position validatedPosition = world.validateCharacterPosition(l2Char, packet.getPosition());
-        client.send(new ValidateLocation(l2Char.getId(), validatedPosition));
+        eventBus.post(new PositionValidationRequested(l2Char, packet.getPosition()));
+
     }
 
     @Override
@@ -161,7 +163,7 @@ public class L2ClientPacketProcessorImpl implements L2ClientPacketProcessor {
 
     @Override
     public void process(MoveBackwardToLocation packet, L2GameClient client) {
-        world.move(client.getActiveCharacter(), packet.getTarget());
+        eventBus.post(new MoveRequested(client.getActiveCharacter(), packet.getTarget()));
         client.send(new MoveToLocation(client.getActiveCharacter(),
                                        client.getActiveCharacter().getMoveTarget()));
     }

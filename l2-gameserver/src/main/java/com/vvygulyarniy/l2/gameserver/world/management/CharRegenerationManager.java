@@ -6,16 +6,16 @@ import com.vvygulyarniy.l2.gameserver.world.character.L2Character;
 import com.vvygulyarniy.l2.gameserver.world.character.info.stat.Gauge;
 import com.vvygulyarniy.l2.gameserver.world.event.CharRegenerated;
 import com.vvygulyarniy.l2.gameserver.world.event.DamageReceived;
-import com.vvygulyarniy.l2.gameserver.world.event.SpawnEvent;
+import com.vvygulyarniy.l2.gameserver.world.event.PlayerEnteredWorldEvent;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledExecutorService;
-
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Phoen-X on 18.03.2017.
@@ -24,11 +24,15 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 public class CharRegenerationManager {
     private final EventBus bus;
     private final Map<L2Character, RegenerationContext> regeneratingCharacters = new ConcurrentHashMap<>();
+    private final Clock clock;
 
-    public CharRegenerationManager(ScheduledExecutorService scheduler, EventBus bus, long tickDelay) {
+    public CharRegenerationManager(ScheduledExecutorService scheduler,
+                                   EventBus bus,
+                                   Clock clock, long tickDelay, TimeUnit timeUnit) {
         this.bus = bus;
         this.bus.register(this);
-        scheduler.scheduleAtFixedRate(() -> regenerate(Instant.now()), 0, tickDelay, MILLISECONDS);
+        this.clock = clock;
+        scheduler.scheduleAtFixedRate(this::regenerateTick, 0, tickDelay, timeUnit);
     }
 
     private static boolean shouldRegenerate(Gauge gauge) {
@@ -39,8 +43,8 @@ public class CharRegenerationManager {
         return gauge.getMaxValue() <= gauge.getCurrValue();
     }
 
-    public void regenerate(Instant now) {
-        regeneratingCharacters.forEach((l2Char, ctx) -> regenerate(l2Char, ctx, now));
+    private void regenerateTick() {
+        regeneratingCharacters.forEach((l2Char, ctx) -> regenerate(l2Char, ctx, Instant.now(clock)));
     }
 
     private void regenerate(L2Character l2Char, RegenerationContext context, Instant now) {
@@ -65,7 +69,7 @@ public class CharRegenerationManager {
     }
 
     @Subscribe
-    public void playerEntered(SpawnEvent event) {
+    public void playerEntered(PlayerEnteredWorldEvent event) {
         log.info("Player entered: {}", event.getL2Character());
         startRegenerationIfNeeded(event.getL2Character());
     }
@@ -74,8 +78,8 @@ public class CharRegenerationManager {
         log.info("Checking if should regenerate");
         if (shouldRegenerate(dmgTarget.getCp()) || shouldRegenerate(dmgTarget.getHp()) || shouldRegenerate(dmgTarget.getMp())) {
             log.info("Starting regeneration");
-            RegenerationContext ctx = regeneratingCharacters.getOrDefault(dmgTarget, new RegenerationContext());
-            ctx.lastRegenerationMade = Instant.now();
+            RegenerationContext ctx = regeneratingCharacters.getOrDefault(dmgTarget,
+                                                                          new RegenerationContext(Instant.now(clock)));
             regeneratingCharacters.put(dmgTarget, ctx);
         } else {
             log.info("Regeneration is not needed");
@@ -84,5 +88,9 @@ public class CharRegenerationManager {
 
     private static class RegenerationContext {
         private Instant lastRegenerationMade;
+
+        RegenerationContext(Instant lastRegenerationMade) {
+            this.lastRegenerationMade = lastRegenerationMade;
+        }
     }
 }

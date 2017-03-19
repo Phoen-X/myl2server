@@ -19,7 +19,7 @@ public class MoveStoppedEventListener {
     }
 
     @Subscribe
-    public void characterStopped(MoveStoppedEvent event) {
+    public void characterStopped(MoveStopped event) {
         log.info("Move stopped: {}", event.getCharacter());
         if (event.getCharacter() instanceof L2Player) {
             L2Player player = (L2Player) event.getCharacter();

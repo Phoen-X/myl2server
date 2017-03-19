@@ -1,7 +1,7 @@
 package com.vvygulyarniy.l2.gameserver.network.handler;
 
 import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
-import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessorImpl;
+import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import com.vvygulyarniy.l2.gameserver.network.packet.client.L2GameClientPacket;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -11,9 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class NettyHandler extends ChannelInboundHandlerAdapter {
     private static final AttributeKey<L2GameClient> gameClientKey = AttributeKey.valueOf("l2GameClient");
-    private final L2ClientPacketProcessorImpl packetProcessor;
+    private final L2ClientPacketProcessor packetProcessor;
 
-    public NettyHandler(L2ClientPacketProcessorImpl packetProcessor) {
+    public NettyHandler(L2ClientPacketProcessor packetProcessor) {
         this.packetProcessor = packetProcessor;
     }
 

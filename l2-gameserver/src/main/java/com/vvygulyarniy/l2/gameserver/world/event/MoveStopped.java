@@ -8,11 +8,11 @@ import lombok.Getter;
  * Phoen-X on 16.03.2017.
  */
 @EqualsAndHashCode
-public class MoveStoppedEvent {
+public class MoveStopped {
     @Getter
     private final L2Character character;
 
-    public MoveStoppedEvent(L2Character character) {
+    public MoveStopped(L2Character character) {
         this.character = character;
     }
 }
