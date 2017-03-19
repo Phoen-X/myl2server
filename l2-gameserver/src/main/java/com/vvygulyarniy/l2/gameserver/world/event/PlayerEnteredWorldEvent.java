@@ -1,6 +1,6 @@
 package com.vvygulyarniy.l2.gameserver.world.event;
 
-import com.vvygulyarniy.l2.gameserver.world.character.L2Character;
+import com.vvygulyarniy.l2.gameserver.world.character.L2Player;
 import lombok.Getter;
 
 /**
@@ -8,9 +8,9 @@ import lombok.Getter;
  */
 public class PlayerEnteredWorldEvent {
     @Getter
-    private final L2Character l2Character;
+    private final L2Player player;
 
-    public PlayerEnteredWorldEvent(L2Character l2Character) {
-        this.l2Character = l2Character;
+    public PlayerEnteredWorldEvent(L2Player player) {
+        this.player = player;
     }
 }

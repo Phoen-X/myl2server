@@ -28,6 +28,7 @@ public class PositionManager {
     private final GameTimeProvider gameTime;
     private final EventBus eventBus;
     private final Map<L2Player, MovingContext> movingObjects = new ConcurrentHashMap<>();
+    //private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
     public PositionManager(GameTimeProvider gameTimeProvider,
                            EventBus eventBus,
@@ -40,7 +41,7 @@ public class PositionManager {
         scheduler.scheduleAtFixedRate(this::updatePositions, 0, tickPeriod, timeUnit);
     }
 
-    public void updatePositions() {
+    private synchronized void updatePositions() {
         movingObjects.forEach((l2Char, moveContext) -> moveChar(l2Char, moveContext, gameTime.now()));
     }
 
@@ -66,11 +67,12 @@ public class PositionManager {
 
         double lengthToGo = pointsPerMillisecond * millisSinceLastUpdate;
         if (lengthToGo >= current.distanceTo(target)) {
+            movingObjects.remove(l2Char);
             l2Char.setPosition(new Position(target, l2Char.getPosition().getHeading()));
             l2Char.setMoveTarget(null);
             eventBus.post(new MoveStopped(l2Char));
-            movingObjects.remove(l2Char);
             log.info("Moving stopped for char {}", l2Char);
+
         } else {
             Position newPosition = new Position(current.moveForwardTo(target, lengthToGo),
                                                 l2Char.getPosition().getHeading());

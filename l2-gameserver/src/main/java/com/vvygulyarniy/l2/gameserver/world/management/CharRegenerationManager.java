@@ -70,8 +70,8 @@ public class CharRegenerationManager {
 
     @Subscribe
     public void playerEntered(PlayerEnteredWorldEvent event) {
-        log.info("Player entered: {}", event.getL2Character());
-        startRegenerationIfNeeded(event.getL2Character());
+        log.info("Player entered: {}", event.getPlayer());
+        startRegenerationIfNeeded(event.getPlayer());
     }
 
     private void startRegenerationIfNeeded(L2Character dmgTarget) {

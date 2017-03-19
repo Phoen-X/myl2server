@@ -1,16 +1,17 @@
 package com.vvygulyarniy.l2.gameserver.world;
 
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.vvygulyarniy.l2.gameserver.network.packet.server.AbstractNpcInfo.NpcInfo;
 import com.vvygulyarniy.l2.gameserver.network.packet.server.ExQuestItemList;
 import com.vvygulyarniy.l2.gameserver.network.packet.server.ItemList;
-import com.vvygulyarniy.l2.gameserver.network.packet.server.MoveToLocation;
 import com.vvygulyarniy.l2.gameserver.network.packet.server.UserInfo;
 import com.vvygulyarniy.l2.gameserver.world.character.L2Npc;
 import com.vvygulyarniy.l2.gameserver.world.character.L2Player;
 import com.vvygulyarniy.l2.gameserver.world.config.npc.XmlNpcInfoRepository;
 import com.vvygulyarniy.l2.gameserver.world.config.npc.XmlNpcSpawnInfoParser;
 import com.vvygulyarniy.l2.gameserver.world.event.PlayerEnteredWorldEvent;
+import com.vvygulyarniy.l2.gameserver.world.event.npc.NpcSpawned;
 import com.vvygulyarniy.l2.gameserver.world.npc.NpcSpawnManager;
 import com.vvygulyarniy.l2.gameserver.world.position.PositionManager;
 import com.vvygulyarniy.l2.gameserver.world.time.GameTimeProvider;
@@ -60,18 +61,19 @@ public class L2World {
         this.executorService.scheduleAtFixedRate(spawnManager::spawnNpcs, 30000, tickDelay, MILLISECONDS);
     }
 
-    public void enterWorld(L2Player player) {
+    @Subscribe
+    public void playerEnter(PlayerEnteredWorldEvent event) {
+        L2Player player = event.getPlayer();
         onlinePlayers.add(player);
         player.send(new UserInfo(player));
         player.send(new ItemList(new ArrayList<>(), false));
         player.send(new ExQuestItemList());
-        player.send(new MoveToLocation(player, player.getPosition()));
-        eventBus.post(new PlayerEnteredWorldEvent(player));
     }
 
-    public void spawnNpc(L2Npc npcInstance) {
-        npcList.add(npcInstance);
-        onlinePlayers.forEach(player -> player.send(new NpcInfo(npcInstance)));
+    @Subscribe
+    public void spawnNpc(NpcSpawned event) {
+        npcList.add(event.getNpc());
+        onlinePlayers.forEach(player -> player.send(new NpcInfo(event.getNpc())));
     }
 
 

@@ -19,20 +19,17 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-/**
- * Created by Phoen-X on 03.03.2017.
- */
 public class PositionManagerTest {
-
-    private PositionManager manager;
-    private EventBus eventBus = new EventBus("main");
-    private OnDemandScheduledExecutorService scheduler = new OnDemandScheduledExecutorService();
-    private MutableGameTimeProvider gameTime = new MutableGameTimeProvider();
+    private EventBus eventBus;
+    private OnDemandScheduledExecutorService scheduler;
+    private MutableGameTimeProvider gameTime;
 
     @BeforeMethod
     public void setUp() throws Exception {
-
-        manager = new PositionManager(gameTime, eventBus, scheduler, 10, MILLISECONDS);
+        gameTime = new MutableGameTimeProvider();
+        scheduler = new OnDemandScheduledExecutorService();
+        eventBus = new EventBus("main");
+        new PositionManager(gameTime, eventBus, scheduler, 10, MILLISECONDS);
     }
 
     @Test
@@ -45,7 +42,6 @@ public class PositionManagerTest {
         eventBus.post(new MoveRequested(l2Char, targetPos));
 
         assertThat(l2Char.getMoveTarget()).isEqualTo(targetPos);
-
     }
 
     @Test
@@ -125,13 +121,12 @@ public class PositionManagerTest {
         gameTime.tick(Duration.ofSeconds(1));
         scheduler.runScheduledTasks();
 
-
-        verify(eventBus, never()).post(new MoveStopped(l2Char));
+        verify(busMock, never()).post(new MoveStopped(l2Char));
 
         gameTime.tick(Duration.ofSeconds(1));
         scheduler.runScheduledTasks();
 
-        verify(eventBus, times(1)).post(new MoveStopped(l2Char));
+        verify(busMock, times(1)).post(new MoveStopped(l2Char));
     }
 
     private L2Player createTestChar() {
