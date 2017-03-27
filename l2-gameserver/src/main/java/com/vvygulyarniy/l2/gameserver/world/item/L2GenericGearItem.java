@@ -1,22 +1,23 @@
-package com.vvygulyarniy.l2.domain.item;
+package com.vvygulyarniy.l2.gameserver.world.item;
 
+import com.vvygulyarniy.l2.gameserver.world.character.info.stat.CombatStat;
 import lombok.ToString;
 
-/**
- * Created by Phoen-X on 03.03.2017.
- */
+import java.util.HashMap;
+import java.util.Map;
+
 @ToString
 public class L2GenericGearItem implements L2GearItem {
+    protected final Map<CombatStat.Type, Double> bonuses;
     private final int id;
     private final int itemId;
     private final String name;
-    private final int enchantLvl;
 
-    public L2GenericGearItem(int id, int itemId, String name, int enchantLvl) {
+    public L2GenericGearItem(int id, int itemId, String name) {
         this.id = id;
         this.itemId = itemId;
         this.name = name;
-        this.enchantLvl = enchantLvl;
+        this.bonuses = new HashMap<>();
     }
 
     @Override
@@ -30,11 +31,6 @@ public class L2GenericGearItem implements L2GearItem {
     }
 
     @Override
-    public int getEnchantLevel() {
-        return enchantLvl;
-    }
-
-    @Override
     public int getAugmentationId() {
         return 0;
     }
@@ -42,5 +38,10 @@ public class L2GenericGearItem implements L2GearItem {
     @Override
     public String name() {
         return name;
+    }
+
+    @Override
+    public Map<CombatStat.Type, Double> getBonuses() {
+        return bonuses;
     }
 }

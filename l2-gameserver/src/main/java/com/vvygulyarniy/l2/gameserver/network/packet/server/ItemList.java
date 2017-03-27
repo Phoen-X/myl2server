@@ -18,7 +18,7 @@
  */
 package com.vvygulyarniy.l2.gameserver.network.packet.server;
 
-import com.vvygulyarniy.l2.domain.item.L2Item;
+import com.vvygulyarniy.l2.gameserver.world.item.L2Item;
 import lombok.ToString;
 
 import java.nio.ByteBuffer;

@@ -19,9 +19,9 @@
 package com.vvygulyarniy.l2.gameserver.network.packet.server;
 
 import com.vvygulyarniy.l2.domain.geo.Point;
-import com.vvygulyarniy.l2.domain.item.L2GearItem;
 import com.vvygulyarniy.l2.gameserver.world.character.L2Player;
 import com.vvygulyarniy.l2.gameserver.world.character.gear.PaperDoll;
+import com.vvygulyarniy.l2.gameserver.world.item.L2GearItem;
 import lombok.ToString;
 
 import java.nio.ByteBuffer;
@@ -140,8 +140,8 @@ public final class UserInfo extends L2GameServerPacket {
                                                     .map(i -> i == null ? 0 : i.getObjectId())
                                                     .collect(toList());
         List<Integer> wornItemsItemIds = wornItems.stream().map(i -> i == null ? 0 : i.getItemId()).collect(toList());
-        List<Integer> wornItemsaugmentationIds = wornItems.stream()
-                                                          .map(i -> i == null ? 0 : i.getEnchantLevel())
+        List<Integer> wornItemsAugmentationIds = wornItems.stream()
+                                                          .map(i -> i == null ? 0 : i.getAugmentationId())
                                                           .collect(toList());
 
         for (Integer objectId : wornItemsObjectIds) {
@@ -150,7 +150,7 @@ public final class UserInfo extends L2GameServerPacket {
         for (Integer itemId : wornItemsItemIds) {
             writeD(buffer, itemId);
         }
-        for (Integer wornItemsaugmentationId : wornItemsaugmentationIds) {
+        for (Integer wornItemsaugmentationId : wornItemsAugmentationIds) {
             writeD(buffer, wornItemsaugmentationId);
         }
         /*for (int slot : getPaperdollOrder()) {

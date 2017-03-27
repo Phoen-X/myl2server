@@ -1,12 +1,13 @@
 package com.vvygulyarniy.l2.gameserver.service.characters;
 
 import com.vvygulyarniy.l2.domain.geo.Position;
-import com.vvygulyarniy.l2.domain.item.L2GenericGearItem;
 import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.server.CharCreateFail;
 import com.vvygulyarniy.l2.gameserver.world.character.L2Player;
 import com.vvygulyarniy.l2.gameserver.world.character.info.CharacterAppearance;
 import com.vvygulyarniy.l2.gameserver.world.character.info.ClassId;
+import com.vvygulyarniy.l2.gameserver.world.item.L2GenericGearItem;
+import com.vvygulyarniy.l2.gameserver.world.item.L2Weapon;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -16,9 +17,6 @@ import java.util.Objects;
 import static com.vvygulyarniy.l2.gameserver.world.character.info.CharacterAppearance.Sex.MALE;
 import static java.util.stream.Collectors.toList;
 
-/**
- * Created by Phoen-X on 23.02.2017.
- */
 @Slf4j
 public class InMemoryCharacterRepository implements CharacterRepository {
     private final List<L2Player> characters = new ArrayList<>();
@@ -28,8 +26,8 @@ public class InMemoryCharacterRepository implements CharacterRepository {
                                         new CharacterAppearance(MALE, (byte) 1, (byte) 1, (byte) 1),
                                         "test_character", 1);
         newChar.setPosition(new Position(15000, 119000, -11900));
-        newChar.getPaperDoll().wearRightHand(new L2GenericGearItem(1, 2369, "Squire's Sword", 0));
-        newChar.getPaperDoll().wearChest(new L2GenericGearItem(2, 1146, "Squire's Shirt", 0));
+        newChar.getPaperDoll().wearRightHand(new L2Weapon(1, 2369, "Squire's Sword", 1, 1));
+        newChar.getPaperDoll().wearChest(new L2GenericGearItem(2, 1146, "Squire's Shirt"));
         characters.add(newChar);
     }
 

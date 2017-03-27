@@ -46,19 +46,18 @@ public class L2World {
                    EventBus eventBus,
                    int ticksPerSecond) throws JDOMException, IOException, URISyntaxException {
         this.eventBus = eventBus;
-        log.info("Even bus: {}", eventBus);
-
         this.ticksPerSecond = ticksPerSecond;
-        Path npcInfoFile = Paths.get(ClassLoader.getSystemResource("npc_info.xml").toURI());
-        this.spawnManager = new NpcSpawnManager(eventBus,
-                                                new XmlNpcInfoRepository(new XmlNpcSpawnInfoParser(npcInfoFile)));
         int tickDelay = 1000 / this.ticksPerSecond;
         this.positionManager = new PositionManager(gameTimeProvider,
                                                    eventBus,
                                                    executorService,
                                                    tickDelay,
                                                    MILLISECONDS);
-        this.executorService.scheduleAtFixedRate(spawnManager::spawnNpcs, 30000, tickDelay, MILLISECONDS);
+        Path npcInfoFile = Paths.get(ClassLoader.getSystemResource("npc_info.xml").toURI());
+        this.spawnManager = new NpcSpawnManager(this.executorService, eventBus,
+                                                new XmlNpcInfoRepository(new XmlNpcSpawnInfoParser(npcInfoFile)),
+                                                tickDelay, MILLISECONDS
+        );
     }
 
     @Subscribe

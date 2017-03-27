@@ -45,4 +45,11 @@ public class BasicStatSetTest {
         BasicStatSet statSet = BasicStatSet.of(1, 2, 3, 4, 5, 6);
         assertThat(statSet.get(MEN)).isEqualTo(6);
     }
+
+    @Test
+    public void basicStatCanBeChanged() {
+        BasicStatSet statSet = BasicStatSet.of(1, 2, 3, 4, 5, 6);
+        statSet.set(STR, 13);
+        assertThat(statSet.get(STR)).isEqualTo(13);
+    }
 }

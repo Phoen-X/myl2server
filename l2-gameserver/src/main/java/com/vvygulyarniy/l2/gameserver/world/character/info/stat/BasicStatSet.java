@@ -3,8 +3,8 @@ package com.vvygulyarniy.l2.gameserver.world.character.info.stat;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.vvygulyarniy.l2.gameserver.world.character.info.stat.BasicStat.*;
 
@@ -14,7 +14,7 @@ import static com.vvygulyarniy.l2.gameserver.world.character.info.stat.BasicStat
 @EqualsAndHashCode
 @ToString
 public class BasicStatSet {
-    private final Map<BasicStat, Integer> statValues = new HashMap<>();
+    private final Map<BasicStat, Integer> statValues = new ConcurrentHashMap<>();
 
     private BasicStatSet(int str, int dex, int con, int intValue, int wit, int men) {
         statValues.put(CON, con);
@@ -31,5 +31,9 @@ public class BasicStatSet {
 
     public int get(BasicStat stat) {
         return statValues.get(stat);
+    }
+
+    public void set(BasicStat stat, int value) {
+        statValues.put(stat, value);
     }
 }

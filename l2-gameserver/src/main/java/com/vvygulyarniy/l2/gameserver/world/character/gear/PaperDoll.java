@@ -1,6 +1,7 @@
 package com.vvygulyarniy.l2.gameserver.world.character.gear;
 
-import com.vvygulyarniy.l2.domain.item.L2GearItem;
+import com.vvygulyarniy.l2.gameserver.world.item.L2GearItem;
+import com.vvygulyarniy.l2.gameserver.world.item.L2Weapon;
 import lombok.ToString;
 
 @ToString
@@ -12,7 +13,7 @@ public class PaperDoll {
     private L2GearItem rightRing;
     private L2GearItem leftFinger;
     private L2GearItem head;
-    private L2GearItem rightHand;
+    private L2Weapon rightHand;
     private L2GearItem leftHand;
     private L2GearItem gloves;
     private L2GearItem chest;
@@ -169,7 +170,7 @@ public class PaperDoll {
         this.rightRing = rightRing;
     }
 
-    public void wearRightHand(L2GearItem rightHand) {
+    public void wearRightHand(L2Weapon rightHand) {
         this.rightHand = rightHand;
     }
 

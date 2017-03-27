@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Phoen-X on 12.03.2017.
@@ -21,12 +23,17 @@ public class NpcSpawnManager {
     private final NpcInfoRepository repo;
     private final Map<Npc, NpcSpawnInfo> npcMap = new HashMap<>();
 
-    public NpcSpawnManager(EventBus eventBus, NpcInfoRepository repo) {
+    public NpcSpawnManager(ScheduledExecutorService scheduler,
+                           EventBus eventBus,
+                           NpcInfoRepository repo,
+                           int tickDelay,
+                           TimeUnit timeUnit) {
         this.eventBus = eventBus;
         this.repo = repo;
+        scheduler.scheduleAtFixedRate(this::spawnNpcs, 30000, tickDelay, timeUnit);
     }
 
-    public void spawnNpcs() {
+    private void spawnNpcs() {
         repo.findAll().forEach(npc -> {
             if (!npcMap.containsKey(npc)) {
                 spawnNewNpc(npc);
@@ -51,7 +58,7 @@ public class NpcSpawnManager {
         private Npc template;
         private L2Character npcInstance;
 
-        public NpcSpawnInfo(Npc template, L2Character npcInstance) {
+        NpcSpawnInfo(Npc template, L2Character npcInstance) {
             this.template = template;
             this.npcInstance = npcInstance;
         }

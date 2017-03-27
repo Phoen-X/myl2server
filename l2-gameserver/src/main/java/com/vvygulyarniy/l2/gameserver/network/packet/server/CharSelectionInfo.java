@@ -19,9 +19,9 @@
 package com.vvygulyarniy.l2.gameserver.network.packet.server;
 
 import com.vvygulyarniy.l2.domain.geo.Point;
-import com.vvygulyarniy.l2.domain.item.L2GearItem;
 import com.vvygulyarniy.l2.gameserver.world.character.L2Player;
 import com.vvygulyarniy.l2.gameserver.world.character.gear.PaperDoll;
+import com.vvygulyarniy.l2.gameserver.world.item.L2GearItem;
 import lombok.ToString;
 
 import java.nio.ByteBuffer;

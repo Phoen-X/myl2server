@@ -5,6 +5,7 @@ import com.vvygulyarniy.l2.gameserver.network.packet.server.L2GameServerPacket;
 import com.vvygulyarniy.l2.gameserver.world.character.gear.PaperDoll;
 import com.vvygulyarniy.l2.gameserver.world.character.info.CharacterAppearance;
 import com.vvygulyarniy.l2.gameserver.world.character.info.ClassId;
+import com.vvygulyarniy.l2.gameserver.world.character.info.stat.BasicStatSet;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -15,6 +16,8 @@ import java.util.Objects;
 @ToString
 public class L2Player extends L2Character {
     private final PaperDoll paperDoll = new PaperDoll();
+    @Getter
+    private final BasicStatSet basicStats;
     @Setter
     private GameClientConnection connection;
     private String accountName;
@@ -48,6 +51,7 @@ public class L2Player extends L2Character {
         this.accountName = accountName;
         this.appearance = appearance;
         this.classId = classId;
+        this.basicStats = classId.getBasicStatSet();
     }
 
     public void send(L2GameServerPacket packet) {
