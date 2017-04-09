@@ -32,7 +32,7 @@ public class CharRegenerationManager {
         this.bus = bus;
         this.bus.register(this);
         this.clock = clock;
-        scheduler.scheduleAtFixedRate(this::regenerateTick, 0, tickDelay, timeUnit);
+        scheduler.scheduleAtFixedRate(this::regenerateTick, 0, 200, timeUnit);
     }
 
     private static boolean shouldRegenerate(Gauge gauge) {
@@ -48,7 +48,6 @@ public class CharRegenerationManager {
     }
 
     private void regenerate(L2Character l2Char, RegenerationContext context, Instant now) {
-        log.info("Regenerating char: {}({})", l2Char.getId(), l2Char.getName());
         l2Char.getCp().regen(Duration.between(context.lastRegenerationMade, now).toMillis());
         l2Char.getHp().regen(Duration.between(context.lastRegenerationMade, now).toMillis());
         l2Char.getMp().regen(Duration.between(context.lastRegenerationMade, now).toMillis());

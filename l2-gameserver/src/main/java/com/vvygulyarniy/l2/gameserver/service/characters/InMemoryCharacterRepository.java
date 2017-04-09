@@ -25,7 +25,7 @@ public class InMemoryCharacterRepository implements CharacterRepository {
         L2Player newChar = new L2Player(L2Player.ID_SEQUENCE.incrementAndGet(), "asd", ClassId.elvenFighter,
                                         new CharacterAppearance(MALE, (byte) 1, (byte) 1, (byte) 1),
                                         "test_character", 1);
-        newChar.setPosition(new Position(15000, 119000, -11900));
+        newChar.setPosition(new Position(164644, 65659, -3671));
         newChar.getPaperDoll().wearRightHand(new L2Weapon(1, 2369, "Squire's Sword", 1, 1));
         newChar.getPaperDoll().wearChest(new L2GenericGearItem(2, 1146, "Squire's Shirt"));
         characters.add(newChar);

@@ -58,6 +58,7 @@ public class L2World {
                                                 new XmlNpcInfoRepository(new XmlNpcSpawnInfoParser(npcInfoFile)),
                                                 tickDelay, MILLISECONDS
         );
+        eventBus.register(this);
     }
 
     @Subscribe
