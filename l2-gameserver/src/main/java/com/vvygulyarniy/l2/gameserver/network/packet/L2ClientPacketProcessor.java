@@ -36,4 +36,6 @@ public interface L2ClientPacketProcessor {
     void process(RequestAllFortressInfo requestAllFortressInfo, L2GameClient client);
 
     void process(MoveBackwardToLocation packet, L2GameClient client);
+
+    void process(RequestPledgeCrest packet, L2GameClient client);
 }

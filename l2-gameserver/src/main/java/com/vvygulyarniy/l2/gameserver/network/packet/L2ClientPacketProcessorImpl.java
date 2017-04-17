@@ -168,6 +168,11 @@ public class L2ClientPacketProcessorImpl implements L2ClientPacketProcessor {
                                        client.getActiveCharacter().getMoveTarget()));
     }
 
+    @Override
+    public void process(RequestPledgeCrest packet, L2GameClient client) {
+        client.send(new PledgeCrest(packet.getCrestId()));
+    }
+
     private CharSelectionInfo buildCharSelectionInfo(L2GameClient client) {
         List<L2Player> accountChars = client.getAccountCharacters();
         int activeCharId = accountChars.stream()

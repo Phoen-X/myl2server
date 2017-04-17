@@ -3,6 +3,7 @@ package com.vvygulyarniy.l2.gameserver.service.characters;
 import com.vvygulyarniy.l2.domain.geo.Position;
 import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.server.CharCreateFail;
+import com.vvygulyarniy.l2.gameserver.world.character.L2Character;
 import com.vvygulyarniy.l2.gameserver.world.character.L2Player;
 import com.vvygulyarniy.l2.gameserver.world.character.info.CharacterAppearance;
 import com.vvygulyarniy.l2.gameserver.world.character.info.ClassId;
@@ -22,7 +23,7 @@ public class InMemoryCharacterRepository implements CharacterRepository {
     private final List<L2Player> characters = new ArrayList<>();
 
     {
-        L2Player newChar = new L2Player(L2Player.ID_SEQUENCE.incrementAndGet(), "asd", ClassId.elvenFighter,
+        L2Player newChar = new L2Player(L2Character.ID_SEQUENCE.incrementAndGet(), "asd", ClassId.elvenFighter,
                                         new CharacterAppearance(MALE, (byte) 1, (byte) 1, (byte) 1),
                                         "test_character", 1);
         newChar.setPosition(new Position(164644, 65659, -3671));

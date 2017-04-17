@@ -9,8 +9,8 @@ import com.vvygulyarniy.l2.gameserver.world.config.npc.NpcInfoRepository;
 import com.vvygulyarniy.l2.gameserver.world.event.npc.NpcSpawned;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class NpcSpawnManager {
     private final EventBus eventBus;
     private final NpcInfoRepository repo;
-    private final Map<Npc, NpcSpawnInfo> npcMap = new HashMap<>();
+    private final Map<Npc, NpcSpawnInfo> npcMap = new ConcurrentHashMap<>();
 
     public NpcSpawnManager(ScheduledExecutorService scheduler,
                            EventBus eventBus,
@@ -43,7 +43,7 @@ public class NpcSpawnManager {
 
     private void spawnNewNpc(Npc npc) {
         log.info("NPC spawned: {}", npc);
-        L2Npc npcInstance = new L2Npc(L2Npc.ID_SEQUENCE.incrementAndGet(),
+        L2Npc npcInstance = new L2Npc(L2Character.ID_SEQUENCE.incrementAndGet(),
                                       npc.getNpcId(),
                                       npc.getName(),
                                       npc.getLevel(),

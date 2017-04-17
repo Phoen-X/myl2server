@@ -32,7 +32,7 @@ public class CharRegenerationManager {
         this.bus = bus;
         this.bus.register(this);
         this.clock = clock;
-        scheduler.scheduleAtFixedRate(this::regenerateTick, 0, 200, timeUnit);
+        scheduler.scheduleAtFixedRate(this::regenerateTick, 0, tickDelay, timeUnit);
     }
 
     private static boolean shouldRegenerate(Gauge gauge) {

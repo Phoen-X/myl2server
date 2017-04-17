@@ -13,7 +13,6 @@ import com.vvygulyarniy.l2.gameserver.world.castle.CastleRegistry;
 import com.vvygulyarniy.l2.gameserver.world.castle.HardCodedCastleRegistry;
 import com.vvygulyarniy.l2.gameserver.world.event.CharRegeneratedNotificator;
 import com.vvygulyarniy.l2.gameserver.world.event.MoveStoppedEventListener;
-import com.vvygulyarniy.l2.gameserver.world.event.npc.NpcSpawnedNotificator;
 import com.vvygulyarniy.l2.gameserver.world.management.CharRegenerationManager;
 import com.vvygulyarniy.l2.gameserver.world.time.CommonClockGameTimeProvider;
 import com.vvygulyarniy.l2.gameserver.world.time.GameTimeProvider;
@@ -66,7 +65,7 @@ public class SpringConfig {
 
     @Bean
     public CharRegenerationManager regenManager(EventBus bus, ScheduledExecutorService scheduler) {
-        return new CharRegenerationManager(scheduler, bus, Clock.systemUTC(), 10, MILLISECONDS);
+        return new CharRegenerationManager(scheduler, bus, Clock.systemUTC(), 1000, MILLISECONDS);
     }
 
     @Bean
@@ -74,10 +73,10 @@ public class SpringConfig {
         return new MoveStoppedEventListener(bus);
     }
 
-    @Bean
+    /*@Bean
     public NpcSpawnedNotificator npcSpawnedNotificator(L2World world, EventBus bus) {
         return new NpcSpawnedNotificator(world, bus);
-    }
+    }*/
 
     @Bean
     public CharRegeneratedNotificator regenerationNotificator(L2World world, EventBus bus) {

@@ -22,4 +22,8 @@ public class Position {
         this.point = point;
         this.heading = heading;
     }
+
+    public double distanceTo(Position position) {
+        return getPoint().distanceTo(position.getPoint());
+    }
 }

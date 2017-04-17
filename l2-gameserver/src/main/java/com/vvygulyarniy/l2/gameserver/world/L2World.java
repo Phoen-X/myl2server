@@ -72,8 +72,11 @@ public class L2World {
 
     @Subscribe
     public void spawnNpc(NpcSpawned event) {
-        npcList.add(event.getNpc());
-        onlinePlayers.forEach(player -> player.send(new NpcInfo(event.getNpc())));
+        L2Npc npc = event.getNpc();
+        npcList.add(npc);
+        onlinePlayers.stream()
+                     .filter(player -> player.getPosition().distanceTo(npc.getPosition()) < 900)
+                     .forEach(player -> player.send(new NpcInfo(npc)));
     }
 
 

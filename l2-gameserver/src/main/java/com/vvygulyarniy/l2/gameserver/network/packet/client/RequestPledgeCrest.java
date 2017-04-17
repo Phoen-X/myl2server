@@ -20,33 +20,32 @@ package com.vvygulyarniy.l2.gameserver.network.packet.client;
 
 import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import lombok.Getter;
 
 /**
  * This class ...
  *
  * @version $Revision: 1.4.4.4 $ $Date: 2005/03/27 15:29:30 $
  */
+@Getter
 public final class RequestPledgeCrest extends L2GameClientPacket {
     private static final String _C__68_REQUESTPLEDGECREST = "[C] 68 RequestPledgeCrest";
 
-    private int _crestId;
+    private int crestId;
 
     @Override
     protected void readImpl() {
-        _crestId = readD();
+        crestId = readD();
     }
 
-/*
-    @Override
+
+    /*@Override
     protected void runImpl() {
-        sendPacket(new PledgeCrest(_crestId));
-    }
-
-*/
+        sendPacket(new PledgeCrest(crestId));
+    }*/
 
     @Override
     public void process(L2ClientPacketProcessor processor, L2GameClient client) {
-        throw new NotImplementedException();
+        processor.process(this, client);
     }
 }

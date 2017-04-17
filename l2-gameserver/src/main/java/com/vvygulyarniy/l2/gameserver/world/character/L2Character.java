@@ -55,9 +55,9 @@ public abstract class L2Character {
         this.name = name;
         this.level = level;
         this.collisionParams = collisionParams;
-        this.cp = new Gauge(maxCp / 2, maxCp, 3);
-        this.hp = new Gauge(maxHp / 2, maxHp, 3);
-        this.mp = new Gauge(maxMp, maxMp / 2, 3);
+        this.cp = new Gauge(maxCp, maxCp, 3);
+        this.hp = new Gauge(maxHp, maxHp, 3);
+        this.mp = new Gauge(maxMp, maxMp, 3);
     }
 
     public void setMoveTarget(Position moveTo) {

@@ -7,9 +7,6 @@ import com.vvygulyarniy.l2.gameserver.world.character.info.ClassId;
 
 import java.util.List;
 
-/**
- * Created by Phoen-X on 23.02.2017.
- */
 public interface CharacterRepository {
     L2Player createCharacter(L2GameClient gameClient,
                              ClassId classId,
