@@ -11,9 +11,13 @@ import com.vvygulyarniy.l2.gameserver.service.characters.InMemoryCharacterReposi
 import com.vvygulyarniy.l2.gameserver.world.L2World;
 import com.vvygulyarniy.l2.gameserver.world.castle.CastleRegistry;
 import com.vvygulyarniy.l2.gameserver.world.castle.HardCodedCastleRegistry;
+import com.vvygulyarniy.l2.gameserver.world.config.npc.XmlNpcInfoRepository;
+import com.vvygulyarniy.l2.gameserver.world.config.npc.XmlNpcSpawnInfoParser;
 import com.vvygulyarniy.l2.gameserver.world.event.CharRegeneratedNotificator;
 import com.vvygulyarniy.l2.gameserver.world.event.MoveStoppedEventListener;
 import com.vvygulyarniy.l2.gameserver.world.management.CharRegenerationManager;
+import com.vvygulyarniy.l2.gameserver.world.npc.NpcSpawnManager;
+import com.vvygulyarniy.l2.gameserver.world.position.PositionManager;
 import com.vvygulyarniy.l2.gameserver.world.time.CommonClockGameTimeProvider;
 import com.vvygulyarniy.l2.gameserver.world.time.GameTimeProvider;
 import io.netty.bootstrap.ServerBootstrap;
@@ -30,6 +34,8 @@ import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Clock;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -43,10 +49,13 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 @Configuration
 public class SpringConfig {
 
+    private static final int TICKS_PER_SECOND = 50;
+
     @Bean
     public GameTimeProvider gameTimeProvider() {
         return CommonClockGameTimeProvider.withClock(Clock.systemUTC());
     }
+
     @Bean
     public ScheduledExecutorService scheduler() {
         return Executors.newScheduledThreadPool(4);
@@ -58,9 +67,8 @@ public class SpringConfig {
     }
 
     @Bean
-    public L2World world(EventBus eventBus,
-                         GameTimeProvider gameTimeProvider) throws JDOMException, IOException, URISyntaxException {
-        return new L2World(gameTimeProvider, eventBus, 50);
+    public L2World world(EventBus eventBus) throws JDOMException, IOException, URISyntaxException {
+        return new L2World(eventBus);
     }
 
     @Bean
@@ -128,6 +136,26 @@ public class SpringConfig {
          .childOption(ChannelOption.SO_KEEPALIVE, true); // (6)
 
         return b;
+    }
+
+    @Bean
+    public NpcSpawnManager spawnManager(ScheduledExecutorService scheduler,
+                                        EventBus eventBus) throws URISyntaxException, JDOMException, IOException {
+        Path npcInfoFile = Paths.get(ClassLoader.getSystemResource("npc_info.xml").toURI());
+        return new NpcSpawnManager(scheduler, eventBus,
+                                   new XmlNpcInfoRepository(new XmlNpcSpawnInfoParser(npcInfoFile)),
+                                   TICKS_PER_SECOND, MILLISECONDS);
+    }
+
+    @Bean
+    public PositionManager positionManager(GameTimeProvider gameTimeProvider,
+                                           EventBus eventBus,
+                                           ScheduledExecutorService scheduler) {
+        return new PositionManager(gameTimeProvider,
+                                   eventBus,
+                                   scheduler,
+                                   TICKS_PER_SECOND,
+                                   MILLISECONDS);
     }
 
 }

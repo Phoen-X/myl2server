@@ -256,7 +256,7 @@ public class EnterWorld extends L2GameClientPacket {
         // Send Dye Information
         activeChar.send(new HennaInfo(activeChar));
 
-        Quest.playerEnter(activeChar);
+        Quest.playerEntered(activeChar);
 
         if (!Config.DISABLE_TUTORIAL) {
             loadTutorial(activeChar);
