@@ -18,8 +18,8 @@
  */
 package com.vvygulyarniy.l2.loginserver;
 
-import com.l2server.network.L2LoginClient;
 import com.l2server.network.SessionKey;
+import com.l2server.network.login.L2LoginClient;
 import com.l2server.network.serverpackets.login.LoginFail.LoginFailReason;
 import com.l2server.network.util.crypt.ScrambledKeyPair;
 import com.vvygulyarniy.l2.loginserver.model.data.AccountInfo;

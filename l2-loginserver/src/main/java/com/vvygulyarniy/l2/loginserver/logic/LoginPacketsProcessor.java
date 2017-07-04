@@ -1,12 +1,12 @@
 package com.vvygulyarniy.l2.loginserver.logic;
 
 import com.l2server.network.ClientPacketProcessor;
-import com.l2server.network.L2LoginClient;
 import com.l2server.network.SessionKey;
 import com.l2server.network.clientpackets.login.AuthGameGuard;
 import com.l2server.network.clientpackets.login.RequestAuthLogin;
 import com.l2server.network.clientpackets.login.RequestServerList;
 import com.l2server.network.clientpackets.login.RequestServerLogin;
+import com.l2server.network.login.L2LoginClient;
 import com.l2server.network.serverpackets.login.*;
 import com.l2server.network.serverpackets.login.ServerList.ServerData;
 import com.vvygulyarniy.l2.loginserver.GameServerTable;
@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static com.l2server.network.L2LoginClient.LoginClientState.AUTHED_LOGIN;
+import static com.l2server.network.login.L2LoginClient.LoginClientState.AUTHED_LOGIN;
 import static com.l2server.network.serverpackets.login.AccountKicked.AccountKickedReason.REASON_PERMANENTLY_BANNED;
 import static com.l2server.network.serverpackets.login.LoginFail.LoginFailReason.*;
 import static com.l2server.network.serverpackets.login.PlayFail.PlayFailReason.REASON_SERVER_OVERLOADED;
@@ -47,7 +47,7 @@ public class LoginPacketsProcessor implements ClientPacketProcessor {
                 log.info("GameServer IP resolved: {}", Arrays.toString(serverIp));
                 List<ServerData> servers = Collections.singletonList(new ServerData(serverIp,
                                                                                     1,
-                                                                                    ServerStatus.STATUS_GOOD,
+                                                                                    ServerStatus.GOOD.getCode(),
                                                                                     9999,
                                                                                     false,
                                                                                     1,
@@ -106,7 +106,7 @@ public class LoginPacketsProcessor implements ClientPacketProcessor {
                     log.info("GameServer IP resolved: {}", Arrays.toString(serverIp));
                     List<ServerData> servers = Collections.singletonList(new ServerData(serverIp,
                                                                                         1,
-                                                                                        ServerStatus.STATUS_GOOD,
+                                                                                        ServerStatus.GOOD.getCode(),
                                                                                         9999,
                                                                                         false,
                                                                                         1,

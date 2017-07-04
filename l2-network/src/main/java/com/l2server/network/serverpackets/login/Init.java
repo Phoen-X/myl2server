@@ -19,7 +19,7 @@
 package com.l2server.network.serverpackets.login;
 
 
-import com.l2server.network.L2LoginClient;
+import com.l2server.network.login.L2LoginClient;
 import lombok.ToString;
 
 import java.nio.ByteBuffer;

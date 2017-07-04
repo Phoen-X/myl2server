@@ -19,7 +19,7 @@
 package com.l2server.network.serverpackets.login;
 
 
-import com.l2server.network.L2LoginClient;
+import com.l2server.network.login.L2LoginClient;
 import lombok.ToString;
 
 import java.nio.ByteBuffer;
@@ -88,7 +88,7 @@ public final class ServerList extends L2LoginServerPacket {
             writeC(buffer, server._pvp ? 0x01 : 0x00);
             writeH(buffer, server._currentPlayers);
             writeH(buffer, server._maxPlayers);
-            writeC(buffer, server._status == ServerStatus.STATUS_DOWN ? 0x00 : 0x01);
+            writeC(buffer, server._status == ServerStatus.DOWN.getCode() ? 0x00 : 0x01);
             writeD(buffer, server._serverType); // 1: Normal, 2: Relax, 4: Public Test, 8: No Label, 16: Character Creation Restricted, 32: Event, 64: Free
             writeC(buffer, server._brackets ? 0x01 : 0x00);
         }

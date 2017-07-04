@@ -1,7 +1,7 @@
 package com.l2server.network.coders.loginserver;
 
-import com.l2server.network.L2LoginClient;
 import com.l2server.network.clientpackets.login.*;
+import com.l2server.network.login.L2LoginClient;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;

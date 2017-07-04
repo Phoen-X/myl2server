@@ -20,7 +20,7 @@ package com.l2server.network.clientpackets.login;
 
 
 import com.l2server.network.ClientPacketProcessor;
-import com.l2server.network.L2LoginClient;
+import com.l2server.network.login.L2LoginClient;
 import lombok.ToString;
 
 /**

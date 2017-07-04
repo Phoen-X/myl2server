@@ -19,7 +19,6 @@
 package com.vvygulyarniy.l2.loginserver;
 
 
-import com.l2server.network.L2LoginClient;
 import com.l2server.network.coders.loginserver.LoginServerClientPacketDecoder;
 import com.l2server.network.coders.loginserver.LoginServerServerPacketEncoder;
 import com.vvygulyarniy.l2.loginserver.logic.LoginPacketsProcessor;
@@ -42,7 +41,6 @@ public final class L2LoginServer {
 
     public static final int LOGIN_SERVER_PORT = 2106;
     private static L2LoginServer _instance;
-    private SelectorThread<L2LoginClient> _selectorThread;
 
     private L2LoginServer() {
         _instance = this;

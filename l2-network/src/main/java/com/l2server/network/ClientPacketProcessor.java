@@ -4,6 +4,7 @@ import com.l2server.network.clientpackets.login.AuthGameGuard;
 import com.l2server.network.clientpackets.login.RequestAuthLogin;
 import com.l2server.network.clientpackets.login.RequestServerList;
 import com.l2server.network.clientpackets.login.RequestServerLogin;
+import com.l2server.network.login.L2LoginClient;
 
 /**
  * Created by Phoen-X on 16.02.2017.

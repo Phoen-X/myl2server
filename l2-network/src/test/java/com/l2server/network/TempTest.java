@@ -1,5 +1,6 @@
 package com.l2server.network;
 
+import com.l2server.network.login.L2LoginClient;
 import com.l2server.network.serverpackets.login.GGAuth;
 import com.l2server.network.util.crypt.ScrambledKeyPair;
 import org.testng.annotations.Test;

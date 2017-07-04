@@ -29,8 +29,6 @@ import java.security.spec.RSAKeyGenParameterSpec;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.l2server.network.serverpackets.login.ServerStatus.STATUS_GOOD;
-
 /**
  * The Class GameServerTable loads the game server names and initialize the game server tables.
  *
@@ -47,8 +45,8 @@ public final class GameServerTable {
     static {
         GameServerInfo server1 = new GameServerInfo(1, new byte[]{1, 1});
         GameServerInfo server2 = new GameServerInfo(2, new byte[]{2, 2});
-        server1.setStatus(STATUS_GOOD);
-        server2.setStatus(STATUS_GOOD);
+        server1.setStatus(ServerStatus.GOOD.getCode());
+        server2.setStatus(ServerStatus.GOOD.getCode());
 
         GAME_SERVER_TABLE.put(1, server1);
         GAME_SERVER_TABLE.put(2, server2);
@@ -234,7 +232,7 @@ public final class GameServerTable {
         public GameServerInfo(int id, byte[] hexId) {
             _id = id;
             _hexId = hexId;
-            _status = ServerStatus.STATUS_DOWN;
+            _status = ServerStatus.DOWN.getCode();
         }
 
         /**
