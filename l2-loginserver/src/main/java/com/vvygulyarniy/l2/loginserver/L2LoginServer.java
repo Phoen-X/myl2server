@@ -20,7 +20,6 @@ package com.vvygulyarniy.l2.loginserver;
 
 
 import com.l2server.network.L2LoginClient;
-import com.l2server.network.SelectorConfig;
 import com.l2server.network.coders.loginserver.LoginServerClientPacketDecoder;
 import com.l2server.network.coders.loginserver.LoginServerServerPacketEncoder;
 import com.vvygulyarniy.l2.loginserver.logic.LoginPacketsProcessor;
@@ -54,7 +53,6 @@ public final class L2LoginServer {
             LoginController.load();
             GameServerTable.getInstance();
 
-            /*startSelectorThread();*/
             LoginPacketsProcessor packetProcessor = new LoginPacketsProcessor(GameServerTable.getInstance());
             startNettyHandler(packetProcessor);
         } catch (Exception e) {
@@ -100,16 +98,4 @@ public final class L2LoginServer {
             bossGroup.shutdownGracefully();
         }
     }
-
-    private void startSelectorThread() throws java.io.IOException {
-        final SelectorConfig sc = new SelectorConfig();
-        final L2LoginPacketHandler lph = new L2LoginPacketHandler();
-        final SelectorHelper sh = new SelectorHelper();
-        LoginPacketsProcessor packetsProcessor = new LoginPacketsProcessor(GameServerTable.getInstance());
-        _selectorThread = new SelectorThread<>(LoginController.getInstance(), packetsProcessor, sc, sh, lph, sh, sh);
-        _selectorThread.start();
-        log.info("Started");
-    }
-
-
 }
