@@ -69,7 +69,7 @@ public class LoginPacketsProcessor implements ClientPacketProcessor {
         byte[] decrypted = null;
         try {
             final Cipher rsaCipher = Cipher.getInstance("RSA/ECB/nopadding");
-            rsaCipher.init(Cipher.DECRYPT_MODE, client.getRSAPrivateKey());
+            rsaCipher.init(Cipher.DECRYPT_MODE, client.getRsaPrivateKey());
             decrypted = rsaCipher.doFinal(packet.getRaw(), 0x00, 0x80);
         } catch (GeneralSecurityException e) {
 

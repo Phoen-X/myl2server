@@ -41,7 +41,7 @@ public class L2ClientPacketDecoder extends ByteToMessageDecoder {
             byteBuffer.limit(byteBuffer.position() + dataSize);
             final L2GameClientPacket cp = createPacket(byteBuffer, client);
             if (cp != null) {
-                cp._buf = byteBuffer;
+                cp.setBuffer(byteBuffer);
                 cp._sbuf = new NioNetStringBuffer(64 * 1024);
                 if (cp.read()) {
                     out.add(cp);

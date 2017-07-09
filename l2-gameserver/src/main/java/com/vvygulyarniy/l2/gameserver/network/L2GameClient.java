@@ -59,7 +59,7 @@ public final class L2GameClient {
     }
 
     public byte[] enableCrypt() {
-        byte[] key = BlowFishKeygen.getRandomKey();
+        byte[] key = BlowFishKeygen.INSTANCE.getRandomKey();
         _crypt.setKey(key);
         return key;
     }

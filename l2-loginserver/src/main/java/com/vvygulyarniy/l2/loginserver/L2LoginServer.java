@@ -20,7 +20,7 @@ package com.vvygulyarniy.l2.loginserver;
 
 
 import com.l2server.network.coders.loginserver.LoginServerClientPacketDecoder;
-import com.l2server.network.coders.loginserver.LoginServerServerPacketEncoder;
+import com.l2server.network.coders.loginserver.LoginServerPacketEncoder;
 import com.vvygulyarniy.l2.loginserver.logic.LoginPacketsProcessor;
 import com.vvygulyarniy.l2.loginserver.netty.NettyLoginServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -77,7 +77,7 @@ public final class L2LoginServer {
                  @Override
                  public void initChannel(SocketChannel ch) throws Exception {
                      ch.pipeline().addLast(new LoginServerClientPacketDecoder(),
-                                           new LoginServerServerPacketEncoder(),
+                                           new LoginServerPacketEncoder(),
                                            new NettyLoginServerHandler(LoginController.getInstance(), packetProcessor));
                  }
              })

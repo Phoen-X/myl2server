@@ -74,7 +74,7 @@ public class LoginController {
         }
 
 
-        testCipher((RSAPrivateKey) _keyPairs[0]._pair.getPrivate());
+        testCipher((RSAPrivateKey) _keyPairs[0].get_pair().getPrivate());
 
         // Store keys for blowfish communication
         generateBlowFishKeys();
@@ -284,7 +284,7 @@ public class LoginController {
         }
 
         if (charsNum > 0) {
-            client.setCharsOnServ(serverId, charsNum);
+            client.setCharsOnServer(serverId, charsNum);
         }
 
         if (timeToDel.length > 0) {

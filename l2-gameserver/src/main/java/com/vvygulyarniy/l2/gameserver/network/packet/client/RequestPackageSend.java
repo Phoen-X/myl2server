@@ -38,7 +38,7 @@ public class RequestPackageSend extends L2GameClientPacket {
         _objectId = readD();
 
         int count = readD();
-        if ((count <= 0) || (count > 20) || ((count * BATCH_LENGTH) != _buf.remaining())) {
+        if ((count <= 0) || (count > 20) || ((count * BATCH_LENGTH) != getBuffer().remaining())) {
             return;
         }
 

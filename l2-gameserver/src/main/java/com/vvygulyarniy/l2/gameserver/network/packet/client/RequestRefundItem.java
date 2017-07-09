@@ -37,7 +37,7 @@ public final class RequestRefundItem extends L2GameClientPacket {
     protected void readImpl() {
         _listId = readD();
         final int count = readD();
-        if ((count <= 0) || (count > 20) || ((count * BATCH_LENGTH) != _buf.remaining())) {
+        if ((count <= 0) || (count > 20) || ((count * BATCH_LENGTH) != getBuffer().remaining())) {
             return;
         }
 

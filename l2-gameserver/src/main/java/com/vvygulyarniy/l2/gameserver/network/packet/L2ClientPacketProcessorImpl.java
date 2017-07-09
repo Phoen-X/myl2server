@@ -114,7 +114,7 @@ public class L2ClientPacketProcessorImpl implements L2ClientPacketProcessor {
         client.selectCharacter(packet.getSlotId());
         client.send(new SSQInfo(NONE));
         client.setState(IN_GAME);
-        client.send(new CharSelected(client.getActiveCharacter(), client.getSessionId().playOkID1));
+        client.send(new CharSelected(client.getActiveCharacter(), client.getSessionId().getPlayOkID1()));
     }
 
     @Override
@@ -181,7 +181,7 @@ public class L2ClientPacketProcessorImpl implements L2ClientPacketProcessor {
                                        .map(L2Player::getId)
                                        .orElse(-1);
         return new CharSelectionInfo(client.getAccountName(),
-                                     client.getSessionId().playOkID1,
+                                     client.getSessionId().getPlayOkID1(),
                                      accountChars,
                                      activeCharId);
     }

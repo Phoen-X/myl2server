@@ -37,7 +37,7 @@ public class MoveToLocationAirShip extends L2GameClientPacket {
     protected void readImpl() {
         _command = readD();
         _param1 = readD();
-        if (_buf.remaining() > 0) {
+        if (getBuffer().remaining() > 0) {
             _param2 = readD();
         }
     }

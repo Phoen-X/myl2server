@@ -35,7 +35,7 @@ public final class RequestDeleteReceivedPost extends L2GameClientPacket {
     @Override
     protected void readImpl() {
         int count = readD();
-        if ((count <= 0) || (count > 20) || ((count * BATCH_LENGTH) != _buf.remaining())) {
+        if ((count <= 0) || (count > 20) || ((count * BATCH_LENGTH) != getBuffer().remaining())) {
             return;
         }
 

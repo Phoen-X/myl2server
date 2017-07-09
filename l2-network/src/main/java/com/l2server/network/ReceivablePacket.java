@@ -20,7 +20,6 @@ package com.l2server.network;
 import java.nio.ByteBuffer;
 
 /**
- * @param <T>
  * @author KenM
  */
 public abstract class ReceivablePacket extends AbstractPacket {
@@ -39,7 +38,7 @@ public abstract class ReceivablePacket extends AbstractPacket {
      * @param dst : the byte array which will be filled with the data.
      */
     protected final void readB(final byte[] dst) {
-        _buf.get(dst);
+        getBuffer().get(dst);
     }
 
     /**
@@ -52,7 +51,7 @@ public abstract class ReceivablePacket extends AbstractPacket {
      * @param len    : the given length of bytes to be read.
      */
     protected final void readB(final byte[] dst, final int offset, final int len) {
-        _buf.get(dst, offset, len);
+        getBuffer().get(dst, offset, len);
     }
 
     /**
@@ -62,7 +61,7 @@ public abstract class ReceivablePacket extends AbstractPacket {
      * @return
      */
     protected final int readC() {
-        return _buf.get() & 0xFF;
+        return getBuffer().get() & 0xFF;
     }
 
     /**
@@ -72,7 +71,7 @@ public abstract class ReceivablePacket extends AbstractPacket {
      * @return
      */
     protected final int readH() {
-        return _buf.getShort() & 0xFFFF;
+        return getBuffer().getShort() & 0xFFFF;
     }
 
     /**
@@ -82,7 +81,7 @@ public abstract class ReceivablePacket extends AbstractPacket {
      * @return
      */
     protected final int readD() {
-        return _buf.getInt();
+        return getBuffer().getInt();
     }
 
     /**
@@ -92,7 +91,7 @@ public abstract class ReceivablePacket extends AbstractPacket {
      * @return
      */
     protected final long readQ() {
-        return _buf.getLong();
+        return getBuffer().getLong();
     }
 
     /**
@@ -102,7 +101,7 @@ public abstract class ReceivablePacket extends AbstractPacket {
      * @return
      */
     protected final double readF() {
-        return _buf.getDouble();
+        return getBuffer().getDouble();
     }
 
     /**
@@ -114,7 +113,7 @@ public abstract class ReceivablePacket extends AbstractPacket {
         _sbuf.clear();
 
         char ch;
-        while ((ch = _buf.getChar()) != 0) {
+        while ((ch = getBuffer().getChar()) != 0) {
             _sbuf.append(ch);
         }
 
@@ -128,7 +127,7 @@ public abstract class ReceivablePacket extends AbstractPacket {
      * @param sBuffer
      */
     public void setBuffers(ByteBuffer data, NioNetStringBuffer sBuffer) {
-        _buf = data;
+        setBuffer(data);
         _sbuf = sBuffer;
     }
 }
