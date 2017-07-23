@@ -16,133 +16,156 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.vvygulyarniy.l2.loginserver.util;
+package com.vvygulyarniy.l2.loginserver.util
 
 
 /**
- * String utilities optimized for the best performance.<br>
- * <h1>How to Use It</h1> <h2>concat() or append()</h2> If concatenating strings<br>
- * in single call, use StringUtil.concat(), otherwise use StringUtil.append()<br>
- * and its variants.<br>
- * <br>
- * <h2>Minimum Calls</h2><br>
+ * String utilities optimized for the best performance.<br></br>
+ * <h1>How to Use It</h1> <h2>concat() or append()</h2> If concatenating strings<br></br>
+ * in single call, use StringUtil.concat(), otherwise use StringUtil.append()<br></br>
+ * and its variants.<br></br>
+ * <br></br>
+ * <h2>Minimum Calls</h2><br></br>
  * Bad:
- * <p>
+ *
+ *
  * <pre>
  * final StringBuilder sbString = new StringBuilder();
  * StringUtil.append(sbString, &quot;text 1&quot;, String.valueOf(npcId));
  * StringUtil.append(&quot;text 2&quot;);
- * </pre>
- * <p>
+</pre> *
+ *
+ *
  * Good:
- * <p>
+ *
+ *
  * <pre>
  * final StringBuilder sbString = new StringBuilder();
  * StringUtil.append(sbString, &quot;text 1&quot;, String.valueOf(npcId), &quot;text 2&quot;);
- * </pre>
- * <p>
- * Why?<br/>
- * Because the less calls you do, the less memory re-allocations have to be done<br>
- * so the whole text fits into the memory and less array copy tasks has to be<br>
- * performed. So if using less calls, less memory is used and string concatenation is faster.<br>
- * <br>
- * <h2>Size Hints for Loops</h2><br>
+</pre> *
+ *
+ *
+ * Why?<br></br>
+ * Because the less calls you do, the less memory re-allocations have to be done<br></br>
+ * so the whole text fits into the memory and less array copy tasks has to be<br></br>
+ * performed. So if using less calls, less memory is used and string concatenation is faster.<br></br>
+ * <br></br>
+ * <h2>Size Hints for Loops</h2><br></br>
  * Bad:
- * <p>
+ *
+ *
  * <pre>
  * final StringBuilder sbString = new StringBuilder();
  * StringUtil.append(sbString, &quot;header start&quot;, someText, &quot;header end&quot;);
  * for (int i = 0; i &lt; 50; i++)
  * {
- * 	StringUtil.append(sbString, &quot;text 1&quot;, stringArray[i], &quot;text 2&quot;);
+ * StringUtil.append(sbString, &quot;text 1&quot;, stringArray[i], &quot;text 2&quot;);
  * }
- * </pre>
- * <p>
+</pre> *
+ *
+ *
  * Good:
- * <p>
+ *
+ *
  * <pre>
  * final StringBuilder sbString = StringUtil.startAppend(1300, &quot;header start&quot;, someText, &quot;header end&quot;);
  * for (int i = 0; i &lt; 50; i++)
  * {
- * 	StringUtil.append(sbString, &quot;text 1&quot;, stringArray[i], &quot;text 2&quot;);
+ * StringUtil.append(sbString, &quot;text 1&quot;, stringArray[i], &quot;text 2&quot;);
  * }
- * </pre>
- * <p>
- * Why?<br/>
+</pre> *
+ *
+ *
+ * Why?<br></br>
  * When using StringUtil.append(), memory is only allocated to fit in the strings in method argument. So on each loop new memory for the string has to be allocated and old string has to be copied to the new string. With size hint, even if the size hint is above the needed memory, memory is saved
  * because new memory has not to be allocated on each cycle. Also it is much faster if no string copy tasks has to be performed. So if concatenating strings in a loop, count approximately the size and set it as the hint for the string builder size. It's better to make the size hint little bit larger
- * rather than smaller.<br/>
- * In case there is no text appended before the cycle, just use <code>new
- * StringBuilder(1300)</code>.<br>
- * <br>
- * <h2>Concatenation and Constants</h2><br>
+ * rather than smaller.<br></br>
+ * In case there is no text appended before the cycle, just use `new
+ * StringBuilder(1300)`.<br></br>
+ * <br></br>
+ * <h2>Concatenation and Constants</h2><br></br>
  * Bad:
- * <p>
+ *
+ *
  * <pre>
  * StringUtil.concat(&quot;text 1 &quot;, &quot;text 2&quot;, String.valueOf(npcId));
- * </pre>
- * <p>
+</pre> *
+ *
+ *
  * Good:
- * <p>
+ *
+ *
  * <pre>
  * StringUtil.concat(&quot;text 1 &quot; + &quot;text 2&quot;, String.valueOf(npcId));
- * </pre>
- * <p>
+</pre> *
+ *
+ *
  * or
- * <p>
+ *
+ *
  * <pre>
  * StringUtil.concat(&quot;text 1 text 2&quot;, String.valueOf(npcId));
- * </pre>
- * <p>
- * Why?<br/>
- * It saves some cycles when determining size of memory that needs to be allocated because less strings are passed to concat() method. But do not use + for concatenation of non-constant strings, that degrades performance and makes extra memory allocations needed.<br>
+</pre> *
+ *
+ *
+ * Why?<br></br>
+ * It saves some cycles when determining size of memory that needs to be allocated because less strings are passed to concat() method. But do not use + for concatenation of non-constant strings, that degrades performance and makes extra memory allocations needed.<br></br>
  * <h2>Concatenation and Constant Variables</h2> Bad:
- * <p>
+ *
+ *
  * <pre>
  * String glue = &quot;some glue&quot;;
  * StringUtil.concat(&quot;text 1&quot;, glue, &quot;text 2&quot;, glue, String.valueOf(npcId));
- * </pre>
- * <p>
+</pre> *
+ *
+ *
  * Good:
- * <p>
+ *
+ *
  * <pre>
  * final String glue = &quot;some glue&quot;;
  * StringUtil.concat(&quot;text 1&quot; + glue + &quot;text2&quot; + glue, String.valueOf(npcId));
- * </pre>
- * <p>
- * Why? Because when using <code>final</code> keyword, the <code>glue</code> is marked as constant string and compiler treats it as a constant string so it is able to create string "text1some gluetext2some glue" during the compilation. But this only works in case the value is known at compilation
- * time, so this cannot be used for cases like <code>final String objectIdString =
- * String.valueOf(getObjectId)</code>.<br>
- * <br>
- * <h2>StringBuilder Reuse</h2><br>
+</pre> *
+ *
+ *
+ * Why? Because when using `final` keyword, the `glue` is marked as constant string and compiler treats it as a constant string so it is able to create string "text1some gluetext2some glue" during the compilation. But this only works in case the value is known at compilation
+ * time, so this cannot be used for cases like `final String objectIdString =
+ * String.valueOf(getObjectId)`.<br></br>
+ * <br></br>
+ * <h2>StringBuilder Reuse</h2><br></br>
  * Bad:
- * <p>
+ *
+ *
  * <pre>
  * final StringBuilder sbString1 = new StringBuilder();
  * StringUtil.append(sbString1, &quot;text 1&quot;, String.valueOf(npcId), &quot;text 2&quot;);
  * ... // output of sbString1, it is no more needed
  * final StringBuilder sbString2 = new StringBuilder();
  * StringUtil.append(sbString2, &quot;text 3&quot;, String.valueOf(npcId), &quot;text 4&quot;);
- * </pre>
- * <p>
+</pre> *
+ *
+ *
  * Good:
- * <p>
+ *
+ *
  * <pre>
  * final StringBuilder sbString = new StringBuilder();
  * StringUtil.append(sbString, &quot;text 1&quot;, String.valueOf(npcId), &quot;text 2&quot;);
  * ... // output of sbString, it is no more needed
  * sbString.setLength(0);
  * StringUtil.append(sbString, &quot;text 3&quot;, String.valueOf(npcId), &quot;text 4&quot;);
- * </pre>
- * <p>
- * Why?</br> In first case, new memory has to be allocated for the second string. In second case already allocated memory is reused, but only in case the new string is not longer than the previously allocated string. Anyway, the second way is better because the string either fits in the memory and
- * some memory is saved, or it does not fit in the memory, and in that case it works as in the first case. <h2>Primitives to Strings</h2> To convert primitives to string, use String.valueOf().<br>
- * <br>
- * <h2>How much faster is it?</h2><br>
+</pre> *
+ *
+ *
+ * Why? In first case, new memory has to be allocated for the second string. In second case already allocated memory is reused, but only in case the new string is not longer than the previously allocated string. Anyway, the second way is better because the string either fits in the memory and
+ * some memory is saved, or it does not fit in the memory, and in that case it works as in the first case. <h2>Primitives to Strings</h2> To convert primitives to string, use String.valueOf().<br></br>
+ * <br></br>
+ * <h2>How much faster is it?</h2><br></br>
  * Here are some results of my tests. Count is number of strings concatenated. Don't take the numbers as 100% true as the numbers are affected by other programs running on my computer at the same time. Anyway, from the results it is obvious that using StringBuilder with predefined size is the
  * fastest (and also most memory efficient) solution. It is about 5 times faster when concatenating 7 strings, compared to TextBuilder. Also, with more strings concatenated, the difference between StringBuilder and TextBuilder gets larger. In code, there are many cases, where there are concatenated
- * 50+ strings so the time saving is even greater.<br>
- * <p>
+ * 50+ strings so the time saving is even greater.<br></br>
+ *
+ *
  * <pre>
  * Count: 2
  * TextBuilder: 1893
@@ -180,85 +203,77 @@ package com.vvygulyarniy.l2.loginserver.util;
  * String: 12746
  * StringBuilder: 3081
  * StringBuilder with size: 2139
- * </pre>
- *
+</pre> *
+
  * @author fordfrog
  */
-public final class StringUtil {
-    private StringUtil() {
-    }
+object StringUtil {
 
     /**
      * Concatenates strings.
-     *
+
      * @param strings strings to be concatenated
+     * *
      * @return concatenated string
      */
-    public static String concat(final String... strings) {
-        final StringBuilder sbString = new StringBuilder();
-        for (final String string : strings) {
-            sbString.append(string);
+    fun concat(vararg strings: String): String {
+        val sbString = StringBuilder()
+        for (string in strings) {
+            sbString.append(string)
         }
-        return sbString.toString();
+        return sbString.toString()
     }
 
     /**
-     * Creates new string builder with size initializated to <code>sizeHint</code>, unless total length of strings is greater than <code>sizeHint</code>.
-     *
+     * Creates new string builder with size initializated to `sizeHint`, unless total length of strings is greater than `sizeHint`.
+
      * @param sizeHint hint for string builder size allocation
+     * *
      * @param strings  strings to be appended
+     * *
      * @return created string builder
      */
-    public static StringBuilder startAppend(final int sizeHint, final String... strings) {
-        final int length = getLength(strings);
-        final StringBuilder sbString = new StringBuilder(sizeHint > length ? sizeHint : length);
-        for (final String string : strings) {
-            sbString.append(string);
+    fun startAppend(sizeHint: Int, vararg strings: String): StringBuilder {
+        val length = getLength(strings)
+        val sbString = StringBuilder(if (sizeHint > length) sizeHint else length)
+        for (string in strings) {
+            sbString.append(string)
         }
-        return sbString;
+        return sbString
     }
 
     /**
      * Appends strings to existing string builder.
-     *
+
      * @param sbString string builder
+     * *
      * @param strings  strings to be appended
      */
-    public static void append(final StringBuilder sbString, final String... strings) {
-        sbString.ensureCapacity(sbString.length() + getLength(strings));
+    fun append(sbString: StringBuilder, vararg strings: String) {
+        sbString.ensureCapacity(sbString.length + getLength(strings))
 
-        for (final String string : strings) {
-            sbString.append(string);
+        for (string in strings) {
+            sbString.append(string)
         }
-    }
-
-    public static int getLength(final Iterable<String> strings) {
-        int length = 0;
-        for (final String string : strings) {
-            length += (string == null) ? 4 : string.length();
-        }
-        return length;
     }
 
     /**
      * Counts total length of all the strings.
-     *
+
      * @param strings array of strings
+     * *
      * @return total length of all the strings
      */
-    public static int getLength(final String[] strings) {
-        int length = 0;
-        for (final String string : strings) {
-            length += (string == null) ? 4 : string.length();
-        }
-        return length;
+    fun getLength(strings: Array<out String>): Int {
+        val length = strings.sumBy { it.length }
+        return length
     }
 
-    public static String getTraceString(StackTraceElement[] trace) {
-        final StringBuilder sbString = new StringBuilder();
-        for (final StackTraceElement element : trace) {
-            sbString.append(element.toString()).append("\n");
+    fun getTraceString(trace: Array<StackTraceElement>): String {
+        val sbString = StringBuilder()
+        for (element in trace) {
+            sbString.append(element.toString()).append("\n")
         }
-        return sbString.toString();
+        return sbString.toString()
     }
 }
