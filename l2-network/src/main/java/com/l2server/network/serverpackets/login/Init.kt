@@ -37,9 +37,9 @@ import java.nio.ByteBuffer
  * s: blowfish key
 </pre> *
  */
-class Init(private val _publicKey: ByteArray,
-           private val _blowfishKey: ByteArray,
-           private val _sessionId: Int) : L2LoginServerPacket() {
+data class Init(private val _publicKey: ByteArray,
+                private val _blowfishKey: ByteArray,
+                private val _sessionId: Int) : L2LoginServerPacket() {
 
     constructor(client: L2LoginClient) : this(client.scrambledModulus, client.blowfishKey, client.sessionId)
 

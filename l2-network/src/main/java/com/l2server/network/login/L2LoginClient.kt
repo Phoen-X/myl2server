@@ -65,7 +65,7 @@ class L2LoginClient(private val connection: LoginClientConnection,
         try {
             val isChecksumValid = loginCrypt.decrypt(buf.array(), buf.position(), size)
             if (!isChecksumValid) {
-
+                log.warn("Checksum is not valid")
                 connection.disconnect()
                 return false
             }

@@ -48,10 +48,6 @@ class RequestAuthLogin : L2LoginClientPacket() {
         processor.process(this, client)
     }
 
-    companion object {
-        private val log = org.slf4j.LoggerFactory.getLogger(RequestAuthLogin::class.java)
-    }
-
     /*@Override
     public void run() {
         byte[] decrypted = null;

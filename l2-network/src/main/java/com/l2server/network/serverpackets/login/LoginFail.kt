@@ -20,14 +20,11 @@ package com.l2server.network.serverpackets.login
 
 import java.nio.ByteBuffer
 
-/**
- * Fromat: d d: the failure reason
- */
-class LoginFail(private val _reason: LoginFailReason) : L2LoginServerPacket() {
+data class LoginFail(private val reason: LoginFailReason) : L2LoginServerPacket() {
 
     override fun write(buffer: ByteBuffer) {
         writeC(buffer, 0x01)
-        writeC(buffer, _reason.code)
+        writeC(buffer, reason.code)
     }
 
     enum class LoginFailReason(val code: Int) {

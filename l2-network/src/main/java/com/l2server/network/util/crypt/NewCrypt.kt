@@ -79,17 +79,6 @@ class NewCrypt(blowfishKey: ByteArray) {
     companion object {
 
         /**
-         * Equivalent to calling [.verifyChecksum] with parameters (raw, 0, raw.length)
-
-         * @param raw data array to be verified
-         * *
-         * @return true when the checksum of the data is valid, false otherwise
-         */
-        fun verifyChecksum(raw: ByteArray): Boolean {
-            return NewCrypt.verifyChecksum(raw, 0, raw.size)
-        }
-
-        /**
          * Method to verify the checksum of a packet received by login server from game client.<br></br>
          * This is also used for game server <-> login server communication.
 
@@ -110,34 +99,24 @@ class NewCrypt(blowfishKey: ByteArray) {
             var chksum: Long = 0
             val count = size - 4
             var check: Long = -1
-            var i: Int
+            var i: Int = offset
 
-            i = offset
             while (i < count) {
-                check = (raw[i] and 0xff.toByte()).toLong()
-                check = check or (raw[i + 1] shl 8 and 0xff00).toLong()
-                check = check or (raw[i + 2] shl 0x10 and 0xff0000).toLong()
-                check = check or (raw[i + 3] shl 0x18 and 0xff000000.toInt()).toLong()
+                check = (raw[i] and 0xff.toByte()).toLong() // 7
+                check = check or ((raw[i + 1] shl 8) and 0xff00).toLong() // 44295
+                check = check or ((raw[i + 2] shl 0x10) and 0xff0000).toLong() // 126...
+                check = check or ((raw[i + 3] shl 0x18) and 0xff000000) //-1
 
                 chksum = chksum xor check
                 i += 4
             }
 
-            check = (raw[i] and 0xff).toLong()
-            check = check or (raw[i + 1] shl 8 and 0xff00).toLong()
-            check = check or (raw[i + 2] shl 0x10 and 0xff0000).toLong()
-            check = check or (raw[i + 3] shl 0x18 and 0xff000000.toInt()).toLong()
+            check = (raw[i] and 0xff.toByte()).toLong()
+            check = check or ((raw[i + 1] shl 8) and 0xff00).toLong()
+            check = check or ((raw[i + 2] shl 0x10) and 0xff0000).toLong()
+            check = check or ((raw[i + 3] shl 0x18) and 0xff000000)
 
             return check == chksum
-        }
-
-        /**
-         * Equivalent to calling [.appendChecksum] with parameters (raw, 0, raw.length)
-
-         * @param raw data array to compute the checksum from
-         */
-        fun appendChecksum(raw: ByteArray) {
-            NewCrypt.appendChecksum(raw, 0, raw.size)
         }
 
         /**
@@ -153,9 +132,8 @@ class NewCrypt(blowfishKey: ByteArray) {
             var chksum: Long = 0
             val count = size - 4
             var ecx: Long
-            var i: Int
+            var i: Int = offset
 
-            i = offset
             while (i < count) {
                 ecx = (raw[i] and 0xff).toLong()
                 ecx = ecx or (raw[i + 1] shl 8 and 0xff00).toLong()
@@ -230,3 +208,5 @@ class NewCrypt(blowfishKey: ByteArray) {
         }
     }
 }
+
+private infix fun Int.and(l: Long) = this.toLong() and l

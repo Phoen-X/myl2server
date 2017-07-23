@@ -11,9 +11,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-/**
- * Created by Phoen-X on 16.02.2017.
- */
 @Slf4j
 public class GameServer {
 

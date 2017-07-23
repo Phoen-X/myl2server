@@ -34,7 +34,6 @@ abstract class L2LoginClientPacket : ReceivablePacket() {
         } catch (e: Exception) {
             return false
         }
-
     }
 
     protected abstract fun readImpl(): Boolean

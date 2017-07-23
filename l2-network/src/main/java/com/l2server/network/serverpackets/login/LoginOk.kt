@@ -36,7 +36,7 @@ import java.nio.ByteBuffer
  * b: 16 bytes - unknown
 </pre> *
  */
-class LoginOk(sessionKey: SessionKey) : L2LoginServerPacket() {
+data class LoginOk(val sessionKey: SessionKey) : L2LoginServerPacket() {
     private val _loginOk1: Int = sessionKey.loginOkID1
     private val _loginOk2: Int = sessionKey.loginOkID2
 
@@ -51,9 +51,5 @@ class LoginOk(sessionKey: SessionKey) : L2LoginServerPacket() {
         writeD(buffer, 0x00)
         writeD(buffer, 0x00)
         writeB(buffer, ByteArray(16))
-    }
-
-    override fun toString(): String {
-        return "LoginOk(_loginOk1=" + this._loginOk1 + ", _loginOk2=" + this._loginOk2 + ")"
     }
 }

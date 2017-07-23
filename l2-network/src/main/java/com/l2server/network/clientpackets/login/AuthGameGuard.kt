@@ -56,13 +56,8 @@ class AuthGameGuard : L2LoginClientPacket() {
     }
 
     override fun toString(): String {
-        return "com.l2server.network.clientpackets.login.AuthGameGuard(_sessionId=" + this.sessionId + ", _data1=" + this.data1 + ", _data2=" + this.data2 + ", _data3=" + this.data3 + ", _data4=" + this.data4 + ")"
+        return "AuthGameGuard(sessionId=$sessionId, data1=$data1, data2 $data2, data3=$data3, data4=$data4)"
     }
-
-    companion object {
-        private val log = org.slf4j.LoggerFactory.getLogger(AuthGameGuard::class.java)
-    }
-
     /*@Override
     public void run() {
         if (_sessionId == getClient().getSessionId()) {

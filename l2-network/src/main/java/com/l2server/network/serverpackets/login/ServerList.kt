@@ -21,9 +21,7 @@ package com.l2server.network.serverpackets.login
 
 import com.l2server.network.and
 import com.l2server.network.login.L2LoginClient
-import lombok.ToString
 import java.nio.ByteBuffer
-import java.util.*
 
 /**
  * ServerList
@@ -55,17 +53,13 @@ import java.util.*
  * is less than half the maximum. as Normal between half and 4/5<br></br>
  * and Full when there's more than 4/5 of the maximum number of players.
  */
-@ToString
-class ServerList(client: L2LoginClient, servers: List<ServerData>) : L2LoginServerPacket() {
+data class ServerList(val client: L2LoginClient, val servers: List<ServerData>) : L2LoginServerPacket() {
 
-    private val servers: List<ServerData>
-    private val lastServer: Int
+    private val lastServer: Int = client.lastServer
     private val charsOnServers: Map<Int, Int>
     private val charsToDelete: Map<Int, LongArray>?
 
     init {
-        this.servers = ArrayList(servers)
-        lastServer = client.lastServer
         charsOnServers = client.charsOnServ
         charsToDelete = client.charsWaitingDelOnServ
     }
@@ -135,7 +129,7 @@ class ServerList(client: L2LoginClient, servers: List<ServerData>) : L2LoginServ
         }// If server GM-only - show status only to GMs
 
         override fun toString(): String {
-            return "com.l2server.network.serverpackets.login.ServerList.ServerData(ip=" + java.util.Arrays.toString(this.ip) + ", port=" + this.port + ", ageLimit=" + this.ageLimit + ", pvp=" + this.pvp + ", currentPlayers=" + this.currentPlayers + ", maxPlayers=" + this.maxPlayers + ", brackets=" + this.brackets + ", clock=" + this.clock + ", status=" + this.status + ", serverId=" + this.serverId + ", serverType=" + this.serverType + ")"
+            return "ServerData(ip=" + java.util.Arrays.toString(this.ip) + ", port=" + this.port + ", ageLimit=" + this.ageLimit + ", pvp=" + this.pvp + ", currentPlayers=" + this.currentPlayers + ", maxPlayers=" + this.maxPlayers + ", brackets=" + this.brackets + ", clock=" + this.clock + ", status=" + this.status + ", serverId=" + this.serverId + ", serverType=" + this.serverType + ")"
         }
     }
 }

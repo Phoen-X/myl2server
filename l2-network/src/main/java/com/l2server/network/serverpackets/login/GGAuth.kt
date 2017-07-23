@@ -24,19 +24,14 @@ import java.nio.ByteBuffer
 /**
  * Fromat: d d: response
  */
-class GGAuth(private val response: Int) : L2LoginServerPacket() {
+data class GGAuth(private val session: Int) : L2LoginServerPacket() {
 
     override fun write(buffer: ByteBuffer) {
         writeC(buffer, 0x0b)
-        writeD(buffer, response)
+        writeD(buffer, session)
         writeD(buffer, 0x00)
         writeD(buffer, 0x00)
         writeD(buffer, 0x00)
         writeD(buffer, 0x00)
     }
-
-    override fun toString(): String {
-        return "GGAuth(response=" + this.response + ")"
-    }
-
 }

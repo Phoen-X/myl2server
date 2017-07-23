@@ -21,7 +21,5 @@ package com.l2server.network.serverpackets.login
 
 import com.l2server.network.SendablePacket
 
-/**
- * @author KenM
- */
+
 abstract class L2LoginServerPacket : SendablePacket()

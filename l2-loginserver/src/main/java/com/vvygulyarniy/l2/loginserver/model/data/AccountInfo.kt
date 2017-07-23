@@ -16,24 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.vvygulyarniy.l2.loginserver.util;
+package com.vvygulyarniy.l2.loginserver.model.data
 
-import java.util.logging.LogManager;
+import java.util.*
 
 /**
- * Specialized {@link LogManager} class.<br>
- * Prevents log devices to close before shutdown sequence so the shutdown sequence can make logging.
+ * @author HorridoJoho
  */
-public class L2LogManager extends LogManager {
-    public L2LogManager() {
+class AccountInfo(login: String, private val passHash: String, val accessLevel: Int, val lastServerId: Int) {
+    val login: String
+
+    init {
+        Objects.requireNonNull(login, "login")
+        Objects.requireNonNull(passHash, "passHash")
+
+        if (login.isEmpty()) {
+            throw IllegalArgumentException("login")
+        }
+        if (passHash.isEmpty()) {
+            throw IllegalArgumentException("passHash")
+        }
+
+        this.login = login.toLowerCase()
     }
 
-    @Override
-    public void reset() {
-        // do nothing
-    }
-
-    public void doReset() {
-        super.reset();
+    fun checkPassHash(passHash: String): Boolean {
+        return this.passHash == passHash
     }
 }
