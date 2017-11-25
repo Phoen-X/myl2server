@@ -17,7 +17,6 @@
  */
 package com.l2server.network.util.crypt
 
-import com.l2server.network.and
 import java.io.IOException
 
 class BlowfishEngine {
@@ -120,7 +119,7 @@ class BlowfishEngine {
             var data = 0x0000000
             for (j in 0..3) {
                 // create a 32 bit block
-                data = data shl 8 or (key[keyIndex++] and 0xff)
+                data = data shl 8 or (key[keyIndex++].toInt() and 0xff)
                 // wrap when we get to the end of the key
                 if (keyIndex >= keyLength) {
                     keyIndex = 0
@@ -356,7 +355,10 @@ class BlowfishEngine {
      * @return the extracted integer
      */
     private fun bytesTo32bits(src: ByteArray, srcIndex: Int): Int {
-        return src[srcIndex + 3] and 0xff shl 24 or (src[srcIndex + 2] and 0xff shl 16) or (src[srcIndex + 1] and 0xff shl 8) or (src[srcIndex] and 0xff)
+        return src[srcIndex + 3].toInt() and 0xff shl 24 or
+                (src[srcIndex + 2].toInt() and 0xff shl 16) or
+                (src[srcIndex + 1].toInt() and 0xff shl 8) or
+                (src[srcIndex].toInt() and 0xff)
     }
 
     /**

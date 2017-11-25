@@ -1,6 +1,5 @@
 package com.l2server.network.coders.loginserver
 
-import com.l2server.network.and
 import com.l2server.network.clientpackets.login.*
 import com.l2server.network.login.L2LoginClient
 import io.netty.buffer.ByteBuf
@@ -9,7 +8,7 @@ import io.netty.handler.codec.ByteToMessageDecoder
 import io.netty.util.AttributeKey
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
-import java.util.function.Supplier
+import kotlin.experimental.and
 
 class LoginServerClientPacketDecoder : ByteToMessageDecoder() {
 
@@ -18,7 +17,7 @@ class LoginServerClientPacketDecoder : ByteToMessageDecoder() {
     @Throws(Exception::class)
     override fun decode(ctx: ChannelHandlerContext, byteBuf: ByteBuf, list: MutableList<Any>) {
         byteBuf.markReaderIndex()
-        val dataSize = byteBuf.readShortLE() and 0xFFFF - HEADER_SIZE
+        val dataSize = byteBuf.readShortLE().toInt() and 0xFFFF - HEADER_SIZE
         val client = ctx.channel().attr(clientKey).get()
         val byteBuffer = ByteBuffer.allocate(byteBuf.readableBytes()).order(ByteOrder.LITTLE_ENDIAN)
         val data = ByteArray(byteBuf.readableBytes())
@@ -44,30 +43,32 @@ class LoginServerClientPacketDecoder : ByteToMessageDecoder() {
     }
 
     private fun handlePacket(byteBuffer: ByteBuffer): L2LoginClientPacket? {
-        val opcode = byteBuffer.get() and 0xFF
+        val opcode = byteBuffer.get().toShort() and 0xFF
 
-        val packet = opcodeMapping.getOrDefault(opcode, Supplier<L2LoginClientPacket?> { null }).get()
+        val packet = opcodeMapping.getOrDefault(opcode, { null }).invoke()
 
-        if (packet == null) {
-            return null
-        } else {
+        return if (packet != null) {
             packet.buffer = byteBuffer
-            if (packet.read()) {
-                return packet
-            } else {
-                return null
-            }
+            if (packet.read()) packet else null
+        } else {
+            null
         }
     }
 
     companion object {
         val HEADER_SIZE = 2
-        private val opcodeMapping = hashMapOf(
-                0x07 to Supplier<L2LoginClientPacket> { AuthGameGuard() },
-                0x00 to Supplier<L2LoginClientPacket> { RequestAuthLogin() },
-                0x02 to Supplier<L2LoginClientPacket> { RequestServerLogin() },
-                0x05 to Supplier<L2LoginClientPacket> { RequestServerList() }
+        private val authGgOpcode: Short = 0x07
+        private val requestAuthOpCode: Short = 0x00
+        private val requestServerLoginOpCode: Short = 0x02
+        private val requestServerListOpCode: Short = 0x05
+
+        private val opcodeMapping: HashMap<Short, () -> L2LoginClientPacket?> = hashMapOf(
+                authGgOpcode to ::AuthGameGuard,
+                requestAuthOpCode to ::RequestAuthLogin,
+                requestServerLoginOpCode to ::RequestServerLogin,
+                requestServerListOpCode to ::RequestServerList
         )
+
         private val log = org.slf4j.LoggerFactory.getLogger(LoginServerClientPacketDecoder::class.java)
     }
 }

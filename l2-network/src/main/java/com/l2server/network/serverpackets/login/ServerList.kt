@@ -19,7 +19,6 @@
 package com.l2server.network.serverpackets.login
 
 
-import com.l2server.network.and
 import com.l2server.network.login.L2LoginClient
 import java.nio.ByteBuffer
 
@@ -71,10 +70,10 @@ data class ServerList(val client: L2LoginClient, val servers: List<ServerData>) 
         for (server in servers) {
             writeC(buffer, server.serverId) // server id
 
-            writeC(buffer, server.ip[0] and 0xff)
-            writeC(buffer, server.ip[1] and 0xff)
-            writeC(buffer, server.ip[2] and 0xff)
-            writeC(buffer, server.ip[3] and 0xff)
+            writeC(buffer, server.ip[0].toInt() and 0xff)
+            writeC(buffer, server.ip[1].toInt() and 0xff)
+            writeC(buffer, server.ip[2].toInt() and 0xff)
+            writeC(buffer, server.ip[3].toInt() and 0xff)
 
             writeD(buffer, server.port)
             writeC(buffer, server.ageLimit) // Age Limit 0, 15, 18

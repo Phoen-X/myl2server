@@ -18,8 +18,6 @@
  */
 package com.l2server.network.util.crypt
 
-import com.l2server.network.and
-import com.l2server.network.shl
 import java.util.*
 
 /**
@@ -42,16 +40,16 @@ class GameCrypt {
         }
 
         var temp = 0
-        for (i in 0..size - 1) {
-            val temp2 = raw[offset + i] and 0xFF
+        for (i in 0 until size) {
+            val temp2 = raw[offset + i].toInt() and 0xFF
             raw[offset + i] = (temp2 xor _inKey[i and 15].toInt() xor temp).toByte()
             temp = temp2
         }
 
-        var old = _inKey[8] and 0xff
-        old = old or (_inKey[9] shl 8 and 0xff00)
-        old = old or (_inKey[10] shl 0x10 and 0xff0000)
-        old = old or (_inKey[11] shl 0x18 and 0xff000000.toInt())
+        var old = _inKey[8].toLong() and 0xff
+        old = old or (_inKey[9].toLong() shl 8 and 0xff00)
+        old = old or (_inKey[10].toLong() shl 0x10 and 0xff0000)
+        old = old or (_inKey[11].toLong() shl 0x18 and 0xff000000)
 
         old += size
 
@@ -68,16 +66,16 @@ class GameCrypt {
         }
 
         var temp = 0
-        for (i in 0..size - 1) {
-            val temp2 = raw[offset + i] and 0xFF
+        for (i in 0 until size) {
+            val temp2 = raw[offset + i].toInt() and 0xFF
             temp = temp2 xor _outKey[i and 15].toInt() xor temp
             raw[offset + i] = temp.toByte()
         }
 
-        var old = _outKey[8] and 0xff
-        old = old or (_outKey[9] shl 8 and 0xff00)
-        old = old or (_outKey[10] shl 0x10 and 0xff0000)
-        old = old or (_outKey[11] shl 0x18 and 0xff000000.toInt())
+        var old = _outKey[8].toLong() and 0xff
+        old = old or (_outKey[9].toLong() shl 8 and 0xff00)
+        old = old or (_outKey[10].toLong() shl 0x10 and 0xff0000)
+        old = old or (_outKey[11].toLong() shl 0x18 and 0xff000000)
 
         old += size
 

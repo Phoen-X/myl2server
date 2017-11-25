@@ -18,7 +18,6 @@
  */
 package com.vvygulyarniy.l2.loginserver.util
 
-import com.l2server.network.and
 import java.util.*
 
 /**
@@ -52,8 +51,9 @@ object HexUtils {
 
         // /////////////////////////////
         // NIBBLE LOOKUP
-        chars[offset] = _NIBBLE_CHAR_LOOKUP[data and 0xF0 shr 4]
-        chars[offset + 1] = _NIBBLE_CHAR_LOOKUP[data and 0x0F]
+        val intData = data.toInt()
+        chars[offset] = _NIBBLE_CHAR_LOOKUP[intData and 0xF0 shr 4]
+        chars[offset + 1] = _NIBBLE_CHAR_LOOKUP[intData and 0x0F]
 
         return chars
     }
@@ -112,8 +112,8 @@ object HexUtils {
         while (dataIdx < len + offset) {
             // /////////////////////////////
             // NIBBLE LOOKUP, we duplicate the code from b2HexChars here, we want to save a few cycles(for charsIdx increment)
-            dstHexChars[charsIdx] = _NIBBLE_CHAR_LOOKUP[data[dataIdx] and 0xF0 shr 4]
-            dstHexChars[++charsIdx] = _NIBBLE_CHAR_LOOKUP[data[dataIdx] and 0x0F]
+            dstHexChars[charsIdx] = _NIBBLE_CHAR_LOOKUP[data[dataIdx].toInt() and 0xF0 shr 4]
+            dstHexChars[++charsIdx] = _NIBBLE_CHAR_LOOKUP[data[dataIdx].toInt() and 0x0F]
             ++dataIdx
             ++charsIdx
         }

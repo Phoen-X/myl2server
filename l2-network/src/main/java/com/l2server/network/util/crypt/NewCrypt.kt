@@ -18,10 +18,6 @@
  */
 package com.l2server.network.util.crypt
 
-import com.l2server.network.and
-import com.l2server.network.shl
-import kotlin.experimental.and
-
 /**
  * Class to use a blowfish cipher with ECB processing.<br></br>
  * Static methods are present to append/check the checksum of<br></br>
@@ -102,19 +98,19 @@ class NewCrypt(blowfishKey: ByteArray) {
             var i: Int = offset
 
             while (i < count) {
-                check = (raw[i] and 0xff.toByte()).toLong() // 7
-                check = check or ((raw[i + 1] shl 8) and 0xff00).toLong() // 44295
-                check = check or ((raw[i + 2] shl 0x10) and 0xff0000).toLong() // 126...
-                check = check or ((raw[i + 3] shl 0x18) and 0xff000000) //-1
+                check = (raw[i].toLong() and 0xff)
+                check = check or ((raw[i + 1].toLong() shl 8) and 0xff00)
+                check = check or ((raw[i + 2].toLong() shl 0x10) and 0xff0000)
+                check = check or ((raw[i + 3].toLong() shl 0x18) and 0xff000000)
 
                 chksum = chksum xor check
                 i += 4
             }
 
-            check = (raw[i] and 0xff.toByte()).toLong()
-            check = check or ((raw[i + 1] shl 8) and 0xff00).toLong()
-            check = check or ((raw[i + 2] shl 0x10) and 0xff0000).toLong()
-            check = check or ((raw[i + 3] shl 0x18) and 0xff000000)
+            check = (raw[i].toLong() and 0xff)
+            check = check or ((raw[i + 1].toLong() shl 8) and 0xff00)
+            check = check or ((raw[i + 2].toLong() shl 0x10) and 0xff0000)
+            check = check or ((raw[i + 3].toLong() shl 0x18) and 0xff000000)
 
             return check == chksum
         }
@@ -135,19 +131,19 @@ class NewCrypt(blowfishKey: ByteArray) {
             var i: Int = offset
 
             while (i < count) {
-                ecx = (raw[i] and 0xff).toLong()
-                ecx = ecx or (raw[i + 1] shl 8 and 0xff00).toLong()
-                ecx = ecx or (raw[i + 2] shl 0x10 and 0xff0000).toLong()
-                ecx = ecx or (raw[i + 3] shl 0x18 and 0xff000000.toInt()).toLong()
+                ecx = (raw[i].toLong() and 0xff)
+                ecx = ecx or (raw[i + 1].toLong() shl 8 and 0xff00)
+                ecx = ecx or (raw[i + 2].toLong() shl 0x10 and 0xff0000)
+                ecx = ecx or (raw[i + 3].toLong() shl 0x18 and 0xff000000)
 
                 chksum = chksum xor ecx
                 i += 4
             }
 
-            ecx = (raw[i] and 0xff).toLong()
-            ecx = ecx or (raw[i + 1] shl 8 and 0xff00).toLong()
-            ecx = ecx or (raw[i + 2] shl 0x10 and 0xff0000).toLong()
-            ecx = ecx or (raw[i + 3] shl 0x18 and 0xff000000.toInt()).toLong()
+            ecx = (raw[i].toLong() and 0xff)
+            ecx = ecx or (raw[i + 1].toLong() shl 8 and 0xff00)
+            ecx = ecx or (raw[i + 2].toLong() shl 0x10 and 0xff0000)
+            ecx = ecx or (raw[i + 3].toLong() shl 0x18 and 0xff000000)
 
             raw[i] = (chksum and 0xff).toByte()
             raw[i + 1] = (chksum shr 0x08 and 0xff).toByte()
@@ -186,10 +182,10 @@ class NewCrypt(blowfishKey: ByteArray) {
             var ecx = key // Initial xor key
 
             while (pos < stop) {
-                edx = raw[pos] and 0xFF
-                edx = edx or (raw[pos + 1] and 0xFF shl 8)
-                edx = edx or (raw[pos + 2] and 0xFF shl 16)
-                edx = edx or (raw[pos + 3] and 0xFF shl 24)
+                edx = raw[pos].toInt() and 0xFF
+                edx = edx or (raw[pos + 1].toInt() and 0xFF shl 8)
+                edx = edx or (raw[pos + 2].toInt() and 0xFF shl 16)
+                edx = edx or (raw[pos + 3].toInt() and 0xFF shl 24)
 
                 ecx += edx
 
@@ -204,7 +200,7 @@ class NewCrypt(blowfishKey: ByteArray) {
             raw[pos++] = (ecx and 0xFF).toByte()
             raw[pos++] = (ecx shr 8 and 0xFF).toByte()
             raw[pos++] = (ecx shr 16 and 0xFF).toByte()
-            raw[pos++] = (ecx shr 24 and 0xFF).toByte()
+            raw[pos] = (ecx shr 24 and 0xFF).toByte()
         }
     }
 }
