@@ -1,4 +1,4 @@
-package com.l2server.network.util.crypt;
+package com.l2server.crypt;
 
 /**
  * Class to use a blowfish cipher with ECB processing.<br>

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2server.network.util.crypt
+package com.l2server.crypt
 
 /**
  * Class to use a blowfish cipher with ECB processing.<br></br>
@@ -160,7 +160,7 @@ class NewCrypt(blowfishKey: ByteArray) {
          * @param key The 4 bytes (int) XOR key
          */
         fun encXORPass(raw: ByteArray, key: Int) {
-            NewCrypt.encXORPass(raw, 0, raw.size, key)
+            encXORPass(raw, 0, raw.size, key)
         }
 
         /**
@@ -204,5 +204,3 @@ class NewCrypt(blowfishKey: ByteArray) {
         }
     }
 }
-
-private infix fun Int.and(l: Long) = this.toLong() and l

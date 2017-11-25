@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/l2-crypt/l2-crypt.iml" filepath="$PROJECT_DIR$/l2-crypt/l2-crypt.iml" />
       <module fileurl="file://$PROJECT_DIR$/l2-domain/l2-domain.iml" filepath="$PROJECT_DIR$/l2-domain/l2-domain.iml" />
       <module fileurl="file://$PROJECT_DIR$/l2-gameserver/l2-gameserver.iml" filepath="$PROJECT_DIR$/l2-gameserver/l2-gameserver.iml" />
       <module fileurl="file://$PROJECT_DIR$/l2-loginserver/l2-loginserver.iml" filepath="$PROJECT_DIR$/l2-loginserver/l2-loginserver.iml" />

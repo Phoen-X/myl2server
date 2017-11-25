@@ -13,6 +13,7 @@
         <module>l2-gameserver</module>
         <module>l2-mock-client</module>
         <module>l2-domain</module>
+        <module>l2-crypt</module>
     </modules>
 
     <packaging>pom</packaging>

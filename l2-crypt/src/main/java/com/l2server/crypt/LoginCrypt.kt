@@ -1,4 +1,4 @@
-package com.l2server.network.util.crypt
+package com.l2server.crypt
 
 
 import java.io.IOException

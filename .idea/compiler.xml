@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="l2-crypt" />
         <module name="l2-domain" />
         <module name="l2-gameserver" />
         <module name="l2-loginserver" />
@@ -15,6 +16,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="l2-crypt" target="1.8" />
       <module name="l2-domain" target="1.8" />
       <module name="l2-gameserver" target="1.8" />
       <module name="l2-loginserver" target="1.8" />
