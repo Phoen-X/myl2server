@@ -18,9 +18,9 @@
  */
 package com.vvygulyarniy.l2.gameserver.network;
 
+import com.l2server.crypt.BlowFishKeygen;
+import com.l2server.crypt.GameCrypt;
 import com.l2server.network.SessionKey;
-import com.l2server.network.util.crypt.BlowFishKeygen;
-import com.l2server.network.util.crypt.GameCrypt;
 import com.vvygulyarniy.l2.gameserver.network.packet.server.L2GameServerPacket;
 import com.vvygulyarniy.l2.gameserver.network.packet.server.ServerClose;
 import com.vvygulyarniy.l2.gameserver.world.character.L2Player;

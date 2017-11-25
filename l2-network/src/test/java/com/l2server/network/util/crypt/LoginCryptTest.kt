@@ -1,5 +1,6 @@
 package com.l2server.network.util.crypt
 
+import com.l2server.crypt.LoginCrypt
 import com.l2server.network.testutil.BuffersUtil.bufferData
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.testng.annotations.Test

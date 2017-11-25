@@ -19,12 +19,12 @@
 package com.l2server.network.login
 
 
+import com.l2server.crypt.LoginCrypt
+import com.l2server.crypt.ScrambledKeyPair
 import com.l2server.network.SessionKey
 import com.l2server.network.serverpackets.login.L2LoginServerPacket
 import com.l2server.network.serverpackets.login.LoginFail
 import com.l2server.network.serverpackets.login.PlayFail
-import com.l2server.network.util.crypt.LoginCrypt
-import com.l2server.network.util.crypt.ScrambledKeyPair
 import org.slf4j.LoggerFactory.getLogger
 import java.io.IOException
 import java.nio.ByteBuffer

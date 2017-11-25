@@ -18,10 +18,10 @@
  */
 package com.vvygulyarniy.l2.loginserver
 
+import com.l2server.crypt.ScrambledKeyPair
 import com.l2server.network.SessionKey
 import com.l2server.network.login.L2LoginClient
 import com.l2server.network.serverpackets.login.LoginFail.LoginFailReason
-import com.l2server.network.util.crypt.ScrambledKeyPair
 import com.vvygulyarniy.l2.loginserver.model.data.AccountInfo
 import com.vvygulyarniy.l2.loginserver.util.Rnd
 import java.net.InetAddress
@@ -121,7 +121,7 @@ object LoginController {
         try {
             val md = MessageDigest.getInstance("SHA")
             val raw = password.toByteArray(StandardCharsets.UTF_8)
-            val hashBase64 = Base64.getEncoder().encodeToString(md.digest(raw))
+            Base64.getEncoder().encodeToString(md.digest(raw))
             return AccountInfo(login, password, 1, 0)
         } catch (e: Exception) {
             return null

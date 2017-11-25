@@ -18,8 +18,6 @@
  */
 package com.l2server.crypt
 
-import java.util.*
-
 /**
  * @author KenM
  */
@@ -29,7 +27,6 @@ class GameCrypt {
     private var _isEnabled: Boolean = false
 
     fun setKey(key: ByteArray) {
-        log.debug("Setting crypt key: {}", Arrays.toString(key))
         System.arraycopy(key, 0, _inKey, 0, 16)
         System.arraycopy(key, 0, _outKey, 0, 16)
     }
@@ -83,9 +80,5 @@ class GameCrypt {
         _outKey[9] = (old shr 0x08 and 0xff).toByte()
         _outKey[10] = (old shr 0x10 and 0xff).toByte()
         _outKey[11] = (old shr 0x18 and 0xff).toByte()
-    }
-
-    companion object {
-        private val log = org.slf4j.LoggerFactory.getLogger(GameCrypt::class.java)
     }
 }
