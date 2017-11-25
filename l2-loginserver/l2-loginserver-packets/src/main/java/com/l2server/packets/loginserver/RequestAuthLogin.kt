@@ -16,10 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2server.network.clientpackets.login
+package com.l2server.packets.loginserver
 
 
-import com.l2server.network.ClientPacketProcessor
 import com.l2server.network.login.L2LoginClient
 
 /**

@@ -1,10 +1,5 @@
 package com.vvygulyarniy.l2.loginserver.logic
 
-import com.l2server.network.ClientPacketProcessor
-import com.l2server.network.clientpackets.login.AuthGameGuard
-import com.l2server.network.clientpackets.login.RequestAuthLogin
-import com.l2server.network.clientpackets.login.RequestServerList
-import com.l2server.network.clientpackets.login.RequestServerLogin
 import com.l2server.network.login.L2LoginClient
 import com.l2server.network.login.L2LoginClient.LoginClientState.AUTHED_LOGIN
 import com.l2server.network.serverpackets.login.*
@@ -12,6 +7,7 @@ import com.l2server.network.serverpackets.login.AccountKicked.AccountKickedReaso
 import com.l2server.network.serverpackets.login.LoginFail.LoginFailReason.*
 import com.l2server.network.serverpackets.login.PlayFail.PlayFailReason.REASON_SERVER_OVERLOADED
 import com.l2server.network.serverpackets.login.ServerList.ServerData
+import com.l2server.packets.loginserver.*
 import com.vvygulyarniy.l2.loginserver.GameServerTable
 import com.vvygulyarniy.l2.loginserver.LoginController
 import java.net.InetAddress

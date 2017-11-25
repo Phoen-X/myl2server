@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/l2-domain/l2-domain.iml" filepath="$PROJECT_DIR$/l2-domain/l2-domain.iml" />
       <module fileurl="file://$PROJECT_DIR$/l2-gameserver/l2-gameserver.iml" filepath="$PROJECT_DIR$/l2-gameserver/l2-gameserver.iml" />
       <module fileurl="file://$PROJECT_DIR$/l2-loginserver/l2-loginserver.iml" filepath="$PROJECT_DIR$/l2-loginserver/l2-loginserver.iml" />
+      <module fileurl="file://$PROJECT_DIR$/l2-loginserver/l2-loginserver-packets/l2-loginserver-packets.iml" filepath="$PROJECT_DIR$/l2-loginserver/l2-loginserver-packets/l2-loginserver-packets.iml" />
       <module fileurl="file://$PROJECT_DIR$/l2-mock-client/l2-mock-client.iml" filepath="$PROJECT_DIR$/l2-mock-client/l2-mock-client.iml" />
       <module fileurl="file://$PROJECT_DIR$/l2-network/l2-network.iml" filepath="$PROJECT_DIR$/l2-network/l2-network.iml" />
       <module fileurl="file://$PROJECT_DIR$/myl2server.iml" filepath="$PROJECT_DIR$/myl2server.iml" />

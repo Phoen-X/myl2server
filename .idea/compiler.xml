@@ -10,7 +10,7 @@
         <module name="l2-crypt" />
         <module name="l2-domain" />
         <module name="l2-gameserver" />
-        <module name="l2-loginserver" />
+        <module name="l2-loginserver-packets" />
         <module name="l2-mock-client" />
         <module name="l2-network" />
       </profile>
@@ -20,6 +20,7 @@
       <module name="l2-domain" target="1.8" />
       <module name="l2-gameserver" target="1.8" />
       <module name="l2-loginserver" target="1.8" />
+      <module name="l2-loginserver-packets" target="1.8" />
       <module name="l2-mock-client" target="1.8" />
       <module name="l2-network" target="1.8" />
       <module name="myl2server" target="1.8" />

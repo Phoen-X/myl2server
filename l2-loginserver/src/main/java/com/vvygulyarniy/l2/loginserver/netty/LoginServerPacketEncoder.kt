@@ -1,4 +1,4 @@
-package com.l2server.network.coders.loginserver
+package com.vvygulyarniy.l2.loginserver.netty
 
 import com.l2server.network.login.L2LoginClient
 import com.l2server.network.serverpackets.login.L2LoginServerPacket

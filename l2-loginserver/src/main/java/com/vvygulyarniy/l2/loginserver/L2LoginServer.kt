@@ -19,9 +19,9 @@
 package com.vvygulyarniy.l2.loginserver
 
 
-import com.l2server.network.coders.loginserver.LoginServerClientPacketDecoder
-import com.l2server.network.coders.loginserver.LoginServerPacketEncoder
 import com.vvygulyarniy.l2.loginserver.logic.LoginPacketsProcessor
+import com.vvygulyarniy.l2.loginserver.netty.LoginServerClientPacketDecoder
+import com.vvygulyarniy.l2.loginserver.netty.LoginServerPacketEncoder
 import com.vvygulyarniy.l2.loginserver.netty.NettyLoginServerHandler
 import io.netty.bootstrap.ServerBootstrap
 import io.netty.channel.ChannelInitializer
