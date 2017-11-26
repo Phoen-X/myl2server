@@ -40,10 +40,7 @@ class LoginCrypt {
         }
 
         _crypt!!.decrypt(raw, offset, size)
-        val newVerification = NewCrypt.verifyChecksum(raw, offset, size)
-        val oldVerification = BackwardJavaCrypt.verifyChecksum(raw, offset, size)
-        println("new = $newVerification, old = $oldVerification")
-        return newVerification
+        return NewCrypt.verifyChecksum(raw, offset, size)
     }
 
     /**

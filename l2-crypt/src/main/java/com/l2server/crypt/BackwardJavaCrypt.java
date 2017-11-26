@@ -45,27 +45,17 @@ public final class BackwardJavaCrypt {
         int i;
 
         for (i = offset; i < count; i += 4) {
-            System.err.println("OLD: check = " + check);
             check = raw[i] & 0xff; //7
-            System.err.println("OLD: check = " + check);
             check |= (raw[i + 1] << 8) & 0xff00;    // 44295
-            System.err.println("OLD: check = " + check);
             check |= (raw[i + 2] << 0x10) & 0xff0000;//
-            System.err.println("OLD: check = " + check);
             check |= (raw[i + 3] << 0x18) & 0xff000000;//
-            System.err.println("OLD: check = " + check);
             chksum ^= check;
-            System.err.println("OLD: check = " + check);
         }
 
         check = raw[i] & 0xff;
-        System.err.println("OLD: check = " + check);
         check |= (raw[i + 1] << 8) & 0xff00;
-        System.err.println("OLD: check = " + check);
         check |= (raw[i + 2] << 0x10) & 0xff0000;
-        System.err.println("OLD: check = " + check);
         check |= (raw[i + 3] << 0x18) & 0xff000000;
-        System.err.println("OLD: check = " + check);
 
         return check == chksum;
     }
