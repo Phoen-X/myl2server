@@ -16,35 +16,40 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2server.packets.loginserver
+package com.l2server.network.clientpackets.login
 
 
+import com.l2server.network.ClientPacketProcessor
 import com.l2server.network.login.L2LoginClient
 
 /**
- * Format: ddddd
-
- * @author -Wooden-
+ * <pre>
+ * Format: ddc
+ * d: fist part of session id
+ * d: second part of session id
+ * c: ?
+</pre> *
  */
-class AuthGameGuard : L2LoginClientPacket() {
-    var sessionId: Int = 0
+class RequestServerList : L2LoginClientPacket() {
+    /**
+     * @return
+     */
+    var sessionKey1: Int = 0
         private set
-    var data1: Int = 0
+    /**
+     * @return
+     */
+    var sessionKey2: Int = 0
         private set
-    var data2: Int = 0
-        private set
-    var data3: Int = 0
-        private set
-    var data4: Int = 0
-        private set
+    /**
+     * @return
+     */
+    val data3: Int = 0
 
-    override fun readImpl(): Boolean {
-        if (super.buffer!!.remaining() >= 20) {
-            sessionId = readD()
-            data1 = readD()
-            data2 = readD()
-            data3 = readD()
-            data4 = readD()
+    public override fun readImpl(): Boolean {
+        if (super.buffer!!.remaining() >= 8) {
+            sessionKey1 = readD() // loginOk 1
+            sessionKey2 = readD() // loginOk 2
             return true
         }
         return false
@@ -54,14 +59,10 @@ class AuthGameGuard : L2LoginClientPacket() {
         processor.process(this, client)
     }
 
-    override fun toString(): String {
-        return "AuthGameGuard(sessionId=$sessionId, data1=$data1, data2 $data2, data3=$data3, data4=$data4)"
-    }
     /*@Override
     public void run() {
-        if (_sessionId == getClient().getSessionId()) {
-            getClient().setState(L2LoginClient.LoginClientState.AUTHED_GG);
-            getClient().sendPacket(new GGAuth(getClient().getSessionId()));
+        if (getClient().getSessionKey().checkLoginPair(_skey1, _skey2)) {
+            getClient().sendPacket(new ServerList(getClient()));
         } else {
             getClient().close(LoginFail.LoginFailReason.REASON_ACCESS_FAILED);
         }

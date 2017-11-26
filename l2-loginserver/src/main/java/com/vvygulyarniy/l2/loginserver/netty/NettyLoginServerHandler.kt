@@ -1,8 +1,8 @@
 package com.vvygulyarniy.l2.loginserver.netty
 
+import com.l2server.network.clientpackets.login.L2LoginClientPacket
 import com.l2server.network.login.L2LoginClient
 import com.l2server.network.serverpackets.login.Init
-import com.l2server.packets.loginserver.L2LoginClientPacket
 import com.vvygulyarniy.l2.loginserver.LoginController
 import com.vvygulyarniy.l2.loginserver.logic.LoginPacketsProcessor
 import io.netty.channel.ChannelHandlerContext
