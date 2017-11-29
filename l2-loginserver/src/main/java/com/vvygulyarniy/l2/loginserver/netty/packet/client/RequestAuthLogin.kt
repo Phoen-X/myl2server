@@ -16,11 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2server.network.clientpackets.login
+package com.vvygulyarniy.l2.loginserver.netty.packet.client
 
 
-import com.l2server.network.ClientPacketProcessor
-import com.l2server.network.login.L2LoginClient
+import com.vvygulyarniy.l2.loginserver.netty.login.ClientPacketProcessor
+import com.vvygulyarniy.l2.loginserver.netty.login.L2LoginClient
 
 /**
  * <pre>

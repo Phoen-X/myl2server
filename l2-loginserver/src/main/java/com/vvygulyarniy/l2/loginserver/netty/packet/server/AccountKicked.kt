@@ -1,4 +1,4 @@
-package com.l2server.network.serverpackets.login
+package com.vvygulyarniy.l2.loginserver.netty.packet.server
 
 import java.nio.ByteBuffer
 

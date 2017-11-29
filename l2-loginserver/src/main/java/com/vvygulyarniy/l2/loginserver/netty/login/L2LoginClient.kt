@@ -16,16 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2server.network.login
+package com.vvygulyarniy.l2.loginserver.netty.login
 
 
 import com.l2server.crypt.LoginCrypt
 import com.l2server.crypt.NewCrypt
 import com.l2server.crypt.ScrambledKeyPair
 import com.l2server.network.SessionKey
-import com.l2server.network.serverpackets.login.L2LoginServerPacket
-import com.l2server.network.serverpackets.login.LoginFail
-import com.l2server.network.serverpackets.login.PlayFail
+import com.vvygulyarniy.l2.loginserver.netty.packet.server.L2LoginServerPacket
+import com.vvygulyarniy.l2.loginserver.netty.packet.server.LoginFail
+import com.vvygulyarniy.l2.loginserver.netty.packet.server.PlayFail
 import org.slf4j.LoggerFactory.getLogger
 import java.io.IOException
 import java.nio.ByteBuffer

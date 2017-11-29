@@ -16,27 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2server.network.clientpackets.login
+package com.vvygulyarniy.l2.loginserver.netty.login
 
-
-import com.l2server.network.ClientPacketProcessor
-import com.l2server.network.ReceivablePacket
-import com.l2server.network.login.L2LoginClient
 
 /**
- * @author KenM
+ * @author -Wooden-
  */
-abstract class L2LoginClientPacket : ReceivablePacket() {
-
-    override fun read(): Boolean {
-        try {
-            return readImpl()
-        } catch (e: Exception) {
-            return false
-        }
-    }
-
-    protected abstract fun readImpl(): Boolean
-
-    abstract fun process(processor: ClientPacketProcessor, client: L2LoginClient)
+enum class ServerStatus(val code: Int) {
+    AUTO(0x00), GOOD(0x01), NORMAL(0x02), FULL(0x03), DOWN(0x04), GM_ONLY(0x05)
 }

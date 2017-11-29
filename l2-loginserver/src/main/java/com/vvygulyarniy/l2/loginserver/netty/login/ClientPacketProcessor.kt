@@ -1,10 +1,9 @@
-package com.l2server.network
+package com.vvygulyarniy.l2.loginserver.netty.login
 
-import com.l2server.network.clientpackets.login.AuthGameGuard
-import com.l2server.network.clientpackets.login.RequestAuthLogin
-import com.l2server.network.clientpackets.login.RequestServerList
-import com.l2server.network.clientpackets.login.RequestServerLogin
-import com.l2server.network.login.L2LoginClient
+import com.vvygulyarniy.l2.loginserver.netty.packet.client.AuthGameGuard
+import com.vvygulyarniy.l2.loginserver.netty.packet.client.RequestAuthLogin
+import com.vvygulyarniy.l2.loginserver.netty.packet.client.RequestServerList
+import com.vvygulyarniy.l2.loginserver.netty.packet.client.RequestServerLogin
 
 /**
  * Created by Phoen-X on 16.02.2017.

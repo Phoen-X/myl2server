@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2server.network.serverpackets.login
+package com.vvygulyarniy.l2.loginserver.netty.packet.server
 
 
 import java.nio.ByteBuffer

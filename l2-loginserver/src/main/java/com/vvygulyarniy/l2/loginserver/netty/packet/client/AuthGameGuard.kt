@@ -16,40 +16,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2server.network.clientpackets.login
+package com.vvygulyarniy.l2.loginserver.netty.packet.client
 
 
-import com.l2server.network.ClientPacketProcessor
-import com.l2server.network.login.L2LoginClient
+import com.vvygulyarniy.l2.loginserver.netty.login.ClientPacketProcessor
+import com.vvygulyarniy.l2.loginserver.netty.login.L2LoginClient
 
 /**
- * <pre>
- * Format: ddc
- * d: fist part of session id
- * d: second part of session id
- * c: ?
-</pre> *
- */
-class RequestServerList : L2LoginClientPacket() {
-    /**
-     * @return
-     */
-    var sessionKey1: Int = 0
-        private set
-    /**
-     * @return
-     */
-    var sessionKey2: Int = 0
-        private set
-    /**
-     * @return
-     */
-    val data3: Int = 0
+ * Format: ddddd
 
-    public override fun readImpl(): Boolean {
-        if (super.buffer!!.remaining() >= 8) {
-            sessionKey1 = readD() // loginOk 1
-            sessionKey2 = readD() // loginOk 2
+ * @author -Wooden-
+ */
+class AuthGameGuard : L2LoginClientPacket() {
+    var sessionId: Int = 0
+        private set
+    var data1: Int = 0
+        private set
+    var data2: Int = 0
+        private set
+    var data3: Int = 0
+        private set
+    var data4: Int = 0
+        private set
+
+    override fun readImpl(): Boolean {
+        if (super.buffer!!.remaining() >= 20) {
+            sessionId = readD()
+            data1 = readD()
+            data2 = readD()
+            data3 = readD()
+            data4 = readD()
             return true
         }
         return false
@@ -59,10 +55,14 @@ class RequestServerList : L2LoginClientPacket() {
         processor.process(this, client)
     }
 
+    override fun toString(): String {
+        return "AuthGameGuard(sessionId=$sessionId, data1=$data1, data2 $data2, data3=$data3, data4=$data4)"
+    }
     /*@Override
     public void run() {
-        if (getClient().getSessionKey().checkLoginPair(_skey1, _skey2)) {
-            getClient().sendPacket(new ServerList(getClient()));
+        if (_sessionId == getClient().getSessionId()) {
+            getClient().setState(L2LoginClient.LoginClientState.AUTHED_GG);
+            getClient().sendPacket(new GGAuth(getClient().getSessionId()));
         } else {
             getClient().close(LoginFail.LoginFailReason.REASON_ACCESS_FAILED);
         }

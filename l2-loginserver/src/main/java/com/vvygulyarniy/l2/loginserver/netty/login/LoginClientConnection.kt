@@ -1,6 +1,6 @@
-package com.l2server.network.login
+package com.vvygulyarniy.l2.loginserver.netty.login
 
-import com.l2server.network.serverpackets.login.L2LoginServerPacket
+import com.vvygulyarniy.l2.loginserver.netty.packet.server.L2LoginServerPacket
 
 /**
  * Phoen-X on 04.07.2017.

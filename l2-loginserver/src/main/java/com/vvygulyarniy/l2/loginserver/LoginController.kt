@@ -20,9 +20,9 @@ package com.vvygulyarniy.l2.loginserver
 
 import com.l2server.crypt.ScrambledKeyPair
 import com.l2server.network.SessionKey
-import com.l2server.network.login.L2LoginClient
-import com.l2server.network.serverpackets.login.LoginFail.LoginFailReason
 import com.vvygulyarniy.l2.loginserver.model.data.AccountInfo
+import com.vvygulyarniy.l2.loginserver.netty.login.L2LoginClient
+import com.vvygulyarniy.l2.loginserver.netty.packet.server.LoginFail.LoginFailReason
 import com.vvygulyarniy.l2.loginserver.util.Rnd
 import java.net.InetAddress
 import java.nio.charset.StandardCharsets

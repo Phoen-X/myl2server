@@ -16,11 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2server.network.clientpackets.login
+package com.vvygulyarniy.l2.loginserver.netty.packet.client
 
 
-import com.l2server.network.ClientPacketProcessor
-import com.l2server.network.login.L2LoginClient
+import com.vvygulyarniy.l2.loginserver.netty.login.ClientPacketProcessor
+import com.vvygulyarniy.l2.loginserver.netty.login.L2LoginClient
 
 /**
  * <pre>
@@ -62,7 +62,7 @@ class RequestServerLogin : L2LoginClientPacket() {
     }
 
     override fun toString(): String {
-        return "com.l2server.network.clientpackets.login.RequestServerLogin(_skey1=" + this.sessionKey1 + ", _skey2=" + this.sessionKey2 + ", serverId=" + this.serverID + ")"
+        return "com.vvygulyarniy.l2.loginserver.netty.packet.client.RequestServerLogin(_skey1=" + this.sessionKey1 + ", _skey2=" + this.sessionKey2 + ", serverId=" + this.serverID + ")"
     }
 
     /* @Override
