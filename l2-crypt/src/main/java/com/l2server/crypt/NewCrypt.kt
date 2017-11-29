@@ -30,7 +30,11 @@ class NewCrypt(blowfishKey: ByteArray) {
     private val _cipher: BlowfishEngine = BlowfishEngine()
 
     init {
-        _cipher.init(blowfishKey)
+        setKey(blowfishKey)
+    }
+
+    fun setKey(newBlowfishKey: ByteArray) {
+        _cipher.init(newBlowfishKey)
     }
 
     /**

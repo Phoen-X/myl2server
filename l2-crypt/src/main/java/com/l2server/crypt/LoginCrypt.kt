@@ -3,13 +3,11 @@ package com.l2server.crypt
 
 import java.io.IOException
 import java.nio.ByteBuffer
-import java.util.*
 
 /**
  * @author KenM
  */
-class LoginCrypt {
-    private var _crypt: NewCrypt? = null
+class LoginCrypt(private val _crypt: NewCrypt) {
     private var _static = true
 
     /**
@@ -18,7 +16,7 @@ class LoginCrypt {
      * @param key the blowfish key to initialize the dynamic blowfish cipher with
      */
     fun setKey(key: ByteArray) {
-        _crypt = NewCrypt(key)
+        _crypt.setKey(key)
     }
 
     /**
@@ -39,7 +37,7 @@ class LoginCrypt {
             throw IOException("raw array too short for size starting from offset")
         }
 
-        _crypt!!.decrypt(raw, offset, size)
+        _crypt.decrypt(raw, offset, size)
         return NewCrypt.verifyChecksum(raw, offset, size)
     }
 
@@ -78,7 +76,7 @@ class LoginCrypt {
                 throw IOException("packet too long")
             }
             NewCrypt.appendChecksum(raw, offset, index)
-            _crypt!!.crypt(raw, offset, index)
+            _crypt.crypt(raw, offset, index)
         }
         return index
     }
@@ -97,7 +95,6 @@ class LoginCrypt {
     }
 
     companion object {
-        private val rnd = Random()
         private val STATIC_BLOWFISH_KEY = byteArrayOf(0x6b.toByte(),
                 0x60.toByte(), 0xcb.toByte(), 0x5b.toByte(), 0x82.toByte(), 0xce.toByte(), 0x90.toByte(),
                 0xb1.toByte(), 0xcc.toByte(), 0x2b.toByte(), 0x6c.toByte(),

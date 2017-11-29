@@ -20,6 +20,7 @@ package com.l2server.network.login
 
 
 import com.l2server.crypt.LoginCrypt
+import com.l2server.crypt.NewCrypt
 import com.l2server.crypt.ScrambledKeyPair
 import com.l2server.network.SessionKey
 import com.l2server.network.serverpackets.login.L2LoginServerPacket
@@ -56,8 +57,7 @@ class L2LoginClient(private val connection: LoginClientConnection,
         this.state = LoginClientState.CONNECTED
         this.sessionId = rnd.nextInt()
         this.connectionStartTime = System.currentTimeMillis()
-        this.loginCrypt = LoginCrypt()
-        this.loginCrypt.setKey(blowfishKey)
+        this.loginCrypt = LoginCrypt(NewCrypt(blowfishKey))
     }
 
     fun decrypt(buf: ByteBuffer, size: Int): Boolean {
