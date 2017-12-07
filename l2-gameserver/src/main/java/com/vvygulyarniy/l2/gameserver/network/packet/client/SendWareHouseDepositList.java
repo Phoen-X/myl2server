@@ -23,6 +23,8 @@ import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * SendWareHouseDepositList client packet class.
  */
@@ -31,6 +33,10 @@ public final class SendWareHouseDepositList extends L2GameClientPacket {
     private static final String _C__3B_SENDWAREHOUSEDEPOSITLIST = "[C] 3B SendWareHouseDepositList";
 
     private static final int BATCH_LENGTH = 12;
+
+    public SendWareHouseDepositList(ByteBuffer buf) {
+        super(buf);
+    }
 
     //private List<ItemHolder> _items = null;
 

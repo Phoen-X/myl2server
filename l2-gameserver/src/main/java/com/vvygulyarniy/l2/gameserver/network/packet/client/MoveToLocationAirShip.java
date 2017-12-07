@@ -23,6 +23,8 @@ import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 @ToString
 public class MoveToLocationAirShip extends L2GameClientPacket {
     public static final int MIN_Z = -895;
@@ -32,6 +34,10 @@ public class MoveToLocationAirShip extends L2GameClientPacket {
     private int _command;
     private int _param1;
     private int _param2 = 0;
+
+    public MoveToLocationAirShip(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

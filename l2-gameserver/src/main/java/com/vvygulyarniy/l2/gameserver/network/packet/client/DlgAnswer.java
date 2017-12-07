@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author Dezmond_snz
  */
@@ -30,6 +32,10 @@ public final class DlgAnswer extends L2GameClientPacket {
     private int _messageId;
     private int _answer;
     private int _requesterId;
+
+    public DlgAnswer(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

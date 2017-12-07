@@ -20,7 +20,10 @@ package com.vvygulyarniy.l2.gameserver.network.packet.client;
 
 import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
+import org.jetbrains.annotations.NotNull;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.nio.ByteBuffer;
 
 /**
  * Halloween rank list client packet. Format: (ch)ddd
@@ -32,6 +35,10 @@ public class BrEventRankerList extends L2GameClientPacket {
     private int _day;
     @SuppressWarnings("unused")
     private int _ranking;
+
+    public BrEventRankerList(@NotNull ByteBuffer buffer) {
+        super(buffer);
+    }
 
     @Override
     protected void readImpl() {

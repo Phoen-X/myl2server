@@ -22,6 +22,7 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
 import java.util.logging.Logger;
 
 public final class RequestEnchantItem extends L2GameClientPacket {
@@ -31,6 +32,10 @@ public final class RequestEnchantItem extends L2GameClientPacket {
 
     private int _objectId;
     private int _supportId;
+
+    public RequestEnchantItem(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

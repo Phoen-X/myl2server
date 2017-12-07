@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * <p>
  * Format: (c) Sd
@@ -38,6 +40,10 @@ public final class RequestPetition extends L2GameClientPacket {
 
     private String _content;
     private int _type; // 1 = on : 0 = off;
+
+    public RequestPetition(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

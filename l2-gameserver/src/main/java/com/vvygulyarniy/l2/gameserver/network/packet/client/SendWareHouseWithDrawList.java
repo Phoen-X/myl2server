@@ -23,6 +23,8 @@ import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * This class ... 32 SendWareHouseWithDrawList cd (dd) WootenGil rox :P
  *
@@ -33,6 +35,10 @@ public final class SendWareHouseWithDrawList extends L2GameClientPacket {
     private static final String _C__32_SENDWAREHOUSEWITHDRAWLIST = "[C] 3C SendWareHouseWithDrawList";
 
     private static final int BATCH_LENGTH = 12; // length of the one item
+
+    public SendWareHouseWithDrawList(ByteBuffer buf) {
+        super(buf);
+    }
 
     //private ItemHolder _items[] = null;
 

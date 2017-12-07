@@ -22,6 +22,7 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
 import java.util.Calendar;
 
 /**
@@ -30,6 +31,10 @@ import java.util.Calendar;
 public class RequestSetCastleSiegeTime extends L2GameClientPacket {
     private int _castleId;
     private long _time;
+
+    public RequestSetCastleSiegeTime(ByteBuffer buf) {
+        super(buf);
+    }
 
     private static boolean isSiegeTimeValid(long siegeDate, long choosenDate) {
         /*Calendar cal1 = Calendar.getInstance();

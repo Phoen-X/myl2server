@@ -24,6 +24,8 @@ import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.nio.ByteBuffer;
+
 /**
  * This class ...
  *
@@ -37,6 +39,10 @@ public class ValidatePosition extends L2GameClientPacket {
     private Position position;
     @Getter
     private int vehicleId; // vehicle id
+
+    public ValidatePosition(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

@@ -20,7 +20,10 @@ package com.vvygulyarniy.l2.gameserver.network.packet.client;
 
 import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
+import org.jetbrains.annotations.NotNull;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.nio.ByteBuffer;
 
 /**
  * This class ...
@@ -29,6 +32,10 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 public final class ObserverReturn extends L2GameClientPacket {
     private static final String __C__C1_OBSERVERRETURN = "[C] C1 ObserverReturn";
+
+    public ObserverReturn(@NotNull ByteBuffer buffer) {
+        super(buffer);
+    }
 
     @Override
     protected void readImpl() {

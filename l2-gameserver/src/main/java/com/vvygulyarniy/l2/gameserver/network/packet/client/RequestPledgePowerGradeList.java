@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * Format: (ch)
  *
@@ -29,6 +31,11 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 public final class RequestPledgePowerGradeList extends L2GameClientPacket {
     private static final String _C__D0_13_REQUESTPLEDGEPOWERGRADELIST = "[C] D0:13 RequestPledgePowerGradeList";
+
+    public RequestPledgePowerGradeList(
+            ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

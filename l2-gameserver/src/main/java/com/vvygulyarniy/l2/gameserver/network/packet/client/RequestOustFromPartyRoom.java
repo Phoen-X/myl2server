@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * format (ch) d
  *
@@ -31,6 +33,10 @@ public final class RequestOustFromPartyRoom extends L2GameClientPacket {
     private static final String _C__D0_09_REQUESTOUSTFROMPARTYROOM = "[C] D0:09 RequestOustFromPartyRoom";
 
     private int _charid;
+
+    public RequestOustFromPartyRoom(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

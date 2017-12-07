@@ -22,11 +22,17 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author l3x
  */
 public class RequestProcureCropList extends L2GameClientPacket {
     private static final int BATCH_LENGTH = 20; // length of the one item
+
+    public RequestProcureCropList(ByteBuffer buf) {
+        super(buf);
+    }
 
     //private List<CropHolder> _items = null; //TODO uncomment this
 

@@ -20,12 +20,19 @@ package com.vvygulyarniy.l2.gameserver.network.packet.client;
 
 import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
+import org.jetbrains.annotations.NotNull;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.nio.ByteBuffer;
 
 public final class RequestVoteNew extends L2GameClientPacket {
     private static final String _C__D0_7E_REQUESTVOTENEW = "[C] D0:7E RequestVoteNew";
 
     private int _targetId;
+
+    public RequestVoteNew(@NotNull ByteBuffer buffer) {
+        super(buffer);
+    }
 
     @Override
     protected void readImpl() {

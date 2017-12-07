@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 public class RequestExRemoveItemAttribute extends L2GameClientPacket {
     private static final String _C__D0_23_REQUESTEXREMOVEITEMATTRIBUTE = "[C] D0:23 RequestExRemoveItemAttribute";
 
@@ -29,7 +31,8 @@ public class RequestExRemoveItemAttribute extends L2GameClientPacket {
     private long _price;
     private byte _element;
 
-    public RequestExRemoveItemAttribute() {
+    public RequestExRemoveItemAttribute(ByteBuffer buf) {
+        super(buf);
     }
 
     @Override

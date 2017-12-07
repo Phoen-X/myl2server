@@ -22,6 +22,7 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
 import java.util.logging.Logger;
 
 /**
@@ -32,6 +33,10 @@ import java.util.logging.Logger;
 public final class RequestRestart extends L2GameClientPacket {
     protected static final Logger _logAccounting = Logger.getLogger("accounting");
     private static final String _C__57_REQUESTRESTART = "[C] 57 RequestRestart";
+
+    public RequestRestart(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

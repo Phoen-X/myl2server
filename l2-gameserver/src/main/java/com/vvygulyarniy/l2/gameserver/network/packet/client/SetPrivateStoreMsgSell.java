@@ -23,6 +23,8 @@ import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * This class ...
  *
@@ -35,6 +37,10 @@ public class SetPrivateStoreMsgSell extends L2GameClientPacket {
     private static final int MAX_MSG_LENGTH = 29;
 
     private String _storeMsg;
+
+    public SetPrivateStoreMsgSell(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

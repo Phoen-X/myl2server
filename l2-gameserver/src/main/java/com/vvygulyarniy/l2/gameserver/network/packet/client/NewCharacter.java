@@ -22,9 +22,15 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
 
+import java.nio.ByteBuffer;
+
 @ToString
 public final class NewCharacter extends L2GameClientPacket {
     private static final String _C__13_NEWCHARACTER = "[C] 13 NewCharacter";
+
+    public NewCharacter(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

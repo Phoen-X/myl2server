@@ -20,10 +20,17 @@ package com.vvygulyarniy.l2.gameserver.network.packet.client;
 
 import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
+import org.jetbrains.annotations.NotNull;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.nio.ByteBuffer;
 
 public final class RequestRecipeShopManageList extends L2GameClientPacket {
     private static final String _C__B9_RequestRecipeShopManageList = "[C] B9 RequestRecipeShopManageList";
+
+    public RequestRecipeShopManageList(@NotNull ByteBuffer buffer) {
+        super(buffer);
+    }
 
     @Override
     protected void readImpl() {

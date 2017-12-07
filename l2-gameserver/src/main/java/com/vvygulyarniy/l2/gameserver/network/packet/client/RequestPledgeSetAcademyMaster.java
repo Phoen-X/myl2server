@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
 
+import java.nio.ByteBuffer;
+
 /**
  * Format: (ch) dSS
  *
@@ -34,6 +36,10 @@ public final class RequestPledgeSetAcademyMaster extends L2GameClientPacket {
     private String currPlayerName;
     private int set; // 1 set, 0 delete
     private String targetPlayerName;
+
+    public RequestPledgeSetAcademyMaster(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

@@ -23,6 +23,8 @@ import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * This class ...
  *
@@ -33,6 +35,10 @@ public final class SetPrivateStoreListBuy extends L2GameClientPacket {
     private static final String _C__9A_SETPRIVATESTORELISTBUY = "[C] 9A SetPrivateStoreListBuy";
 
     private static final int BATCH_LENGTH = 40; // length of the one item
+
+    public SetPrivateStoreListBuy(ByteBuffer buf) {
+        super(buf);
+    }
 
     //private Item[] _items = null;
 

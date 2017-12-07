@@ -21,7 +21,10 @@ package com.vvygulyarniy.l2.gameserver.network.packet.client;
 import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.nio.ByteBuffer;
 
 /**
  * @author Gnacik
@@ -33,6 +36,10 @@ public final class RequestWithDrawPremiumItem extends L2GameClientPacket {
     private int _itemNum;
     private int _charId;
     private long _itemCount;
+
+    public RequestWithDrawPremiumItem(@NotNull ByteBuffer buffer) {
+        super(buffer);
+    }
 
     @Override
     protected void readImpl() {

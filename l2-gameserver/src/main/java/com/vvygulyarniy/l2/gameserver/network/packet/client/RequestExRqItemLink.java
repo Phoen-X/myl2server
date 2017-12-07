@@ -22,12 +22,18 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author KenM
  */
 public class RequestExRqItemLink extends L2GameClientPacket {
     private static final String _C__D0_1E_REQUESTEXRQITEMLINK = "[C] D0:1E RequestExRqItemLink";
     private int _objectId;
+
+    public RequestExRqItemLink(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

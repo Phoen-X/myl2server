@@ -22,11 +22,17 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * @version 1.4
  */
 public final class RequestSkillList extends L2GameClientPacket {
     private static final String _C__50_REQUESTSKILLLIST = "[C] 50 RequestSkillList";
+
+    public RequestSkillList(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

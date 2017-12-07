@@ -23,6 +23,8 @@ import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author -Wooden-
  */
@@ -31,6 +33,10 @@ public final class SnoopQuit extends L2GameClientPacket {
     private static final String _C__B4_SNOOPQUIT = "[C] B4 SnoopQuit";
 
     private int _snoopID;
+
+    public SnoopQuit(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

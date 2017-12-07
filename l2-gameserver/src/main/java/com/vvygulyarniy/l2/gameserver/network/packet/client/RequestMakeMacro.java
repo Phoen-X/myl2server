@@ -22,11 +22,17 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 public final class RequestMakeMacro extends L2GameClientPacket {
     private static final String _C__CD_REQUESTMAKEMACRO = "[C] CD RequestMakeMacro";
     private static final int MAX_MACRO_LENGTH = 12;
     /*private Macro _macro;*/
     private int _commandsLenght = 0;
+
+    public RequestMakeMacro(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

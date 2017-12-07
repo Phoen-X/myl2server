@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * format ch c: (id) 0xD0 h: (subid) 0x12
  *
@@ -29,6 +31,11 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 public final class RequestOlympiadObserverEnd extends L2GameClientPacket {
     private static final String _C__D0_29_REQUESTOLYMPIADOBSERVEREND = "[C] D0:29 RequestOlympiadObserverEnd";
+
+    public RequestOlympiadObserverEnd(
+            ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

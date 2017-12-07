@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * RequestShowBoard client packet implementation.
  *
@@ -32,6 +34,10 @@ public final class RequestShowBoard extends L2GameClientPacket {
 
     @SuppressWarnings("unused")
     private int _unknown;
+
+    public RequestShowBoard(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected final void readImpl() {

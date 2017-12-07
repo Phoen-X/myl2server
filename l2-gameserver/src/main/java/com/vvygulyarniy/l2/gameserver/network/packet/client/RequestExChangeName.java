@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * Reply for {@link ExNeedToChangeName}
  *
@@ -33,6 +35,10 @@ public class RequestExChangeName extends L2GameClientPacket {
     private String _newName;
     private int _type;
     private int _charSlot;
+
+    public RequestExChangeName(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

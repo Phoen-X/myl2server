@@ -23,6 +23,8 @@ import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.nio.ByteBuffer;
+
 @SuppressWarnings("unused")
 @Getter
 @ToString
@@ -43,6 +45,10 @@ public final class CharacterCreate extends L2GameClientPacket {
     private byte hairStyle;
     private byte hairColor;
     private byte face;
+
+    public CharacterCreate(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author Administrator
  */
@@ -29,6 +31,10 @@ public final class RequestRecipeItemMakeSelf extends L2GameClientPacket {
     private static final String _C__B8_REQUESTRECIPEITEMMAKESELF = "[C] B8 RequestRecipeItemMakeSelf";
 
     private int _id;
+
+    public RequestRecipeItemMakeSelf(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

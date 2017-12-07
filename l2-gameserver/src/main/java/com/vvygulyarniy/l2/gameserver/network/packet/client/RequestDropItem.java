@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * This class ...
  *
@@ -35,6 +37,10 @@ public final class RequestDropItem extends L2GameClientPacket {
     private int _x;
     private int _y;
     private int _z;
+
+    public RequestDropItem(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

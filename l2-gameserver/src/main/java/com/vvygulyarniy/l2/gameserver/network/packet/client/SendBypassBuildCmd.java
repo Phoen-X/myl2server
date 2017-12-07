@@ -23,6 +23,8 @@ import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * This class handles all GM commands triggered by //command
  *
@@ -34,6 +36,10 @@ public final class SendBypassBuildCmd extends L2GameClientPacket {
     public static final int ANNOUNCEMENT = 10;
     private static final String _C__74_SENDBYPASSBUILDCMD = "[C] 74 SendBypassBuildCmd";
     private String _command;
+
+    public SendBypassBuildCmd(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

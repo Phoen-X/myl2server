@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * This class ...
  *
@@ -33,6 +35,10 @@ public final class FinishRotating extends L2GameClientPacket {
     private int _degree;
     @SuppressWarnings("unused")
     private int _unknown;
+
+    public FinishRotating(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

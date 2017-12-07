@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * This packet is received from client when a party leader requests to change the leadership to another player in his party.
  */
@@ -29,6 +31,10 @@ public final class RequestChangePartyLeader extends L2GameClientPacket {
     private static final String _C__D0_0C_REQUESTCHANGEPARTYLEADER = "[C] D0:0C RequestChangePartyLeader";
 
     private String _name;
+
+    public RequestChangePartyLeader(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

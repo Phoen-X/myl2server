@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * * @author Gnacik
  */
@@ -33,6 +35,10 @@ public final class RequestPreviewItem extends L2GameClientPacket {
     private int _listId;
     private int _count;
     private int[] _items;
+
+    public RequestPreviewItem(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

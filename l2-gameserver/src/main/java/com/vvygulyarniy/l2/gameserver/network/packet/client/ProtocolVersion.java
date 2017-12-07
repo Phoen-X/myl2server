@@ -22,6 +22,9 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.Getter;
 import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
+
+import java.nio.ByteBuffer;
 
 /**
  * This class ...
@@ -34,6 +37,10 @@ public final class ProtocolVersion extends L2GameClientPacket {
 
     @Getter
     private int version;
+
+    public ProtocolVersion(@NotNull ByteBuffer buffer) {
+        super(buffer);
+    }
 
     @Override
     protected void readImpl() {

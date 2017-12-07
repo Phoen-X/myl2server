@@ -23,6 +23,8 @@ import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author Gnacik
  */
@@ -33,6 +35,10 @@ public final class RequestWithdrawPartyRoom extends L2GameClientPacket {
     private int _roomid;
     @SuppressWarnings("unused")
     private int _unk1;
+
+    public RequestWithdrawPartyRoom(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

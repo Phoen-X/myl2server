@@ -22,11 +22,17 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author l3x
  */
 @ToString
 public class RequestManorList extends L2GameClientPacket {
+    public RequestManorList(ByteBuffer buf) {
+        super(buf);
+    }
+
     @Override
     protected void readImpl() {
     }

@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * TODO: This class is a copy of AttackRequest, we should get proper structure for both.
  */
@@ -38,6 +40,10 @@ public final class Attack extends L2GameClientPacket {
     private int _originZ;
     @SuppressWarnings("unused")
     private int _attackId;
+
+    public Attack(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

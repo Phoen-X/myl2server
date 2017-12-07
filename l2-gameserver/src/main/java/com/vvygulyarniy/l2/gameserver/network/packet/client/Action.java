@@ -23,6 +23,8 @@ import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 @ToString
 public final class Action extends L2GameClientPacket {
 
@@ -31,6 +33,10 @@ public final class Action extends L2GameClientPacket {
     private int _originY;
     private int _originZ;
     private int _actionId;
+
+    public Action(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

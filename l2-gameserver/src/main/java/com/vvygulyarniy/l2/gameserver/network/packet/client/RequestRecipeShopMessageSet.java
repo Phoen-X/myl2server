@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * This class ... cS
  *
@@ -33,6 +35,10 @@ public class RequestRecipeShopMessageSet extends L2GameClientPacket {
     private static final int MAX_MSG_LENGTH = 29;
 
     private String _name;
+
+    public RequestRecipeShopMessageSet(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

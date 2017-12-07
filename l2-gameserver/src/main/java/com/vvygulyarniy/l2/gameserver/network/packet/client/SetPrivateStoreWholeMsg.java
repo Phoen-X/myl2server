@@ -21,7 +21,10 @@ package com.vvygulyarniy.l2.gameserver.network.packet.client;
 import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.nio.ByteBuffer;
 
 /**
  * @author KenM
@@ -32,6 +35,10 @@ public class SetPrivateStoreWholeMsg extends L2GameClientPacket {
     private static final int MAX_MSG_LENGTH = 29;
 
     private String _msg;
+
+    public SetPrivateStoreWholeMsg(@NotNull ByteBuffer buffer) {
+        super(buffer);
+    }
 
     @Override
     protected void readImpl() {

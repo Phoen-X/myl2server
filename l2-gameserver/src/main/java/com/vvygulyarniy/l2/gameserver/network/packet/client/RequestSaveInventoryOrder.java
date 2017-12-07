@@ -22,6 +22,7 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +38,10 @@ public final class RequestSaveInventoryOrder extends L2GameClientPacket {
      */
     private static final int LIMIT = 125;
     private List<InventoryOrder> _order;
+
+    public RequestSaveInventoryOrder(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

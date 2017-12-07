@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * This class ...
  *
@@ -29,6 +31,10 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 public final class RequestQuestList extends L2GameClientPacket {
     private static final String _C__62_REQUESTQUESTLIST = "[C] 62 RequestQuestList";
+
+    public RequestQuestList(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

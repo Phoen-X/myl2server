@@ -22,6 +22,7 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,10 @@ public class RequestSaveKeyMapping extends L2GameClientPacket {
 
     /*private final Map<Integer, List<ActionKey>> _keyMap = new HashMap<>();
     */private final Map<Integer, List<Integer>> _catMap = new HashMap<>();
+
+    public RequestSaveKeyMapping(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

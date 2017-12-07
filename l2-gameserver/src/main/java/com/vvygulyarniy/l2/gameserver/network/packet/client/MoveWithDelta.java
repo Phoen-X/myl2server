@@ -23,6 +23,8 @@ import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * Format: (c) ddd d: dx d: dy d: dz
  *
@@ -38,6 +40,10 @@ public class MoveWithDelta extends L2GameClientPacket {
     private int _dy;
     @SuppressWarnings("unused")
     private int _dz;
+
+    public MoveWithDelta(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

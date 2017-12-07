@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * This class ...
  *
@@ -31,6 +33,10 @@ public final class RequestJoinAlly extends L2GameClientPacket {
     private static final String _C__8C_REQUESTJOINALLY = "[C] 8C RequestJoinAlly";
 
     private int _id;
+
+    public RequestJoinAlly(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

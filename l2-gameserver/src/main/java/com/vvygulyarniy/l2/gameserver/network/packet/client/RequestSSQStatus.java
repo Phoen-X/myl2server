@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * Seven Signs Record Update Request packet type id 0xc7 format: cc
  *
@@ -31,6 +33,10 @@ public final class RequestSSQStatus extends L2GameClientPacket {
     private static final String _C__C8_RequestSSQStatus = "[C] C8 RequestSSQStatus";
 
     private int _page;
+
+    public RequestSSQStatus(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

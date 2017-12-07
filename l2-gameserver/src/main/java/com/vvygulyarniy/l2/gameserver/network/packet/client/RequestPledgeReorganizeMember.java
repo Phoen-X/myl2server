@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * Format: (ch) dSdS
  *
@@ -34,6 +36,10 @@ public final class RequestPledgeReorganizeMember extends L2GameClientPacket {
     private String _memberName;
     private int _newPledgeType;
     private String _selectedMember;
+
+    public RequestPledgeReorganizeMember(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

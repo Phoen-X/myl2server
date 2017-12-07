@@ -22,10 +22,16 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 public final class RequestRecipeBookOpen extends L2GameClientPacket {
     private static final String _C__B5_REQUESTRECIPEBOOKOPEN = "[C] B5 RequestRecipeBookOpen";
 
     private boolean _isDwarvenCraft;
+
+    public RequestRecipeBookOpen(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

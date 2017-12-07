@@ -20,7 +20,10 @@ package com.vvygulyarniy.l2.gameserver.network.packet.client;
 
 import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
+import org.jetbrains.annotations.NotNull;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.nio.ByteBuffer;
 
 /**
  * @author Migi, DS
@@ -31,6 +34,10 @@ public final class RequestDeleteReceivedPost extends L2GameClientPacket {
     private static final int BATCH_LENGTH = 4; // length of the one item
 
     int[] _msgIds = null;
+
+    public RequestDeleteReceivedPost(@NotNull ByteBuffer buffer) {
+        super(buffer);
+    }
 
     @Override
     protected void readImpl() {

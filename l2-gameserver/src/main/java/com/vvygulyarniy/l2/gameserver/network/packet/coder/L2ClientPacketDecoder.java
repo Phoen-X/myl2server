@@ -1,6 +1,5 @@
 package com.vvygulyarniy.l2.gameserver.network.packet.coder;
 
-import com.l2server.network.NioNetStringBuffer;
 import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.L2GameClient.GameClientState;
 import com.vvygulyarniy.l2.gameserver.network.packet.client.*;
@@ -41,8 +40,6 @@ public class L2ClientPacketDecoder extends ByteToMessageDecoder {
             byteBuffer.limit(byteBuffer.position() + dataSize);
             final L2GameClientPacket cp = createPacket(byteBuffer, client);
             if (cp != null) {
-                cp.setBuffer(byteBuffer);
-                cp.set_sbuf(new NioNetStringBuffer(64 * 1024));
                 if (cp.read()) {
                     out.add(cp);
                 } else {
@@ -63,10 +60,10 @@ public class L2ClientPacketDecoder extends ByteToMessageDecoder {
             case CONNECTED:
                 switch (opCode) {
                     case 0x0e:
-                        return new ProtocolVersion();
+                        return new ProtocolVersion(buf);
 
                     case 0x2b:
-                        return new AuthLogin();
+                        return new AuthLogin(buf);
                     default:
                         break;
                 }
@@ -74,17 +71,17 @@ public class L2ClientPacketDecoder extends ByteToMessageDecoder {
             case AUTHED:
                 switch (opCode) {
                     case 0x00:
-                        return new Logout();
+                        return new Logout(buf);
                     case 0x0c:
-                        return new CharacterCreate();
+                        return new CharacterCreate(buf);
                     case 0x0d:
-                        return new CharacterDelete();
+                        return new CharacterDelete(buf);
                     case 0x12:
-                        return new CharacterSelect();
+                        return new CharacterSelect(buf);
                     case 0x13:
-                        return new NewCharacter();
+                        return new NewCharacter(buf);
                     case 0x7b:
-                        return new CharacterRestore();
+                        return new CharacterRestore(buf);
                     case 0xd0:
                         int id2 = -1;
                         if (buf.remaining() >= 2) {
@@ -96,13 +93,13 @@ public class L2ClientPacketDecoder extends ByteToMessageDecoder {
 
                         switch (id2) {
                             case 0x36:
-                                return new RequestGotoLobby();
+                                return new RequestGotoLobby(buf);
                             case 0x93:
-                                return new RequestEx2ndPasswordCheck();
+                                return new RequestEx2ndPasswordCheck(buf);
                             case 0x94:
-                                return new RequestEx2ndPasswordVerify();
+                                return new RequestEx2ndPasswordVerify(buf);
                             case 0x95:
-                                return new RequestEx2ndPasswordReq();
+                                return new RequestEx2ndPasswordReq(buf);
                             default:
                                 break;
                         }
@@ -114,85 +111,85 @@ public class L2ClientPacketDecoder extends ByteToMessageDecoder {
             case IN_GAME:
                 switch (opCode) {
                     case 0x00:
-                        return new Logout();
+                        return new Logout(buf);
                     case 0x01:
-                        return new Attack();
+                        return new Attack(buf);
                     case 0x03:
-                        return new RequestStartPledgeWar();
+                        return new RequestStartPledgeWar(buf);
                     case 0x04:
-                        return new RequestReplyStartPledgeWar();
+                        return new RequestReplyStartPledgeWar(buf);
                     case 0x05:
-                        return new RequestStopPledgeWar();
+                        return new RequestStopPledgeWar(buf);
                     case 0x06: // RequestSCCheck
-                        return new RequestReplyStopPledgeWar();
+                        return new RequestReplyStopPledgeWar(buf);
                     case 0x07:
-                        return new RequestSurrenderPledgeWar();
+                        return new RequestSurrenderPledgeWar(buf);
                     case 0x08:
-                        return new RequestReplySurrenderPledgeWar();
+                        return new RequestReplySurrenderPledgeWar(buf);
                     case 0x09:
-                        return new RequestSetPledgeCrest();
+                        return new RequestSetPledgeCrest(buf);
                     case 0x0b:
-                        return new RequestGiveNickName();
+                        return new RequestGiveNickName(buf);
                     case 0x0f:
-                        return new MoveBackwardToLocation();
+                        return new MoveBackwardToLocation(buf);
                     case 0x10:
                         // Say
                         break;
                     case 0x11:
-                        return new EnterWorld();
+                        return new EnterWorld(buf);
                     case 0x12:
                         // CharacterSelect, in case of player spam clicks on loginscreen
                         log.warn("Player spam clicks on login screen");
                         break;
                     case 0x14:
-                        return new RequestItemList();
+                        return new RequestItemList(buf);
                     case 0x15:
                         // RequestEquipItem
                         log.warn("Used obsolete RequestEquipItem packet!");
                         break;
                     case 0x16:
-                        return new RequestUnEquipItem();
+                        return new RequestUnEquipItem(buf);
                     case 0x17:
-                        return new RequestDropItem();
+                        return new RequestDropItem(buf);
                     case 0x19:
-                        return new UseItem();
+                        return new UseItem(buf);
                     case 0x1a:
-                        return new TradeRequest();
+                        return new TradeRequest(buf);
                     case 0x1b:
-                        return new AddTradeItem();
+                        return new AddTradeItem(buf);
                     case 0x1c:
-                        return new TradeDone();
+                        return new TradeDone(buf);
                     case 0x1f:
-                        return new Action();
+                        return new Action(buf);
                     case 0x22:
-                        return new RequestLinkHtml();
+                        return new RequestLinkHtml(buf);
                     case 0x23:
-                        return new RequestBypassToServer();
+                        return new RequestBypassToServer(buf);
                     case 0x24:
-                        return new RequestBBSwrite();
+                        return new RequestBBSwrite(buf);
                     case 0x25:
                         // RequestCreatePledge
                         break;
                     case 0x26:
-                        return new RequestJoinPledge();
+                        return new RequestJoinPledge(buf);
                     case 0x27:
-                        return new RequestAnswerJoinPledge();
+                        return new RequestAnswerJoinPledge(buf);
                     case 0x28:
-                        return new RequestWithdrawalPledge();
+                        return new RequestWithdrawalPledge(buf);
                     case 0x29:
-                        return new RequestOustPledgeMember();
+                        return new RequestOustPledgeMember(buf);
                     case 0x2c:
-                        return new RequestGetItemFromPet();
+                        return new RequestGetItemFromPet(buf);
                     case 0x2e:
-                        return new RequestAllyInfo();
+                        return new RequestAllyInfo(buf);
                     case 0x2f:
-                        return new RequestCrystallizeItem();
+                        return new RequestCrystallizeItem(buf);
                     case 0x30:
-                        return new RequestPrivateStoreManageSell();
+                        return new RequestPrivateStoreManageSell(buf);
                     case 0x31:
-                        return new SetPrivateStoreListSell();
+                        return new SetPrivateStoreListSell(buf);
                     case 0x32:
-                        return new AttackRequest();
+                        return new AttackRequest(buf);
                     case 0x33:
                         // RequestTeleportPacket
                         break;
@@ -209,44 +206,44 @@ public class L2ClientPacketDecoder extends ByteToMessageDecoder {
                         log.warn("Used obsolete ChangeWaitType packet");
                         break;
                     case 0x37:
-                        return new RequestSellItem();
+                        return new RequestSellItem(buf);
                     case 0x38:
                         // RequestMagicSkillList
                         break;
                     case 0x39:
-                        return new RequestMagicSkillUse();
+                        return new RequestMagicSkillUse(buf);
                     case 0x3a: // SendApperingPacket
-                        return new Appearing();
+                        return new Appearing(buf);
                     case 0x3b:
-                        return new SendWareHouseDepositList();
+                        return new SendWareHouseDepositList(buf);
                     case 0x3c:
-                        return new SendWareHouseWithDrawList();
+                        return new SendWareHouseWithDrawList(buf);
                     case 0x3d:
-                        return new RequestShortCutReg();
+                        return new RequestShortCutReg(buf);
                     case 0x3f:
-                        return new RequestShortCutDel();
+                        return new RequestShortCutDel(buf);
                     case 0x40:
-                        return new RequestBuyItem();
+                        return new RequestBuyItem(buf);
                     case 0x41:
                         // RequestDismissPledge
                         break;
                     case 0x42:
-                        return new RequestJoinParty();
+                        return new RequestJoinParty(buf);
                     case 0x43:
-                        return new RequestAnswerJoinParty();
+                        return new RequestAnswerJoinParty(buf);
                     case 0x44:
-                        return new RequestWithDrawalParty();
+                        return new RequestWithDrawalParty(buf);
                     case 0x45:
-                        return new RequestOustPartyMember();
+                        return new RequestOustPartyMember(buf);
                     case 0x46:
                         // RequestDismissParty
                         break;
                     case 0x47:
-                        return new CannotMoveAnymore();
+                        return new CannotMoveAnymore(buf);
                     case 0x48:
-                        return new RequestTargetCanceld();
+                        return new RequestTargetCanceld(buf);
                     case 0x49:
-                        return new Say2();
+                        return new Say2(buf);
                     case 0x4a:
                         int id_2 = -1;
                         if (buf.remaining() >= 2) {
@@ -274,148 +271,148 @@ public class L2ClientPacketDecoder extends ByteToMessageDecoder {
                         }
                         break;
                     case 0x4d:
-                        return new RequestPledgeMemberList();
+                        return new RequestPledgeMemberList(buf);
                     case 0x4f:
                         // RequestMagicList
                         break;
                     case 0x50:
-                        return new RequestSkillList();
+                        return new RequestSkillList(buf);
                     case 0x52:
-                        return new MoveWithDelta();
+                        return new MoveWithDelta(buf);
                     case 0x53:
-                        return new RequestGetOnVehicle();
+                        return new RequestGetOnVehicle(buf);
                     case 0x54:
-                        return new RequestGetOffVehicle();
+                        return new RequestGetOffVehicle(buf);
                     case 0x55:
-                        return new AnswerTradeRequest();
+                        return new AnswerTradeRequest(buf);
                     case 0x56:
-                        return new RequestActionUse();
+                        return new RequestActionUse(buf);
                     case 0x57:
-                        return new RequestRestart();
+                        return new RequestRestart(buf);
                     case 0x58:
-                        return new RequestSiegeInfo();
+                        return new RequestSiegeInfo(buf);
                     case 0x59:
-                        return new ValidatePosition();
+                        return new ValidatePosition(buf);
                     case 0x5a:
                         // RequestSEKCustom
                         break;
                     case 0x5b:
-                        return new StartRotating();
+                        return new StartRotating(buf);
                     case 0x5c:
-                        return new FinishRotating();
+                        return new FinishRotating(buf);
                     case 0x5e:
-                        return new RequestShowBoard();
+                        return new RequestShowBoard(buf);
                     case 0x5f:
-                        return new RequestEnchantItem();
+                        return new RequestEnchantItem(buf);
                     case 0x60:
-                        return new RequestDestroyItem();
+                        return new RequestDestroyItem(buf);
                     case 0x62:
-                        return new RequestQuestList();
+                        return new RequestQuestList(buf);
                     case 0x63: // RequestDestroyQuest
-                        return new RequestQuestAbort();
+                        return new RequestQuestAbort(buf);
                     case 0x65:
-                        return new RequestPledgeInfo();
+                        return new RequestPledgeInfo(buf);
                     case 0x66:
-                        return new RequestPledgeExtendedInfo();
+                        return new RequestPledgeExtendedInfo(buf);
                     case 0x67:
-                        return new RequestPledgeCrest();
+                        return new RequestPledgeCrest(buf);
                     case 0x6b: // RequestSendL2FriendSay
-                        return new RequestSendFriendMsg();
+                        return new RequestSendFriendMsg(buf);
                     case 0x6c:
-                        return new RequestShowMiniMap();
+                        return new RequestShowMiniMap(buf);
                     case 0x6d:
                         // RequestSendMsnChatLog
                         break;
                     case 0x6e: // RequestReload
-                        return new RequestRecordInfo();
+                        return new RequestRecordInfo(buf);
                     case 0x6f:
-                        return new RequestHennaEquip();
+                        return new RequestHennaEquip(buf);
                     case 0x70:
-                        return new RequestHennaRemoveList();
+                        return new RequestHennaRemoveList(buf);
                     case 0x71:
-                        return new RequestHennaItemRemoveInfo();
+                        return new RequestHennaItemRemoveInfo(buf);
                     case 0x72:
-                        return new RequestHennaRemove();
+                        return new RequestHennaRemove(buf);
                     case 0x73:
-                        return new RequestAcquireSkillInfo();
+                        return new RequestAcquireSkillInfo(buf);
                     case 0x74:
-                        return new SendBypassBuildCmd();
+                        return new SendBypassBuildCmd(buf);
                     case 0x75:
-                        return new RequestMoveToLocationInVehicle();
+                        return new RequestMoveToLocationInVehicle(buf);
                     case 0x76:
-                        return new CannotMoveAnymoreInVehicle();
+                        return new CannotMoveAnymoreInVehicle(buf);
                     case 0x77:
-                        return new RequestFriendInvite();
+                        return new RequestFriendInvite(buf);
                     case 0x78: // RequestFriendAddReply
-                        return new RequestAnswerFriendInvite();
+                        return new RequestAnswerFriendInvite(buf);
                     case 0x79:
-                        return new RequestFriendList();
+                        return new RequestFriendList(buf);
                     case 0x7a:
-                        return new RequestFriendDel();
+                        return new RequestFriendDel(buf);
                     case 0x7c:
-                        return new RequestAcquireSkill();
+                        return new RequestAcquireSkill(buf);
                     case 0x7d:
-                        return new RequestRestartPoint();
+                        return new RequestRestartPoint(buf);
                     case 0x7e:
-                        return new RequestGMCommand();
+                        return new RequestGMCommand(buf);
                     case 0x7f:
-                        return new RequestPartyMatchConfig();
+                        return new RequestPartyMatchConfig(buf);
                     case 0x80:
-                        return new RequestPartyMatchList();
+                        return new RequestPartyMatchList(buf);
                     case 0x81:
-                        return new RequestPartyMatchDetail();
+                        return new RequestPartyMatchDetail(buf);
                     case 0x83: // SendPrivateStoreBuyList
-                        return new RequestPrivateStoreBuy();
+                        return new RequestPrivateStoreBuy(buf);
                     case 0x85:
-                        return new RequestTutorialLinkHtml();
+                        return new RequestTutorialLinkHtml(buf);
                     case 0x86:
-                        return new RequestTutorialPassCmdToServer();
+                        return new RequestTutorialPassCmdToServer(buf);
                     case 0x87:
-                        return new RequestTutorialQuestionMark();
+                        return new RequestTutorialQuestionMark(buf);
                     case 0x88:
-                        return new RequestTutorialClientEvent();
+                        return new RequestTutorialClientEvent(buf);
                     case 0x89:
-                        return new RequestPetition();
+                        return new RequestPetition(buf);
                     case 0x8a:
-                        return new RequestPetitionCancel();
+                        return new RequestPetitionCancel(buf);
                     case 0x8b:
-                        return new RequestGmList();
+                        return new RequestGmList(buf);
                     case 0x8c:
-                        return new RequestJoinAlly();
+                        return new RequestJoinAlly(buf);
                     case 0x8d:
-                        return new RequestAnswerJoinAlly();
+                        return new RequestAnswerJoinAlly(buf);
                     case 0x8e: // RequestWithdrawAlly
-                        return new AllyLeave();
+                        return new AllyLeave(buf);
                     case 0x8f: // RequestOustAlly
-                        return new AllyDismiss();
+                        return new AllyDismiss(buf);
                     case 0x90:
-                        return new RequestDismissAlly();
+                        return new RequestDismissAlly(buf);
                     case 0x91:
-                        return new RequestSetAllyCrest();
+                        return new RequestSetAllyCrest(buf);
                     case 0x92:
-                        return new RequestAllyCrest();
+                        return new RequestAllyCrest(buf);
                     case 0x93:
-                        return new RequestChangePetName();
+                        return new RequestChangePetName(buf);
                     case 0x94:
-                        return new RequestPetUseItem();
+                        return new RequestPetUseItem(buf);
                     case 0x95:
-                        return new RequestGiveItemToPet();
+                        return new RequestGiveItemToPet(buf);
                     case 0x96:
-                        return new RequestPrivateStoreQuitSell();
+                        return new RequestPrivateStoreQuitSell(buf);
                     case 0x97:
-                        return new SetPrivateStoreMsgSell();
+                        return new SetPrivateStoreMsgSell(buf);
                     case 0x98:
-                        return new RequestPetGetItem();
+                        return new RequestPetGetItem(buf);
                     case 0x99:
-                        return new RequestPrivateStoreManageBuy();
+                        return new RequestPrivateStoreManageBuy(buf);
                     case 0x9a: // SetPrivateStoreList
-                        return new SetPrivateStoreListBuy();
+                        return new SetPrivateStoreListBuy(buf);
                     case 0x9c:
-                        return new RequestPrivateStoreQuitBuy();
+                        return new RequestPrivateStoreQuitBuy(buf);
                     case 0x9d:
-                        return new SetPrivateStoreMsgBuy();
+                        return new SetPrivateStoreMsgBuy(buf);
                     case 0x9f: // SendPrivateStoreBuyList
-                        return new RequestPrivateStoreSell();
+                        return new RequestPrivateStoreSell(buf);
                     case 0xa0:
                         // SendTimeCheckPacket
                         break;
@@ -423,26 +420,26 @@ public class L2ClientPacketDecoder extends ByteToMessageDecoder {
                         // RequestSkillCoolTime
                         break;
                     case 0xa7:
-                        return new RequestPackageSendableItemList();
+                        return new RequestPackageSendableItemList(buf);
                     case 0xa8:
-                        return new RequestPackageSend();
+                        return new RequestPackageSend(buf);
                     case 0xa9:
-                        return new RequestBlock();
+                        return new RequestBlock(buf);
                     case 0xaa:
-                        return new RequestSiegeInfo();
+                        return new RequestSiegeInfo(buf);
                     case 0xab: // RequestCastleSiegeAttackerList
-                        return new RequestSiegeAttackerList();
+                        return new RequestSiegeAttackerList(buf);
                     case 0xac:
-                        return new RequestSiegeDefenderList();
+                        return new RequestSiegeDefenderList(buf);
                     case 0xad: // RequestJoinCastleSiege
-                        return new RequestJoinSiege();
+                        return new RequestJoinSiege(buf);
                     case 0xae: // RequestConfirmCastleSiegeWaitingList
                         //return new RequestConfirmSiegeWaitingList();
                         break;
                     case 0xAF:
-                        return new RequestSetCastleSiegeTime();
+                        return new RequestSetCastleSiegeTime(buf);
                     case 0xb0:
-                        return new MultiSellChoose();
+                        return new MultiSellChoose(buf);
                     case 0xb1:
                         // NetPing
                         break;
@@ -450,62 +447,62 @@ public class L2ClientPacketDecoder extends ByteToMessageDecoder {
                         // RequestRemainTime
                         break;
                     case 0xb3:
-                        return new BypassUserCmd();
+                        return new BypassUserCmd(buf);
                     case 0xb4:
-                        return new SnoopQuit();
+                        return new SnoopQuit(buf);
                     case 0xb5:
-                        return new RequestRecipeBookOpen();
+                        return new RequestRecipeBookOpen(buf);
                     case 0xb6: // RequestRecipeItemDelete
-                        return new RequestRecipeBookDestroy();
+                        return new RequestRecipeBookDestroy(buf);
                     case 0xb7:
-                        return new RequestRecipeItemMakeInfo();
+                        return new RequestRecipeItemMakeInfo(buf);
                     case 0xb8:
-                        return new RequestRecipeItemMakeSelf();
+                        return new RequestRecipeItemMakeSelf(buf);
                     case 0xb9:
                         // RequestRecipeShopManageList
                         break;
                     case 0xba:
-                        return new RequestRecipeShopMessageSet();
+                        return new RequestRecipeShopMessageSet(buf);
                     case 0xbb:
-                        return new RequestRecipeShopListSet();
+                        return new RequestRecipeShopListSet(buf);
                     case 0xbc:
-                        return new RequestRecipeShopManageQuit();
+                        return new RequestRecipeShopManageQuit(buf);
                     case 0xbd:
                         // RequestRecipeShopManageCancel
                         break;
                     case 0xbe:
-                        return new RequestRecipeShopMakeInfo();
+                        return new RequestRecipeShopMakeInfo(buf);
                     case 0xbf: // RequestRecipeShopMakeDo
-                        return new RequestRecipeShopMakeItem();
+                        return new RequestRecipeShopMakeItem(buf);
                     case 0xc0: // RequestRecipeShopSellList
-                        return new RequestRecipeShopManagePrev();
+                        return new RequestRecipeShopManagePrev(buf);
                     case 0xc1: // RequestObserverEndPacket
-                        return new ObserverReturn();
+                        return new ObserverReturn(buf);
                     case 0xc2:
                         // Unused (RequestEvaluate/VoteSociality)
                         break;
                     case 0xc3:
-                        return new RequestHennaItemList();
+                        return new RequestHennaItemList(buf);
                     case 0xc4:
-                        return new RequestHennaItemInfo();
+                        return new RequestHennaItemInfo(buf);
                     case 0xc5:
-                        return new RequestBuySeed();
+                        return new RequestBuySeed(buf);
                     case 0xc6: // ConfirmDlg
-                        return new DlgAnswer();
+                        return new DlgAnswer(buf);
                     case 0xc7: // RequestPreviewItem
-                        return new RequestPreviewItem();
+                        return new RequestPreviewItem(buf);
                     case 0xc8:
-                        return new RequestSSQStatus();
+                        return new RequestSSQStatus(buf);
                     case 0xc9:
-                        return new RequestPetitionFeedback();
+                        return new RequestPetitionFeedback(buf);
                     case 0xcb:
-                        return new GameGuardReply();
+                        return new GameGuardReply(buf);
                     case 0xcc:
-                        return new RequestPledgePower();
+                        return new RequestPledgePower(buf);
                     case 0xcd:
-                        return new RequestMakeMacro();
+                        return new RequestMakeMacro(buf);
                     case 0xce:
-                        return new RequestDeleteMacro();
+                        return new RequestDeleteMacro(buf);
                     case 0xcf: // RequestProcureCrop
                         // return new RequestBuyProcure();
                         break;
@@ -521,15 +518,15 @@ public class L2ClientPacketDecoder extends ByteToMessageDecoder {
 
                         switch (id2) {
                             case 0x01:
-                                return new RequestManorList();
+                                return new RequestManorList(buf);
                             case 0x02:
-                                return new RequestProcureCropList();
+                                return new RequestProcureCropList(buf);
                             case 0x03:
-                                return new RequestSetSeed();
+                                return new RequestSetSeed(buf);
                             case 0x04:
-                                return new RequestSetCrop();
+                                return new RequestSetCrop(buf);
                             case 0x05:
-                                return new RequestWriteHeroWords();
+                                return new RequestWriteHeroWords(buf);
                             case 0x5F:
                                 /**
                                  * Server Packets: ExMpccRoomInfo FE:9B ExListMpccWaiting FE:9C ExDissmissMpccRoom FE:9D ExManageMpccRoomMember FE:9E ExMpccRoomMember FE:9F
@@ -543,69 +540,69 @@ public class L2ClientPacketDecoder extends ByteToMessageDecoder {
                                 // TODO: RequestManageMpccRoom chdddddS
                                 break;
                             case 0x06:
-                                return new RequestExAskJoinMPCC();
+                                return new RequestExAskJoinMPCC(buf);
                             case 0x07:
-                                return new RequestExAcceptJoinMPCC();
+                                return new RequestExAcceptJoinMPCC(buf);
                             case 0x08:
-                                return new RequestExOustFromMPCC();
+                                return new RequestExOustFromMPCC(buf);
                             case 0x09:
-                                return new RequestOustFromPartyRoom();
+                                return new RequestOustFromPartyRoom(buf);
                             case 0x0a:
-                                return new RequestDismissPartyRoom();
+                                return new RequestDismissPartyRoom(buf);
                             case 0x0b:
-                                return new RequestWithdrawPartyRoom();
+                                return new RequestWithdrawPartyRoom(buf);
                             case 0x0c:
-                                return new RequestChangePartyLeader();
+                                return new RequestChangePartyLeader(buf);
                             case 0x0d:
-                                return new RequestAutoSoulShot();
+                                return new RequestAutoSoulShot(buf);
                             case 0x0e:
-                                return new RequestExEnchantSkillInfo();
+                                return new RequestExEnchantSkillInfo(buf);
                             case 0x0f:
-                                return new RequestExEnchantSkill();
+                                return new RequestExEnchantSkill(buf);
                             case 0x10:
-                                return new RequestExPledgeCrestLarge();
+                                return new RequestExPledgeCrestLarge(buf);
                             case 0x11:
-                                return new RequestExSetPledgeCrestLarge();
+                                return new RequestExSetPledgeCrestLarge(buf);
                             case 0x12:
-                                return new RequestPledgeSetAcademyMaster();
+                                return new RequestPledgeSetAcademyMaster(buf);
                             case 0x13:
-                                return new RequestPledgePowerGradeList();
+                                return new RequestPledgePowerGradeList(buf);
                             case 0x14:
-                                return new RequestPledgeMemberPowerInfo();
+                                return new RequestPledgeMemberPowerInfo(buf);
                             case 0x15:
-                                return new RequestPledgeSetMemberPowerGrade();
+                                return new RequestPledgeSetMemberPowerGrade(buf);
                             case 0x16:
-                                return new RequestPledgeMemberInfo();
+                                return new RequestPledgeMemberInfo(buf);
                             case 0x17:
-                                return new RequestPledgeWarList();
+                                return new RequestPledgeWarList(buf);
                             case 0x18:
-                                return new RequestExFishRanking();
+                                return new RequestExFishRanking(buf);
                             case 0x19:
-                                return new RequestPCCafeCouponUse();
+                                return new RequestPCCafeCouponUse(buf);
                             case 0x1b:
-                                return new RequestDuelStart();
+                                return new RequestDuelStart(buf);
                             case 0x1c:
-                                return new RequestDuelAnswerStart();
+                                return new RequestDuelAnswerStart(buf);
                             case 0x1d:
                                 // RequestExSetTutorial
                                 break;
                             case 0x1e:
-                                return new RequestExRqItemLink();
+                                return new RequestExRqItemLink(buf);
                             case 0x1f:
                                 // CanNotMoveAnymoreAirShip
                                 break;
                             case 0x20:
-                                return new MoveToLocationInAirShip();
+                                return new MoveToLocationInAirShip(buf);
                             case 0x21:
-                                return new RequestKeyMapping();
+                                return new RequestKeyMapping(buf);
                             case 0x22:
-                                return new RequestSaveKeyMapping();
+                                return new RequestSaveKeyMapping(buf);
                             case 0x23:
-                                return new RequestExRemoveItemAttribute();
+                                return new RequestExRemoveItemAttribute(buf);
                             case 0x24:
-                                return new RequestSaveInventoryOrder();
+                                return new RequestSaveInventoryOrder(buf);
                             case 0x25:
-                                return new RequestExitPartyMatchingWaitingRoom();
+                                return new RequestExitPartyMatchingWaitingRoom(buf);
                             case 0x26:
                                 //return new RequestConfirmTargetItem();
                                 break;
@@ -616,84 +613,84 @@ public class L2ClientPacketDecoder extends ByteToMessageDecoder {
                                 //return new RequestConfirmGemStone();
                                 break;
                             case 0x29:
-                                return new RequestOlympiadObserverEnd();
+                                return new RequestOlympiadObserverEnd(buf);
                             case 0x2a:
-                                return new RequestCursedWeaponList();
+                                return new RequestCursedWeaponList(buf);
                             case 0x2b:
-                                return new RequestCursedWeaponLocation();
+                                return new RequestCursedWeaponLocation(buf);
                             case 0x2c:
-                                return new RequestPledgeReorganizeMember();
+                                return new RequestPledgeReorganizeMember(buf);
                             case 0x2d:
-                                return new RequestExMPCCShowPartyMembersInfo();
+                                return new RequestExMPCCShowPartyMembersInfo(buf);
                             case 0x2e:
-                                return new RequestOlympiadMatchList();
+                                return new RequestOlympiadMatchList(buf);
                             case 0x2f:
-                                return new RequestAskJoinPartyRoom();
+                                return new RequestAskJoinPartyRoom(buf);
                             case 0x30:
-                                return new AnswerJoinPartyRoom();
+                                return new AnswerJoinPartyRoom(buf);
                             case 0x31:
-                                return new RequestListPartyMatchingWaitingRoom();
+                                return new RequestListPartyMatchingWaitingRoom(buf);
                             case 0x32:
-                                return new RequestExEnchantSkillSafe();
+                                return new RequestExEnchantSkillSafe(buf);
                             case 0x33:
-                                return new RequestExEnchantSkillUntrain();
+                                return new RequestExEnchantSkillUntrain(buf);
                             case 0x34:
-                                return new RequestExEnchantSkillRouteChange();
+                                return new RequestExEnchantSkillRouteChange(buf);
                             case 0x35:
-                                return new RequestExEnchantItemAttribute();
+                                return new RequestExEnchantItemAttribute(buf);
                             case 0x36:
-                                return new ExGetOnAirShip();
+                                return new ExGetOnAirShip(buf);
                             case 0x38:
-                                return new MoveToLocationAirShip();
+                                return new MoveToLocationAirShip(buf);
                             case 0x39:
-                                return new RequestBidItemAuction();
+                                return new RequestBidItemAuction(buf);
                             case 0x3a:
-                                return new RequestInfoItemAuction();
+                                return new RequestInfoItemAuction(buf);
                             case 0x3b:
-                                return new RequestExChangeName();
+                                return new RequestExChangeName(buf);
                             case 0x3c:
-                                return new RequestAllCastleInfo();
+                                return new RequestAllCastleInfo(buf);
                             case 0x3d:
-                                return new RequestAllFortressInfo();
+                                return new RequestAllFortressInfo(buf);
                             case 0x3e:
-                                return new RequestAllAgitInfo();
+                                return new RequestAllAgitInfo(buf);
                             case 0x3f:
-                                return new RequestFortressSiegeInfo();
+                                return new RequestFortressSiegeInfo(buf);
                             case 0x40:
-                                return new RequestGetBossRecord();
+                                return new RequestGetBossRecord(buf);
                             case 0x41:
                                 //return new RequestRefine();
                                 break;
                             case 0x42:
-                                return new RequestConfirmCancelItem();
+                                return new RequestConfirmCancelItem(buf);
                             case 0x43:
                                 //return new RequestRefineCancel();
                                 break;
                             case 0x44:
-                                return new RequestExMagicSkillUseGround();
+                                return new RequestExMagicSkillUseGround(buf);
                             case 0x45:
-                                return new RequestDuelSurrender();
+                                return new RequestDuelSurrender(buf);
                             case 0x46:
-                                return new RequestExEnchantSkillInfoDetail();
+                                return new RequestExEnchantSkillInfoDetail(buf);
                             case 0x48:
-                                return new RequestFortressMapInfo();
+                                return new RequestFortressMapInfo(buf);
                             case 0x49:
                                 // RequestPVPMatchRecord
                                 break;
                             case 0x4a:
-                                return new SetPrivateStoreWholeMsg();
+                                return new SetPrivateStoreWholeMsg(buf);
                             case 0x4b:
-                                return new RequestDispel();
+                                return new RequestDispel(buf);
                             case 0x4c:
-                                return new RequestExTryToPutEnchantTargetItem();
+                                return new RequestExTryToPutEnchantTargetItem(buf);
                             case 0x4d:
-                                return new RequestExTryToPutEnchantSupportItem();
+                                return new RequestExTryToPutEnchantSupportItem(buf);
                             case 0x4e:
-                                return new RequestExCancelEnchantItem();
+                                return new RequestExCancelEnchantItem(buf);
                             case 0x4f:
-                                return new RequestChangeNicknameColor();
+                                return new RequestChangeNicknameColor(buf);
                             case 0x50:
-                                return new RequestResetNickname();
+                                return new RequestResetNickname(buf);
                             case 0x51:
                                 int id3 = 0;
                                 if (buf.remaining() >= 4) {
@@ -704,15 +701,15 @@ public class L2ClientPacketDecoder extends ByteToMessageDecoder {
                                 }
                                 switch (id3) {
                                     case 0x00:
-                                        return new RequestBookMarkSlotInfo();
+                                        return new RequestBookMarkSlotInfo(buf);
                                     case 0x01:
-                                        return new RequestSaveBookMarkSlot();
+                                        return new RequestSaveBookMarkSlot(buf);
                                     case 0x02:
-                                        return new RequestModifyBookMarkSlot();
+                                        return new RequestModifyBookMarkSlot(buf);
                                     case 0x03:
-                                        return new RequestDeleteBookMarkSlot();
+                                        return new RequestDeleteBookMarkSlot(buf);
                                     case 0x04:
-                                        return new RequestTeleportBookMark();
+                                        return new RequestTeleportBookMark(buf);
                                     case 0x05:
                                         // RequestChangeBookMarkSlot
                                         break;
@@ -721,7 +718,7 @@ public class L2ClientPacketDecoder extends ByteToMessageDecoder {
                                 }
                                 break;
                             case 0x52:
-                                return new RequestWithDrawPremiumItem();
+                                return new RequestWithDrawPremiumItem(buf);
                             case 0x53:
                                 // RequestJump
                                 break;
@@ -735,42 +732,42 @@ public class L2ClientPacketDecoder extends ByteToMessageDecoder {
                                 // NotifyStartMiniGame
                                 break;
                             case 0x57:
-                                return new RequestJoinDominionWar();
+                                return new RequestJoinDominionWar(buf);
                             case 0x58:
-                                return new RequestDominionInfo();
+                                return new RequestDominionInfo(buf);
                             case 0x59:
                                 // RequestExCleftEnter
                                 break;
                             case 0x5a:
-                                return new RequestExCubeGameChangeTeam();
+                                return new RequestExCubeGameChangeTeam(buf);
                             case 0x5b:
-                                return new EndScenePlayer();
+                                return new EndScenePlayer(buf);
                             case 0x5c:
-                                return new RequestExCubeGameReadyAnswer();
+                                return new RequestExCubeGameReadyAnswer(buf);
                             case 0x63:
-                                return new RequestSeedPhase();
+                                return new RequestSeedPhase(buf);
                             case 0x65:
-                                return new RequestPostItemList();
+                                return new RequestPostItemList(buf);
                             case 0x66:
-                                return new RequestSendPost();
+                                return new RequestSendPost(buf);
                             case 0x67:
-                                return new RequestReceivedPostList();
+                                return new RequestReceivedPostList(buf);
                             case 0x68:
-                                return new RequestDeleteReceivedPost();
+                                return new RequestDeleteReceivedPost(buf);
                             case 0x69:
-                                return new RequestReceivedPost();
+                                return new RequestReceivedPost(buf);
                             case 0x6a:
-                                return new RequestPostAttachment();
+                                return new RequestPostAttachment(buf);
                             case 0x6b:
-                                return new RequestRejectPostAttachment();
+                                return new RequestRejectPostAttachment(buf);
                             case 0x6c:
-                                return new RequestSentPostList();
+                                return new RequestSentPostList(buf);
                             case 0x6d:
-                                return new RequestDeleteSentPost();
+                                return new RequestDeleteSentPost(buf);
                             case 0x6e:
-                                return new RequestSentPost();
+                                return new RequestSentPost(buf);
                             case 0x6f:
-                                return new RequestCancelPostAttachment();
+                                return new RequestCancelPostAttachment(buf);
                             case 0x70:
                                 // RequestShowNewUserPetition
                                 break;
@@ -784,20 +781,20 @@ public class L2ClientPacketDecoder extends ByteToMessageDecoder {
                                 // ExRaidReserveResult
                                 break;
                             case 0x75:
-                                return new RequestRefundItem();
+                                return new RequestRefundItem(buf);
                             case 0x76:
-                                return new RequestBuySellUIClose();
+                                return new RequestBuySellUIClose(buf);
                             case 0x77:
                                 // RequestEventMatchObserverEnd
                                 break;
                             case 0x78:
-                                return new RequestPartyLootModification();
+                                return new RequestPartyLootModification(buf);
                             case 0x79:
-                                return new AnswerPartyLootModification();
+                                return new AnswerPartyLootModification(buf);
                             case 0x7a:
-                                return new AnswerCoupleAction();
+                                return new AnswerCoupleAction(buf);
                             case 0x7b:
-                                return new BrEventRankerList();
+                                return new BrEventRankerList(buf);
                             case 0x7c:
                                 // AskMembership
                                 break;
@@ -805,17 +802,17 @@ public class L2ClientPacketDecoder extends ByteToMessageDecoder {
                                 // RequestAddExpandQuestAlarm
                                 break;
                             case 0x7e:
-                                return new RequestVoteNew();
+                                return new RequestVoteNew(buf);
                             case 0x84:
-                                return new RequestExAddContactToContactList();
+                                return new RequestExAddContactToContactList(buf);
                             case 0x85:
-                                return new RequestExDeleteContactFromContactList();
+                                return new RequestExDeleteContactFromContactList(buf);
                             case 0x86:
-                                return new RequestExShowContactList();
+                                return new RequestExShowContactList(buf);
                             case 0x87:
-                                return new RequestExFriendListExtended();
+                                return new RequestExFriendListExtended(buf);
                             case 0x88:
-                                return new RequestExOlympiadMatchListRefresh();
+                                return new RequestExOlympiadMatchListRefresh(buf);
                             case 0x89:
                                 // RequestBRGamePoint
                                 break;

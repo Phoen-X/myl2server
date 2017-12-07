@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * Format: (ch) dd
  *
@@ -32,6 +34,10 @@ public final class RequestPledgeWarList extends L2GameClientPacket {
     @SuppressWarnings("unused")
     private int _unk1;
     private int _tab;
+
+    public RequestPledgeWarList(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

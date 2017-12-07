@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * This class ...
  *
@@ -33,6 +35,10 @@ public final class RequestPrivateStoreSell extends L2GameClientPacket {
     private static final int BATCH_LENGTH = 28; // length of the one item
 
     private int _storePlayerId;
+
+    public RequestPrivateStoreSell(ByteBuffer buf) {
+        super(buf);
+    }
     /*private ItemRequest[] _items = null;*/
 
     @Override

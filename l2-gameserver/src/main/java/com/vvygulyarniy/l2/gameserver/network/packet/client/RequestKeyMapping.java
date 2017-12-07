@@ -22,12 +22,19 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author KenM / mrTJO
  */
 @ToString
 public class RequestKeyMapping extends L2GameClientPacket {
     private static final String _C__D0_21_REQUESTKEYMAPPING = "[C] D0:21 RequestKeyMapping";
+
+    public RequestKeyMapping(
+            ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

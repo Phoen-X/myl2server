@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
 
+import java.nio.ByteBuffer;
+
 /**
  * Enter World Packet Handler
  * <p>
@@ -36,6 +38,10 @@ public class EnterWorld extends L2GameClientPacket {
     private static final String _C__11_ENTERWORLD = "[C] 11 EnterWorld";
 
     private final int[][] tracert = new int[5][4];
+
+    public EnterWorld(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

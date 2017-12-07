@@ -22,6 +22,7 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
 import java.util.logging.Logger;
 
 /**
@@ -35,6 +36,10 @@ public final class RequestSendFriendMsg extends L2GameClientPacket {
 
     private String _message;
     private String _reciever;
+
+    public RequestSendFriendMsg(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

@@ -21,12 +21,18 @@ package com.vvygulyarniy.l2.gameserver.network.packet.client;
 import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 
+import java.nio.ByteBuffer;
+
 /**
  * Format: (ch) just a trigger
  *
  * @author -Wooden-
  */
 public final class RequestExFishRanking extends L2GameClientPacket {
+
+    public RequestExFishRanking(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

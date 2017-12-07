@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * This class ...
  *
@@ -32,6 +34,10 @@ public final class RequestFriendDel extends L2GameClientPacket {
     private static final String _C__7A_REQUESTFRIENDDEL = "[C] 7A RequestFriendDel";
 
     private String _name;
+
+    public RequestFriendDel(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

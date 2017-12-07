@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * Appearing Packet Handler
  * <p>
@@ -34,6 +36,10 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 public final class Appearing extends L2GameClientPacket {
     private static final String _C__3A_APPEARING = "[C] 3A Appearing";
+
+    public Appearing(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

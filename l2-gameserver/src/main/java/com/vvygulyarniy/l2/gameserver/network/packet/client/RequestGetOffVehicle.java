@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author Maktakien
  */
@@ -29,6 +31,10 @@ public final class RequestGetOffVehicle extends L2GameClientPacket {
     private static final String _C__54_GETOFFVEHICLE = "[S] 54 GetOffVehicle";
 
     private int _boatId, _x, _y, _z;
+
+    public RequestGetOffVehicle(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

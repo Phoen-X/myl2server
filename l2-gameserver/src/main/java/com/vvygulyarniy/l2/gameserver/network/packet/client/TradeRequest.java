@@ -23,12 +23,18 @@ import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * This packet manages the trade request.
  */
 @ToString
 public final class TradeRequest extends L2GameClientPacket {
     private int _objectId;
+
+    public TradeRequest(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

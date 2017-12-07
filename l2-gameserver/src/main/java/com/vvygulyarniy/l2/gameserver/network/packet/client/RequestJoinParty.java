@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * sample 29 42 00 00 10 01 00 00 00 format cdd
  *
@@ -32,6 +34,10 @@ public final class RequestJoinParty extends L2GameClientPacket {
 
     private String _name;
     private int _partyDistributionTypeId;
+
+    public RequestJoinParty(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

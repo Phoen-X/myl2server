@@ -22,6 +22,9 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.Getter;
 import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
+
+import java.nio.ByteBuffer;
 
 /**
  * This class ...
@@ -42,6 +45,10 @@ public final class AuthLogin extends L2GameClientPacket {
     private int _playKey2;
     private int _loginKey1;
     private int _loginKey2;
+
+    public AuthLogin(@NotNull ByteBuffer buffer) {
+        super(buffer);
+    }
 
     @Override
     protected void readImpl() {

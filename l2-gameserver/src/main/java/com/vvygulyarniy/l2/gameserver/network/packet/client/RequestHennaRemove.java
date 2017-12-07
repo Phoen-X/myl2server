@@ -22,12 +22,18 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author Zoey76
  */
 public final class RequestHennaRemove extends L2GameClientPacket {
     private static final String _C__72_REQUESTHENNAREMOVE = "[C] 72 RequestHennaRemove";
     private int _symbolId;
+
+    public RequestHennaRemove(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

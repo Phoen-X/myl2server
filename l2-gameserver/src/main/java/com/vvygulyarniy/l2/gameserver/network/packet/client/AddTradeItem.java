@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * This class ...
  *
@@ -32,6 +34,10 @@ public final class AddTradeItem extends L2GameClientPacket {
     private int _tradeId;
     private int _objectId;
     private long _count;
+
+    public AddTradeItem(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

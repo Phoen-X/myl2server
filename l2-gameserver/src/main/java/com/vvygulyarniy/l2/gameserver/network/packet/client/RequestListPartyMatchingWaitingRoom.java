@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author Gnacik
  */
@@ -31,6 +33,10 @@ public class RequestListPartyMatchingWaitingRoom extends L2GameClientPacket {
     private int _minlvl;
     private int _maxlvl;
     private int _mode; // 1 - waitlist 0 - room waitlist
+
+    public RequestListPartyMatchingWaitingRoom(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

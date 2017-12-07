@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * Format:(ch) Sd
  *
@@ -32,6 +34,10 @@ public final class RequestDuelStart extends L2GameClientPacket {
 
     private String _player;
     private int _partyDuel;
+
+    public RequestDuelStart(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

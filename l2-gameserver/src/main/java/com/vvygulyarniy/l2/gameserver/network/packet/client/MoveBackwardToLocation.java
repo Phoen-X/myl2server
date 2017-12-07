@@ -26,6 +26,7 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 import java.nio.BufferUnderflowException;
+import java.nio.ByteBuffer;
 
 /**
  * This class ...
@@ -42,6 +43,10 @@ public class MoveBackwardToLocation extends L2GameClientPacket {
 
     @SuppressWarnings("unused")
     private int moveMovement;
+
+    public MoveBackwardToLocation(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

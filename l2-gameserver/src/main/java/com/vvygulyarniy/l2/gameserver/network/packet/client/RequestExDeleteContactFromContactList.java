@@ -20,7 +20,10 @@ package com.vvygulyarniy.l2.gameserver.network.packet.client;
 
 import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
+import org.jetbrains.annotations.NotNull;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.nio.ByteBuffer;
 
 /**
  * Format: (ch)S S: Character Name
@@ -30,6 +33,10 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class RequestExDeleteContactFromContactList extends L2GameClientPacket {
     private static final String _C__D0_85_REQUESTEXDELETECONTACTFROMCONTACTLIST = "[C] D0:85 RequestExDeleteContactFromContactList";
     private String _name;
+
+    public RequestExDeleteContactFromContactList(@NotNull ByteBuffer buffer) {
+        super(buffer);
+    }
 
     @Override
     protected void readImpl() {

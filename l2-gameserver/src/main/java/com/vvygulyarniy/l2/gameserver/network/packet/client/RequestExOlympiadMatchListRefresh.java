@@ -20,6 +20,9 @@ package com.vvygulyarniy.l2.gameserver.network.packet.client;
 
 import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
+import org.jetbrains.annotations.NotNull;
+
+import java.nio.ByteBuffer;
 
 /**
  * Format: (ch)d d: unknown (always 0?)
@@ -28,6 +31,10 @@ import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
  */
 public class RequestExOlympiadMatchListRefresh extends L2GameClientPacket {
     private static final String _C__D0_88_REQUESTEXOLYMPIADMATCHLISTREFRESH = "[C] D0:88 RequestExOlympiadMatchListRefresh";
+
+    public RequestExOlympiadMatchListRefresh(@NotNull ByteBuffer buffer) {
+        super(buffer);
+    }
 
     @Override
     protected void readImpl() {

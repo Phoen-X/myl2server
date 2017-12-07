@@ -20,7 +20,10 @@ package com.vvygulyarniy.l2.gameserver.network.packet.client;
 
 import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
+import org.jetbrains.annotations.NotNull;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.nio.ByteBuffer;
 
 /**
  * @author JIV
@@ -29,6 +32,10 @@ public class RequestPartyLootModification extends L2GameClientPacket {
     private static final String _C__D0_78_REQUESTPARTYLOOTMODIFICATION = "[C] D0:78 RequestPartyLootModification";
 
     private int _partyDistributionTypeId;
+
+    public RequestPartyLootModification(@NotNull ByteBuffer buffer) {
+        super(buffer);
+    }
 
     @Override
     protected void readImpl() {

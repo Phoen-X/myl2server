@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * Format : chdb c (id) 0xD0 h (subid) 0x11 d data size b raw data (picture i think ;) )
  *
@@ -32,6 +34,10 @@ public final class RequestExSetPledgeCrestLarge extends L2GameClientPacket {
 
     private int _length;
     private byte[] _data = null;
+
+    public RequestExSetPledgeCrestLarge(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

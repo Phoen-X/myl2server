@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author Zoey76
  */
@@ -29,6 +31,10 @@ public class RequestUnEquipItem extends L2GameClientPacket {
     private static final String _C__16_REQUESTUNEQUIPITEM = "[C] 16 RequestUnequipItem";
 
     private int _slot;
+
+    public RequestUnEquipItem(ByteBuffer buf) {
+        super(buf);
+    }
 
     /**
      * Packet type id 0x16 format: cd

@@ -23,6 +23,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * Request Acquire Skill Info client packet implementation.
  *
@@ -34,6 +36,10 @@ public final class RequestAcquireSkillInfo extends L2GameClientPacket {
     private int _id;
     private int _level;
     private SkillType _skillType;
+
+    public RequestAcquireSkillInfo(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

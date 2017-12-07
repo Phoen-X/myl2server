@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * (ch)cS{S} c: change pass? S: current password S: new password
  *
@@ -32,6 +34,10 @@ public class RequestEx2ndPasswordReq extends L2GameClientPacket {
 
     private int _changePass;
     private String _password, _newPassword;
+
+    public RequestEx2ndPasswordReq(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

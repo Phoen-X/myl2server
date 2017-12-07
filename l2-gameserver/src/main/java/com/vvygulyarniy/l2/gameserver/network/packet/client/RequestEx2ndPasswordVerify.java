@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * Format: (ch)S S: numerical password
  *
@@ -31,6 +33,10 @@ public class RequestEx2ndPasswordVerify extends L2GameClientPacket {
     private static final String _C__D0_AE_REQUESTEX2NDPASSWORDVERIFY = "[C] D0:AE RequestEx2ndPasswordVerify";
 
     private String _password;
+
+    public RequestEx2ndPasswordVerify(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

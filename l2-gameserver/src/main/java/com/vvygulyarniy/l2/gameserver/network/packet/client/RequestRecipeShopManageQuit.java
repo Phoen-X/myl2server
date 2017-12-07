@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * This class ... cd(dd)
  *
@@ -29,6 +31,11 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 public final class RequestRecipeShopManageQuit extends L2GameClientPacket {
     private static final String _C__BC_RequestRecipeShopManageQuit = "[C] BC2 RequestRecipeShopManageQuit";
+
+    public RequestRecipeShopManageQuit(
+            ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

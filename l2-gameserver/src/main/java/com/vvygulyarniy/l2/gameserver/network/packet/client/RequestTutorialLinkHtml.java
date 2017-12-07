@@ -22,10 +22,16 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 public class RequestTutorialLinkHtml extends L2GameClientPacket {
     private static final String _C__85_REQUESTTUTORIALLINKHTML = "[C] 85 RequestTutorialLinkHtml";
 
     private String _bypass;
+
+    public RequestTutorialLinkHtml(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

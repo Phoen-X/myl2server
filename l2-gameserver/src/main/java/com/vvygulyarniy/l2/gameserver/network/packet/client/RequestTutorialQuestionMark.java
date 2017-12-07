@@ -22,10 +22,16 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 public class RequestTutorialQuestionMark extends L2GameClientPacket {
     private static final String _C__87_REQUESTTUTORIALQUESTIONMARK = "[C] 87 RequestTutorialQuestionMark";
 
     private int _number = 0;
+
+    public RequestTutorialQuestionMark(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

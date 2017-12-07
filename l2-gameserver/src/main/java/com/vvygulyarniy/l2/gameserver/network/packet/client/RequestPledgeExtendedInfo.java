@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * Format: (c) S S: pledge name?
  *
@@ -32,6 +34,10 @@ public class RequestPledgeExtendedInfo extends L2GameClientPacket {
 
     @SuppressWarnings("unused")
     private String _name;
+
+    public RequestPledgeExtendedInfo(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

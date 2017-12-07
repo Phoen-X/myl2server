@@ -22,10 +22,16 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 public final class RequestRecipeBookDestroy extends L2GameClientPacket {
     private static final String _C__B6_REQUESTRECIPEBOOKDESTROY = "[C] B6 RequestRecipeBookDestroy";
 
     private int _recipeID;
+
+    public RequestRecipeBookDestroy(ByteBuffer buf) {
+        super(buf);
+    }
 
     /**
      * Unknown Packet:ad 0000: ad 02 00 00 00

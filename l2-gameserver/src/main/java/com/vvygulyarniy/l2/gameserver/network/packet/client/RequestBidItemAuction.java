@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author Forsaiken
  */
@@ -30,6 +32,10 @@ public final class RequestBidItemAuction extends L2GameClientPacket {
 
     private int _instanceId;
     private long _bid;
+
+    public RequestBidItemAuction(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected final void readImpl() {

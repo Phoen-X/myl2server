@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * Client packet for setting ally crest.
  */
@@ -30,6 +32,10 @@ public final class RequestSetAllyCrest extends L2GameClientPacket {
 
     private int _length;
     private byte[] _data = null;
+
+    public RequestSetAllyCrest(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

@@ -22,6 +22,7 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,10 @@ public class RequestBuySeed extends L2GameClientPacket {
     private static final int BATCH_LENGTH = 12; // length of the one item
     private int _manorId;
     private List _items = null;
+
+    public RequestBuySeed(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected final void readImpl() {

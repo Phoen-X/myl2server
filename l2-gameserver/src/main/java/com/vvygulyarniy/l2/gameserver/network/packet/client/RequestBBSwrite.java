@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * RequestBBSwrite client packet implementation.
  *
@@ -35,6 +37,10 @@ public final class RequestBBSwrite extends L2GameClientPacket {
     private String _arg3;
     private String _arg4;
     private String _arg5;
+
+    public RequestBBSwrite(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected final void readImpl() {

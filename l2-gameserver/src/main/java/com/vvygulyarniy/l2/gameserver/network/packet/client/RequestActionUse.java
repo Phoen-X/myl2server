@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * This class manages the action use request packet.
  *
@@ -43,6 +45,10 @@ public final class RequestActionUse extends L2GameClientPacket {
     private int _actionId;
     private boolean _ctrlPressed;
     private boolean _shiftPressed;
+
+    public RequestActionUse(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

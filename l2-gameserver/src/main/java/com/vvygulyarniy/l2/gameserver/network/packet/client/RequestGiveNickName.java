@@ -22,11 +22,17 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 public class RequestGiveNickName extends L2GameClientPacket {
     private static final String _C__0B_REQUESTGIVENICKNAME = "[C] 0B RequestGiveNickName";
 
     private String _target;
     private String _title;
+
+    public RequestGiveNickName(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

@@ -42,16 +42,15 @@ class LoginServerClientPacketDecoder : ByteToMessageDecoder() {
         }
     }
 
-    private fun handlePacket(byteBuffer: ByteBuffer): L2LoginClientPacket? {
+    private fun handlePacket(byteBuffer: ByteBuffer): L2LoginClientPacket {
         val opcode = byteBuffer.get().toShort() and 0xFF
 
-        val packet = opcodeMapping.getOrDefault(opcode, { null }).invoke(byteBuffer)
+        val packet = opcodeMapping.getOrDefault(opcode, { throw RuntimeException("Cannot resolve packet for opcode=$opcode") }).invoke(byteBuffer)
 
-        return if (packet != null) {
-            if (packet.read()) packet else null
-        } else {
-            null
-        }
+        return if (packet != null && packet.read()) {
+            packet
+        } else
+            throw RuntimeException("Cannot parse package $opcode")
     }
 
     companion object {

@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * The Class MultiSellChoose.
  */
@@ -53,6 +55,10 @@ public class MultiSellChoose extends L2GameClientPacket {
     private int _unk10;
     @SuppressWarnings("unused")
     private int _unk11;
+
+    public MultiSellChoose(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

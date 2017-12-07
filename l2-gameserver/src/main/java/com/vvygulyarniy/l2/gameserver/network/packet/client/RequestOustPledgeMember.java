@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * This class ...
  *
@@ -31,6 +33,10 @@ public final class RequestOustPledgeMember extends L2GameClientPacket {
     private static final String _C__29_REQUESTOUSTPLEDGEMEMBER = "[C] 29 RequestOustPledgeMember";
 
     private String _target;
+
+    public RequestOustPledgeMember(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

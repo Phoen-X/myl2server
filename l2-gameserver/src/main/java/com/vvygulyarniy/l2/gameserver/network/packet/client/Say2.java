@@ -23,6 +23,7 @@ import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
 import java.util.logging.Logger;
 
 /**
@@ -124,6 +125,10 @@ public final class Say2 extends L2GameClientPacket {
     private String _text;
     private int _type;
     private String _target;
+
+    public Say2(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

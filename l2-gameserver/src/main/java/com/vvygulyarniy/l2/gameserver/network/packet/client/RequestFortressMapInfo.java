@@ -22,12 +22,18 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author KenM
  */
 public class RequestFortressMapInfo extends L2GameClientPacket {
     private static final String _C_D0_48_REQUESTFORTRESSMAPINFO = "[C] D0:48 RequestFortressMapInfo";
     private int _fortressId;
+
+    public RequestFortressMapInfo(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

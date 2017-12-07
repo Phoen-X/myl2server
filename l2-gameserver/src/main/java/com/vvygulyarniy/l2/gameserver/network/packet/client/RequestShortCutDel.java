@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * This class ...
  *
@@ -32,6 +34,10 @@ public final class RequestShortCutDel extends L2GameClientPacket {
 
     private int _slot;
     private int _page;
+
+    public RequestShortCutDel(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

@@ -21,7 +21,10 @@ package com.vvygulyarniy.l2.gameserver.network.packet.client;
 
 import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
+import org.jetbrains.annotations.NotNull;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.nio.ByteBuffer;
 
 /**
  * @author Gigiikun
@@ -32,6 +35,10 @@ public final class RequestJoinDominionWar extends L2GameClientPacket {
     private int _territoryId;
     private int _isClan;
     private int _isJoining;
+
+    public RequestJoinDominionWar(@NotNull ByteBuffer buffer) {
+        super(buffer);
+    }
 
     @Override
     protected void readImpl() {

@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * <p>
  * Format: (c) d
@@ -34,6 +36,11 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 public final class RequestPetitionCancel extends L2GameClientPacket {
     private static final String _C__8A_REQUEST_PETITIONCANCEL = "[C] 8A RequestPetitionCancel";
+
+    public RequestPetitionCancel(
+            ByteBuffer buf) {
+        super(buf);
+    }
 
     // private int _unknown;
 

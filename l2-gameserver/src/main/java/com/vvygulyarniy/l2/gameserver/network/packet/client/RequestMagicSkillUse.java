@@ -22,12 +22,18 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 public final class RequestMagicSkillUse extends L2GameClientPacket {
     private static final String _C__39_REQUESTMAGICSKILLUSE = "[C] 39 RequestMagicSkillUse";
 
     private int _magicId;
     private boolean _ctrlPressed;
     private boolean _shiftPressed;
+
+    public RequestMagicSkillUse(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * Format: (ch) dS
  *
@@ -33,6 +35,10 @@ public final class RequestPledgeMemberPowerInfo extends L2GameClientPacket {
     @SuppressWarnings("unused")
     private int _unk1;
     private String _player;
+
+    public RequestPledgeMemberPowerInfo(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

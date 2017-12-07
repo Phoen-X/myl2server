@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author Zoey76
  */
@@ -29,6 +31,10 @@ public final class RequestHennaItemInfo extends L2GameClientPacket {
     private static final String _C__C4_REQUESTHENNAITEMINFO = "[C] C4 RequestHennaItemInfo";
 
     private int _symbolId;
+
+    public RequestHennaItemInfo(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

@@ -22,12 +22,19 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author KenM
  */
 @ToString
 public class RequestAllFortressInfo extends L2GameClientPacket {
     private static final String _C__D0_3D_REQUESTALLFORTRESSINFO = "[C] D0:3D RequestAllFortressInfo";
+
+    public RequestAllFortressInfo(
+            ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

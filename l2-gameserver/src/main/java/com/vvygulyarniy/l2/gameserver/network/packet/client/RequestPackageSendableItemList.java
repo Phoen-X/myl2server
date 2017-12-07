@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author -Wooden-
  * @author UnAfraid Thanks mrTJO
@@ -30,6 +32,10 @@ public class RequestPackageSendableItemList extends L2GameClientPacket {
 
     private static final String _C_A7_REQUESTPACKAGESENDABLEITEMLIST = "[C] A7 RequestPackageSendableItemList";
     private int _objectID;
+
+    public RequestPackageSendableItemList(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

@@ -22,12 +22,18 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 public final class RequestPledgePower extends L2GameClientPacket {
     private static final String _C__CC_REQUESTPLEDGEPOWER = "[C] CC RequestPledgePower";
 
     private int _rank;
     private int _action;
     private int _privs;
+
+    public RequestPledgePower(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

@@ -22,12 +22,18 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 public final class RequestPrivateStoreBuy extends L2GameClientPacket {
     private static final String _C__83_REQUESTPRIVATESTOREBUY = "[C] 83 RequestPrivateStoreBuy";
 
     private static final int BATCH_LENGTH = 20; // length of the one item
 
     private int _storePlayerId;
+
+    public RequestPrivateStoreBuy(ByteBuffer buf) {
+        super(buf);
+    }
     /*private Set<ItemRequest> _items = null;*/
 
     @Override

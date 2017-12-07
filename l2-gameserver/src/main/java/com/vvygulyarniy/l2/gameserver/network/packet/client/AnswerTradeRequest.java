@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * This class ...
  *
@@ -31,6 +33,10 @@ public final class AnswerTradeRequest extends L2GameClientPacket {
     private static final String _C__55_ANSWERTRADEREQUEST = "[C] 55 AnswerTradeRequest";
 
     private int _response;
+
+    public AnswerTradeRequest(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

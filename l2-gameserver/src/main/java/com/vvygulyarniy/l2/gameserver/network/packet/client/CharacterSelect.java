@@ -23,6 +23,8 @@ import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.nio.ByteBuffer;
+
 /**
  * This class ...
  *
@@ -42,6 +44,10 @@ public class CharacterSelect extends L2GameClientPacket {
     private int unk3; // new in C4
     @SuppressWarnings("unused")
     private int unk4; // new in C4
+
+    public CharacterSelect(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

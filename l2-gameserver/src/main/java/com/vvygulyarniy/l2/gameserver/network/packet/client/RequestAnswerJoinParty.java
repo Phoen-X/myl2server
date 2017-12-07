@@ -22,10 +22,16 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 public final class RequestAnswerJoinParty extends L2GameClientPacket {
     private static final String _C__43_REQUESTANSWERPARTY = "[C] 43 RequestAnswerJoinParty";
 
     private int _response;
+
+    public RequestAnswerJoinParty(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

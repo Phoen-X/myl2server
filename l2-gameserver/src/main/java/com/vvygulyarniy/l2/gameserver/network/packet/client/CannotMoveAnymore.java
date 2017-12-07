@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * This class ...
  *
@@ -34,6 +36,10 @@ public final class CannotMoveAnymore extends L2GameClientPacket {
     private int _y;
     private int _z;
     private int _heading;
+
+    public CannotMoveAnymore(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

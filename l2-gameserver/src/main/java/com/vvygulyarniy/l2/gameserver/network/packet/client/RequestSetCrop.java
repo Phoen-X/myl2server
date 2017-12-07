@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author l3x
  */
@@ -29,6 +31,10 @@ public final class RequestSetCrop extends L2GameClientPacket {
     private static final int BATCH_LENGTH = 21; // length of the one item
 
     private int _manorId;
+
+    public RequestSetCrop(ByteBuffer buf) {
+        super(buf);
+    }
 /*
     private List<CropProcure> _items;
 */

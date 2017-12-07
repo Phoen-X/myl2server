@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * Fromat:(ch) dddddc
  *
@@ -36,6 +38,10 @@ public final class RequestExMagicSkillUseGround extends L2GameClientPacket {
     private int _skillId;
     private boolean _ctrlPressed;
     private boolean _shiftPressed;
+
+    public RequestExMagicSkillUseGround(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

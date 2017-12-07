@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * Format: (c) dddd d: dx d: dy d: dz d: AirShip id ??
  *
@@ -34,6 +36,10 @@ public class ExGetOnAirShip extends L2GameClientPacket {
     private int _y;
     private int _z;
     private int _shipId;
+
+    public ExGetOnAirShip(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

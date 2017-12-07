@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * format: (ch) d
  *
@@ -30,6 +32,10 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public final class RequestExAcceptJoinMPCC extends L2GameClientPacket {
     private static final String _C__D0_07_REQUESTEXASKJOINMPCC = "[C] D0:07 RequestExAcceptJoinMPCC";
     private int _response;
+
+    public RequestExAcceptJoinMPCC(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

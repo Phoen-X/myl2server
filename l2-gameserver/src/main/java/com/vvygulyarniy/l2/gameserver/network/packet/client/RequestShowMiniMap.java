@@ -21,6 +21,8 @@ package com.vvygulyarniy.l2.gameserver.network.packet.client;
 import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 
+import java.nio.ByteBuffer;
+
 /**
  * sample format d
  *
@@ -28,6 +30,11 @@ import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
  */
 public final class RequestShowMiniMap extends L2GameClientPacket {
     private static final String _C__6C_REQUESTSHOWMINIMAP = "[C] 6C RequestShowMiniMap";
+
+    public RequestShowMiniMap(
+            ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

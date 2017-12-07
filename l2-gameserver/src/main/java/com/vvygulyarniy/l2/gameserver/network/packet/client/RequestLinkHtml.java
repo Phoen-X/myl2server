@@ -23,6 +23,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * Lets drink to code!
  *
@@ -31,6 +33,10 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public final class RequestLinkHtml extends L2GameClientPacket {
     private static final String _C__22_REQUESTLINKHTML = "[C] 22 RequestLinkHtml";
     private String _link;
+
+    public RequestLinkHtml(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

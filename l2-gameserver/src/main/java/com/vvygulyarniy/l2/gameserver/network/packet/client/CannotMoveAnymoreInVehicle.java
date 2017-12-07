@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author Maktakien
  */
@@ -33,6 +35,10 @@ public final class CannotMoveAnymoreInVehicle extends L2GameClientPacket {
     private int _z;
     private int _heading;
     private int _boatId;
+
+    public CannotMoveAnymoreInVehicle(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

@@ -23,6 +23,8 @@ import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * This class ...
  *
@@ -34,6 +36,10 @@ public final class StartRotating extends L2GameClientPacket {
 
     private int _degree;
     private int _side;
+
+    public StartRotating(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

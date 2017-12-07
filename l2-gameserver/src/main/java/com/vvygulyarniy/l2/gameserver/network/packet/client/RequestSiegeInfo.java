@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * Format: (c) (no data, trigger)
  *
@@ -29,6 +31,10 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 public class RequestSiegeInfo extends L2GameClientPacket {
     private static final String _C__58_REQUESTSIEGEINFO = "[C] 58 RequestSiegeInfo";
+
+    public RequestSiegeInfo(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

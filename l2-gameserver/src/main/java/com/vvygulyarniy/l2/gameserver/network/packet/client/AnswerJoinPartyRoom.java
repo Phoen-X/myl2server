@@ -23,6 +23,8 @@ import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * Format: (ch) d
  *
@@ -32,6 +34,10 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public final class AnswerJoinPartyRoom extends L2GameClientPacket {
     private static final String _C__D0_30_ANSWERJOINPARTYROOM = "[C] D0:30 AnswerJoinPartyRoom";
     private int _answer; // 1 or 0
+
+    public AnswerJoinPartyRoom(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

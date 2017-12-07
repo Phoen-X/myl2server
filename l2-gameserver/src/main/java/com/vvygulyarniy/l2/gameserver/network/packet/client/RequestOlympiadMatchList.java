@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * format ch c: (id) 0xD0 h: (subid) 0x13
  *
@@ -30,6 +32,10 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public final class RequestOlympiadMatchList extends L2GameClientPacket {
     private static final String _C__D0_2E_REQUESTOLYMPIADMATCHLIST = "[C] D0:2E RequestOlympiadMatchList";
     private static final String COMMAND = "arenalist";
+
+    public RequestOlympiadMatchList(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

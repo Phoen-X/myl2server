@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * This class ... cdd
  *
@@ -32,6 +34,10 @@ public final class RequestRecipeShopMakeInfo extends L2GameClientPacket {
 
     private int _playerObjectId;
     private int _recipeId;
+
+    public RequestRecipeShopMakeInfo(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

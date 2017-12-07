@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author l3x
  */
@@ -29,6 +31,10 @@ public class RequestSetSeed extends L2GameClientPacket {
     private static final int BATCH_LENGTH = 20; // length of the one item
 
     private int _manorId;
+
+    public RequestSetSeed(ByteBuffer buf) {
+        super(buf);
+    }
 /*
     private List<SeedProduction> _items;
 */

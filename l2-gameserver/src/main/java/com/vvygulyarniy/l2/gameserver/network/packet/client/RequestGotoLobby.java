@@ -23,9 +23,15 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
 
+import java.nio.ByteBuffer;
+
 @ToString
 public class RequestGotoLobby extends L2GameClientPacket {
     private static final String _C__D0_38_REQUESTGOTOLOBBY = "[C] D0:38 RequestGotoLobby";
+
+    public RequestGotoLobby(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

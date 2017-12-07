@@ -23,6 +23,8 @@ import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * Format chS c (id) 0xD0 h (subid) 0x0C S the hero's words :)
  *
@@ -33,6 +35,10 @@ public final class RequestWriteHeroWords extends L2GameClientPacket {
     private static final String _C__D0_05_REQUESTWRITEHEROWORDS = "[C] D0:05 RequestWriteHeroWords";
 
     private String _heroWords;
+
+    public RequestWriteHeroWords(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

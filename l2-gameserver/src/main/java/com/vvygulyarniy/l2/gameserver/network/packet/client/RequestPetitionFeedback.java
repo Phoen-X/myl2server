@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author Plim
  */
@@ -34,6 +36,10 @@ public class RequestPetitionFeedback extends L2GameClientPacket {
     // private int _unknown;
     private int _rate; // 4=VeryGood, 3=Good, 2=Fair, 1=Poor, 0=VeryPoor
     private String _message;
+
+    public RequestPetitionFeedback(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

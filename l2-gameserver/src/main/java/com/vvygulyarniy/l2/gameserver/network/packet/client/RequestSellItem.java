@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * RequestSellItem client packet class.
  */
@@ -31,6 +33,10 @@ public final class RequestSellItem extends L2GameClientPacket {
     private static final int BATCH_LENGTH = 16;
 
     private int _listId;
+
+    public RequestSellItem(ByteBuffer buf) {
+        super(buf);
+    }
     //private List<UniqueItemHolder> _items = null;
 
     @Override

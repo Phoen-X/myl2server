@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * RequestBypassToServer client packet implementation.
  *
@@ -44,6 +46,10 @@ public final class RequestBypassToServer extends L2GameClientPacket {
 
     // S
     private String _command;
+
+    public RequestBypassToServer(ByteBuffer buf) {
+        super(buf);
+    }
 
   /*  private static void comeHere(L2PcInstance activeChar) {
         L2Object obj = activeChar.getTarget();

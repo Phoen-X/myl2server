@@ -23,6 +23,8 @@ import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 @ToString
 public final class UseItem extends L2GameClientPacket {
     private static final String _C__19_USEITEM = "[C] 19 UseItem";
@@ -30,6 +32,10 @@ public final class UseItem extends L2GameClientPacket {
     private int _objectId;
     private boolean _ctrlPressed;
     private int _itemId;
+
+    public UseItem(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

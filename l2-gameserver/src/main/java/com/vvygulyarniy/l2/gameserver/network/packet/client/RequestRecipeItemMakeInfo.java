@@ -22,10 +22,16 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 public final class RequestRecipeItemMakeInfo extends L2GameClientPacket {
     private static final String _C__B7_REQUESTRECIPEITEMMAKEINFO = "[C] B7 RequestRecipeItemMakeInfo";
 
     private int _id;
+
+    public RequestRecipeItemMakeInfo(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

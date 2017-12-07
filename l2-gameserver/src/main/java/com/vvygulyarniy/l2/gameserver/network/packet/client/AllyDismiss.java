@@ -23,11 +23,17 @@ import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 @ToString
 public final class AllyDismiss extends L2GameClientPacket {
     private static final String _C__8F_ALLYDISMISS = "[C] 8F AllyDismiss";
 
     private String _clanName;
+
+    public AllyDismiss(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

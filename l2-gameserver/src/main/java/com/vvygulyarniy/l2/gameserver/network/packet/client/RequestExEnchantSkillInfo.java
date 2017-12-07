@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * Format (ch) dd c: (id) 0xD0 h: (subid) 0x06 d: skill id d: skill lvl
  *
@@ -32,6 +34,10 @@ public final class RequestExEnchantSkillInfo extends L2GameClientPacket {
 
     private int _skillId;
     private int _skillLvl;
+
+    public RequestExEnchantSkillInfo(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

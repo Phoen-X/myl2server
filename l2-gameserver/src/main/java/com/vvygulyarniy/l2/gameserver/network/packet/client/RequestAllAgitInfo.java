@@ -22,11 +22,18 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author KenM
  */
 public class RequestAllAgitInfo extends L2GameClientPacket {
     private static final String _C__D0_3E_REQUESTALLAGITINFO = "[C] D0:3E RequestAllAgitInfo";
+
+    public RequestAllAgitInfo(
+            ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

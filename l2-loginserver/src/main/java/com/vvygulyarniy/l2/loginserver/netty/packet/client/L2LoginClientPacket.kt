@@ -28,7 +28,6 @@ import java.nio.ByteBuffer
  * @author KenM
  */
 abstract class L2LoginClientPacket(buffer: ByteBuffer) : ReceivablePacket(buffer) {
-
     override fun read(): Boolean {
         try {
             return readImpl()

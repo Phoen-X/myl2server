@@ -22,10 +22,16 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 public final class RequestDeleteMacro extends L2GameClientPacket {
     private static final String _C__CE_REQUESTDELETEMACRO = "[C] CE RequestDeleteMacro";
 
     private int _id;
+
+    public RequestDeleteMacro(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * Format:(ch) d
  *
@@ -30,6 +32,10 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public final class RequestExMPCCShowPartyMembersInfo extends L2GameClientPacket {
     private static final String _C__D0_2D_REQUESTMPCCSHOWPARTYMEMBERINFO = "[C] D0:2D RequestExMPCCShowPartyMembersInfo";
     private int _partyLeaderId;
+
+    public RequestExMPCCShowPartyMembersInfo(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

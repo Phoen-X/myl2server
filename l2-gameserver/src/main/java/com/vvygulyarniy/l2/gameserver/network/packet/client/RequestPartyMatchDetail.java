@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author Gnacik
  */
@@ -35,6 +37,10 @@ public final class RequestPartyMatchDetail extends L2GameClientPacket {
     private int _unk2;
     @SuppressWarnings("unused")
     private int _unk3;
+
+    public RequestPartyMatchDetail(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {

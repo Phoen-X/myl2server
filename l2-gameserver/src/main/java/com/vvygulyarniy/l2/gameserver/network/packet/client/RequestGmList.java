@@ -22,6 +22,8 @@ import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.ByteBuffer;
+
 /**
  * This class handles RequestGmLista packet triggered by /gmlist command
  *
@@ -29,6 +31,10 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 public final class RequestGmList extends L2GameClientPacket {
     private static final String _C__8B_REQUESTGMLIST = "[C] 8B RequestGmList";
+
+    public RequestGmList(ByteBuffer buf) {
+        super(buf);
+    }
 
     @Override
     protected void readImpl() {
