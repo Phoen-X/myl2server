@@ -21,6 +21,7 @@ package com.vvygulyarniy.l2.loginserver.netty.packet.client
 
 import com.vvygulyarniy.l2.loginserver.netty.login.ClientPacketProcessor
 import com.vvygulyarniy.l2.loginserver.netty.login.L2LoginClient
+import java.nio.ByteBuffer
 
 /**
  * <pre>
@@ -30,7 +31,7 @@ import com.vvygulyarniy.l2.loginserver.netty.login.L2LoginClient
  * c: ?
 </pre> *
  */
-class RequestServerList : L2LoginClientPacket() {
+class RequestServerList(buffer: ByteBuffer) : L2LoginClientPacket(buffer) {
     /**
      * @return
      */

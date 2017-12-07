@@ -21,13 +21,14 @@ package com.vvygulyarniy.l2.loginserver.netty.packet.client
 
 import com.vvygulyarniy.l2.loginserver.netty.login.ClientPacketProcessor
 import com.vvygulyarniy.l2.loginserver.netty.login.L2LoginClient
+import java.nio.ByteBuffer
 
 /**
  * Format: ddddd
 
  * @author -Wooden-
  */
-class AuthGameGuard : L2LoginClientPacket() {
+class AuthGameGuard(buffer: ByteBuffer) : L2LoginClientPacket(buffer) {
     var sessionId: Int = 0
         private set
     var data1: Int = 0

@@ -21,6 +21,7 @@ package com.vvygulyarniy.l2.loginserver.netty.packet.client
 
 import com.vvygulyarniy.l2.loginserver.netty.login.ClientPacketProcessor
 import com.vvygulyarniy.l2.loginserver.netty.login.L2LoginClient
+import java.nio.ByteBuffer
 
 /**
  * <pre>
@@ -30,7 +31,7 @@ import com.vvygulyarniy.l2.loginserver.netty.login.L2LoginClient
 
  * <pre>
 </pre></pre> */
-class RequestAuthLogin : L2LoginClientPacket() {
+class RequestAuthLogin(buffer: ByteBuffer) : L2LoginClientPacket(buffer) {
     val raw = ByteArray(128)
     var user: String? = null
     var password: String? = null

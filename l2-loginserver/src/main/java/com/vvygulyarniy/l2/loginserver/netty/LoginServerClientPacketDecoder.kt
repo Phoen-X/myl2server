@@ -45,10 +45,9 @@ class LoginServerClientPacketDecoder : ByteToMessageDecoder() {
     private fun handlePacket(byteBuffer: ByteBuffer): L2LoginClientPacket? {
         val opcode = byteBuffer.get().toShort() and 0xFF
 
-        val packet = opcodeMapping.getOrDefault(opcode, { null }).invoke()
+        val packet = opcodeMapping.getOrDefault(opcode, { null }).invoke(byteBuffer)
 
         return if (packet != null) {
-            packet.buffer = byteBuffer
             if (packet.read()) packet else null
         } else {
             null
@@ -62,7 +61,7 @@ class LoginServerClientPacketDecoder : ByteToMessageDecoder() {
         private val requestServerLoginOpCode: Short = 0x02
         private val requestServerListOpCode: Short = 0x05
 
-        private val opcodeMapping: HashMap<Short, () -> L2LoginClientPacket?> = hashMapOf(
+        private val opcodeMapping: HashMap<Short, (ByteBuffer) -> L2LoginClientPacket?> = hashMapOf(
                 authGgOpcode to ::AuthGameGuard,
                 requestAuthOpCode to ::RequestAuthLogin,
                 requestServerLoginOpCode to ::RequestServerLogin,

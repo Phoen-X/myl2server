@@ -22,11 +22,12 @@ package com.vvygulyarniy.l2.loginserver.netty.packet.client
 import com.l2server.network.ReceivablePacket
 import com.vvygulyarniy.l2.loginserver.netty.login.ClientPacketProcessor
 import com.vvygulyarniy.l2.loginserver.netty.login.L2LoginClient
+import java.nio.ByteBuffer
 
 /**
  * @author KenM
  */
-abstract class L2LoginClientPacket : ReceivablePacket() {
+abstract class L2LoginClientPacket(buffer: ByteBuffer) : ReceivablePacket(buffer) {
 
     override fun read(): Boolean {
         try {

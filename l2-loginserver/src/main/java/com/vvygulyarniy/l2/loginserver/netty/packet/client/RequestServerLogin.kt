@@ -21,6 +21,7 @@ package com.vvygulyarniy.l2.loginserver.netty.packet.client
 
 import com.vvygulyarniy.l2.loginserver.netty.login.ClientPacketProcessor
 import com.vvygulyarniy.l2.loginserver.netty.login.L2LoginClient
+import java.nio.ByteBuffer
 
 /**
  * <pre>
@@ -30,25 +31,16 @@ import com.vvygulyarniy.l2.loginserver.netty.login.L2LoginClient
  * c: server ID
 </pre> *
  */
-class RequestServerLogin : L2LoginClientPacket() {
-    /**
-     * @return
-     */
+class RequestServerLogin(buffer: ByteBuffer) : L2LoginClientPacket(buffer) {
     var sessionKey1: Int = 0
         private set
-    /**
-     * @return
-     */
     var sessionKey2: Int = 0
         private set
-    /**
-     * @return
-     */
-    var serverID: Int = 0
+    var serverID: Byte = 0
         private set
 
     public override fun readImpl(): Boolean {
-        if (super.buffer!!.remaining() >= 9) {
+        if (super.buffer.remaining() >= 9) {
             sessionKey1 = readD()
             sessionKey2 = readD()
             serverID = readC()
@@ -62,7 +54,7 @@ class RequestServerLogin : L2LoginClientPacket() {
     }
 
     override fun toString(): String {
-        return "com.vvygulyarniy.l2.loginserver.netty.packet.client.RequestServerLogin(_skey1=" + this.sessionKey1 + ", _skey2=" + this.sessionKey2 + ", serverId=" + this.serverID + ")"
+        return "RequestServerLogin(_skey1=$sessionKey1, _skey2=$sessionKey2, serverId=$serverID)"
     }
 
     /* @Override
