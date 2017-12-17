@@ -19,7 +19,6 @@
 package com.vvygulyarniy.l2.loginserver.netty.packet.server
 
 
-import com.vvygulyarniy.l2.loginserver.netty.login.L2LoginClient
 import java.nio.ByteBuffer
 
 /**
@@ -39,8 +38,6 @@ import java.nio.ByteBuffer
 data class Init(private val _publicKey: ByteArray,
                 private val _blowfishKey: ByteArray,
                 private val _sessionId: Int) : L2LoginServerPacket() {
-
-    constructor(client: L2LoginClient) : this(client.scrambledModulus, client.blowfishKey, client.sessionId)
 
     override fun write(buffer: ByteBuffer) {
         writeC(buffer, 0x00) // init packet id

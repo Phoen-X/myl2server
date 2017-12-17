@@ -1,7 +1,9 @@
 package com.vvygulyarniy.l2.loginserver.netty
 
+import com.l2server.crypt.LoginCrypt
 import com.vvygulyarniy.l2.loginserver.LoginController
 import com.vvygulyarniy.l2.loginserver.logic.LoginPacketsProcessor
+import com.vvygulyarniy.l2.loginserver.model.data.SessionId
 import com.vvygulyarniy.l2.loginserver.netty.login.L2LoginClient
 import com.vvygulyarniy.l2.loginserver.netty.packet.client.L2LoginClientPacket
 import com.vvygulyarniy.l2.loginserver.netty.packet.server.Init
@@ -11,17 +13,23 @@ import io.netty.util.AttributeKey
 import lombok.extern.slf4j.Slf4j
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.util.concurrent.atomic.AtomicInteger
 
 @Slf4j
 class NettyLoginServerHandler(private val loginController: LoginController,
                               private val packetProcessor: LoginPacketsProcessor) : ChannelInboundHandlerAdapter() {
     private val clientKey = AttributeKey.valueOf<L2LoginClient>("l2LoginClient")
+    private var lastSessionId = AtomicInteger(0)
 
     @Throws(Exception::class)
     override fun channelRegistered(ctx: ChannelHandlerContext) {
-        val client = L2LoginClient(NettyLoginClientConnection(ctx),
-                loginController.scrambledRSAKeyPair!!,
-                loginController.blowfishKey)
+        val sessionId = SessionId(lastSessionId.incrementAndGet())
+        val crypt = LoginCrypt()
+
+        val client = L2LoginClient(sessionId, NettyLoginClientConnection(ctx), crypt)
+
+        ctx.setSessionId(sessionId)
+        ctx.setCrypt(crypt)
         ctx.channel().attr(clientKey).set(client)
         log.info("Channel registered: {}", ctx)
     }
@@ -42,9 +50,9 @@ class NettyLoginServerHandler(private val loginController: LoginController,
     @Throws(Exception::class)
     override fun channelActive(ctx: ChannelHandlerContext) {
         log.info("Channel active: {}", ctx)
-        val client = ctx.channel().attr(clientKey).get()
-        val initPacket = Init(client)
+        val crypt = ctx.getCrypt()
 
+        val initPacket = Init(crypt.scrambledKeyPair.modulus, crypt.blowfishKey, ctx.getSessionId().toInt())
 
         ctx.channel().writeAndFlush(initPacket)
     }

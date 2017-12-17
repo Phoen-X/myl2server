@@ -26,11 +26,11 @@ import kotlin.experimental.xor
 /**
 
  */
-class ScrambledKeyPair(var _pair: KeyPair) {
-    var _scrambledModulus: ByteArray
+class ScrambledKeyPair(var pair: KeyPair) {
+    var modulus: ByteArray
 
     init {
-        _scrambledModulus = scrambleModulus((_pair.public as RSAPublicKey).modulus)
+        modulus = scrambleModulus((pair.public as RSAPublicKey).modulus)
     }
 
     private fun scrambleModulus(modulus: BigInteger): ByteArray {

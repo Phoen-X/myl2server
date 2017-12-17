@@ -3,12 +3,22 @@ package com.l2server.crypt
 
 import java.io.IOException
 import java.nio.ByteBuffer
+import java.security.GeneralSecurityException
+import java.security.KeyPairGenerator
+import java.security.interfaces.RSAPrivateKey
+import java.security.spec.RSAKeyGenParameterSpec
+import java.util.*
+import javax.crypto.Cipher
 
 /**
  * @author KenM
  */
-class LoginCrypt(private val _crypt: NewCrypt) {
+class LoginCrypt {
     private var _static = true
+
+    val blowfishKey = cachedBlowfishKeys[(Math.random() * BLOWFISH_KEYS).toInt()]
+    val scrambledKeyPair = cachedScrambledKeyPairs[Random().nextInt(SCRAMBLED_PAIRS_COUNT)]
+    val crypt = NewCrypt(blowfishKey)
 
     /**
      * Method to initialize the the blowfish cipher with dynamic key.
@@ -16,7 +26,7 @@ class LoginCrypt(private val _crypt: NewCrypt) {
      * @param key the blowfish key to initialize the dynamic blowfish cipher with
      */
     fun setKey(key: ByteArray) {
-        _crypt.setKey(key)
+        crypt.setKey(key)
     }
 
     /**
@@ -37,7 +47,7 @@ class LoginCrypt(private val _crypt: NewCrypt) {
             throw IOException("raw array too short for size starting from offset")
         }
 
-        _crypt.decrypt(raw, offset, size)
+        crypt.decrypt(raw, offset, size)
         return NewCrypt.verifyChecksum(raw, offset, size)
     }
 
@@ -67,7 +77,7 @@ class LoginCrypt(private val _crypt: NewCrypt) {
                 throw new IOException("packet too long");
             }*/
             NewCrypt.encXORPass(raw, offset, index, 1)
-            _STATIC_CRYPT.crypt(raw, offset, index)
+            STATIC_CRYPT.crypt(raw, offset, index)
             _static = false
         } else {
             // padding
@@ -76,7 +86,7 @@ class LoginCrypt(private val _crypt: NewCrypt) {
                 throw IOException("packet too long")
             }
             NewCrypt.appendChecksum(raw, offset, index)
-            _crypt.crypt(raw, offset, index)
+            crypt.crypt(raw, offset, index)
         }
         return index
     }
@@ -95,11 +105,56 @@ class LoginCrypt(private val _crypt: NewCrypt) {
     }
 
     companion object {
-        private val STATIC_BLOWFISH_KEY = byteArrayOf(0x6b.toByte(),
-                0x60.toByte(), 0xcb.toByte(), 0x5b.toByte(), 0x82.toByte(), 0xce.toByte(), 0x90.toByte(),
-                0xb1.toByte(), 0xcc.toByte(), 0x2b.toByte(), 0x6c.toByte(),
-                0x55.toByte(), 0x6c.toByte(), 0x6c.toByte(), 0x6c.toByte(), 0x6c.toByte())
+        private val STATIC_BLOWFISH_KEY = byteArrayOf(0x6b.toByte(), 0x60.toByte(), 0xcb.toByte(), 0x5b.toByte(),
+                                                      0x82.toByte(), 0xce.toByte(), 0x90.toByte(), 0xb1.toByte(),
+                                                      0xcc.toByte(), 0x2b.toByte(), 0x6c.toByte(), 0x55.toByte(),
+                                                      0x6c.toByte(), 0x6c.toByte(), 0x6c.toByte(), 0x6c.toByte())
+        private val BLOWFISH_KEYS = 20
 
-        private val _STATIC_CRYPT = NewCrypt(STATIC_BLOWFISH_KEY)
+        private val STATIC_CRYPT = NewCrypt(STATIC_BLOWFISH_KEY)
+
+        private val keygen = KeyPairGenerator.getInstance("RSA")
+        private val cachedScrambledKeyPairs: Array<ScrambledKeyPair>
+        private var cachedBlowfishKeys: Array<ByteArray>
+        private val SCRAMBLED_PAIRS_COUNT = 10
+
+        init {
+            val spec = RSAKeyGenParameterSpec(1024, RSAKeyGenParameterSpec.F4)
+            keygen.initialize(spec)
+
+            cachedScrambledKeyPairs = arrayOfNulls<Unit>(SCRAMBLED_PAIRS_COUNT)
+                    .map { ScrambledKeyPair(keygen.generateKeyPair()) }
+                    .toTypedArray()
+
+            cachedScrambledKeyPairs.forEach { testCipher(it.pair.private as RSAPrivateKey) }
+
+            cachedBlowfishKeys = generateBlowFishKeys()
+        }
+
+        private fun generateBlowFishKeys(): Array<ByteArray> {
+            val blowfishKeys = Array(BLOWFISH_KEYS) { ByteArray(16) }
+            val rnd = Random()
+            for (i in 0 until BLOWFISH_KEYS) {
+                for (j in 0 until blowfishKeys[i].size) {
+                    blowfishKeys[i][j] = (rnd.nextInt(255) + 1).toByte()
+                }
+            }
+            return blowfishKeys
+        }
+
+        /**
+         * This is mostly to force the initialization of the Crypto Implementation, avoiding it being done on runtime when its first needed.<BR></BR>
+         * In short it avoids the worst-case execution time on runtime by doing it on loading.
+
+         * @param key Any private RSA Key just for testing purposes.
+         * *
+         * @throws GeneralSecurityException if a underlying exception was thrown by the Cipher
+         */
+        @Throws(GeneralSecurityException::class)
+        private fun testCipher(key: RSAPrivateKey) {
+            // avoid worst-case execution, KenM
+            val rsaCipher = Cipher.getInstance("RSA/ECB/nopadding")
+            rsaCipher.init(Cipher.DECRYPT_MODE, key)
+        }
     }
 }

@@ -18,7 +18,6 @@
  */
 package com.vvygulyarniy.l2.loginserver
 
-import com.l2server.crypt.ScrambledKeyPair
 import com.l2server.network.SessionKey
 import com.vvygulyarniy.l2.loginserver.model.data.AccountInfo
 import com.vvygulyarniy.l2.loginserver.netty.login.L2LoginClient
@@ -26,77 +25,24 @@ import com.vvygulyarniy.l2.loginserver.netty.packet.server.LoginFail.LoginFailRe
 import com.vvygulyarniy.l2.loginserver.util.Rnd
 import java.net.InetAddress
 import java.nio.charset.StandardCharsets
-import java.security.GeneralSecurityException
-import java.security.KeyPairGenerator
 import java.security.MessageDigest
-import java.security.interfaces.RSAPrivateKey
-import java.security.spec.RSAKeyGenParameterSpec
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
-import javax.crypto.Cipher
 
 object LoginController {
     private val LOGIN_TIMEOUT = 60 * 1000
     private val BLOWFISH_KEYS = 20
 
     private val clientsConnected = ConcurrentHashMap<String, L2LoginClient>()
-    private val keyPairs: Array<ScrambledKeyPair>
-    private var blowfishKeys: Array<ByteArray>? = null
 
     init {
-        val keygen = KeyPairGenerator.getInstance("RSA")
-        val spec = RSAKeyGenParameterSpec(1024, RSAKeyGenParameterSpec.F4)
-        keygen.initialize(spec)
-
-        // generate the initial set of keys
-        keyPairs = arrayOfNulls<Unit>(10)
-                .map { ScrambledKeyPair(keygen.generateKeyPair()) }
-                .toTypedArray()
-        for (i in 0..9) {
-            keyPairs[i] = ScrambledKeyPair(keygen.generateKeyPair())
-        }
-
-        testCipher(keyPairs[0]._pair.private as RSAPrivateKey)
-
-        // Store keys for blowfish communication
-        generateBlowFishKeys()
 
         val purge = PurgeThread()
         purge.isDaemon = true
         purge.start()
     }
 
-    /**
-     * This is mostly to force the initialization of the Crypto Implementation, avoiding it being done on runtime when its first needed.<BR></BR>
-     * In short it avoids the worst-case execution time on runtime by doing it on loading.
 
-     * @param key Any private RSA Key just for testing purposes.
-     * *
-     * @throws GeneralSecurityException if a underlying exception was thrown by the Cipher
-     */
-    @Throws(GeneralSecurityException::class)
-    private fun testCipher(key: RSAPrivateKey) {
-        // avoid worst-case execution, KenM
-        val rsaCipher = Cipher.getInstance("RSA/ECB/nopadding")
-        rsaCipher.init(Cipher.DECRYPT_MODE, key)
-    }
-
-    private fun generateBlowFishKeys() {
-        blowfishKeys = Array(BLOWFISH_KEYS) { ByteArray(16) }
-
-        for (i in 0..BLOWFISH_KEYS - 1) {
-            for (j in 0..blowfishKeys!![i].size - 1) {
-                blowfishKeys!![i][j] = (Rnd.nextInt(255) + 1).toByte()
-            }
-        }
-
-    }
-
-    /**
-     * @return Returns a random key
-     */
-    val blowfishKey: ByteArray
-        get() = blowfishKeys!![(Math.random() * BLOWFISH_KEYS).toInt()]
 
     fun assignSessionKeyToClient(account: String, client: L2LoginClient): SessionKey {
         val key: SessionKey
@@ -144,17 +90,6 @@ object LoginController {
     fun isLoginPossible(): Boolean {
         return true
     }
-
-    /**
-     *
-     *
-     * This method returns one of the cached [ScrambledKeyPairs][ScrambledKeyPair] for communication with Login Clients.
-     *
-
-     * @return a scrambled keypair
-     */
-    val scrambledRSAKeyPair: ScrambledKeyPair?
-        get() = keyPairs[Rnd.nextInt(10)]
 
     /**
      * @param client  the client

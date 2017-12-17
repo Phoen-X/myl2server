@@ -131,9 +131,9 @@ class LoginPacketsProcessor(private val gameServerTable: GameServerTable,
     }
 
     override fun process(packet: AuthGameGuard, client: L2LoginClient) {
-        if (packet.sessionId == client.sessionId) {
+        if (packet.sessionId == client.sessionId.toInt()) {
             client.state = L2LoginClient.LoginClientState.AUTHED_GG
-            client.sendPacket(GGAuth(client.sessionId))
+            client.sendPacket(GGAuth(client.sessionId.toInt()))
         } else {
             client.close(REASON_ACCESS_FAILED)
         }

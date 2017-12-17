@@ -20,9 +20,8 @@ package com.vvygulyarniy.l2.loginserver.netty.login
 
 
 import com.l2server.crypt.LoginCrypt
-import com.l2server.crypt.NewCrypt
-import com.l2server.crypt.ScrambledKeyPair
 import com.l2server.network.SessionKey
+import com.vvygulyarniy.l2.loginserver.model.data.SessionId
 import com.vvygulyarniy.l2.loginserver.netty.packet.server.L2LoginServerPacket
 import com.vvygulyarniy.l2.loginserver.netty.packet.server.LoginFail
 import com.vvygulyarniy.l2.loginserver.netty.packet.server.PlayFail
@@ -37,12 +36,10 @@ import java.util.*
 
  * @author KenM
  */
-class L2LoginClient(private val connection: LoginClientConnection,
-                    private val _scrambledPair: ScrambledKeyPair,
-                    val blowfishKey: ByteArray) {
+class L2LoginClient(val sessionId: SessionId,
+                    private val connection: LoginClientConnection,
+                    private val loginCrypt: LoginCrypt) {
     // Crypt
-    val loginCrypt: LoginCrypt
-    val sessionId: Int
     val connectionStartTime: Long
     var state: LoginClientState? = null
     var account: String? = null
@@ -55,9 +52,7 @@ class L2LoginClient(private val connection: LoginClientConnection,
 
     init {
         this.state = LoginClientState.CONNECTED
-        this.sessionId = rnd.nextInt()
         this.connectionStartTime = System.currentTimeMillis()
-        this.loginCrypt = LoginCrypt(NewCrypt(blowfishKey))
     }
 
     fun decrypt(buf: ByteBuffer, size: Int): Boolean {
@@ -97,10 +92,10 @@ class L2LoginClient(private val connection: LoginClientConnection,
     }
 
     val scrambledModulus: ByteArray
-        get() = _scrambledPair._scrambledModulus
+        get() = loginCrypt.scrambledKeyPair.modulus
 
     val rsaPrivateKey: RSAPrivateKey
-        get() = _scrambledPair._pair.private as RSAPrivateKey
+        get() = loginCrypt.scrambledKeyPair.pair.private as RSAPrivateKey
 
     fun hasJoinedGS(): Boolean {
         return _joinedGS

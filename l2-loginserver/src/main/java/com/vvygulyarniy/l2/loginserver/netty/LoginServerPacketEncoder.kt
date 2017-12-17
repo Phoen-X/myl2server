@@ -25,7 +25,7 @@ class LoginServerPacketEncoder : MessageToByteEncoder<L2LoginServerPacket>() {
 
         var dataSize = buffer.position() - dataPos
         buffer.position(dataPos)
-        client.loginCrypt.encrypt(buffer, dataSize)
+        ctx.crypt.encrypt(buffer, dataSize)
 
         // recalculate size after encryption
         dataSize = buffer.position() - dataPos
