@@ -1,7 +1,7 @@
 package com.vvygulyarniy.l2.loginserver.netty
 
+import com.vvygulyarniy.l2.loginserver.communication.packet.server.L2LoginServerPacket
 import com.vvygulyarniy.l2.loginserver.netty.login.LoginClientConnection
-import com.vvygulyarniy.l2.loginserver.netty.packet.server.L2LoginServerPacket
 import io.netty.channel.ChannelHandlerContext
 
 /**

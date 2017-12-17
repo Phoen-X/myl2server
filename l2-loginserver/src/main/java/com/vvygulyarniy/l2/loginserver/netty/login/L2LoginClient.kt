@@ -21,10 +21,10 @@ package com.vvygulyarniy.l2.loginserver.netty.login
 
 import com.l2server.crypt.LoginCrypt
 import com.l2server.network.SessionKey
+import com.vvygulyarniy.l2.loginserver.communication.packet.server.L2LoginServerPacket
+import com.vvygulyarniy.l2.loginserver.communication.packet.server.LoginFail
+import com.vvygulyarniy.l2.loginserver.communication.packet.server.PlayFail
 import com.vvygulyarniy.l2.loginserver.model.data.SessionId
-import com.vvygulyarniy.l2.loginserver.netty.packet.server.L2LoginServerPacket
-import com.vvygulyarniy.l2.loginserver.netty.packet.server.LoginFail
-import com.vvygulyarniy.l2.loginserver.netty.packet.server.PlayFail
 import org.slf4j.LoggerFactory.getLogger
 import java.io.IOException
 import java.nio.ByteBuffer
@@ -36,9 +36,9 @@ import java.util.*
 
  * @author KenM
  */
-class L2LoginClient(val sessionId: SessionId,
-                    private val connection: LoginClientConnection,
-                    private val loginCrypt: LoginCrypt) {
+private class L2LoginClient(val sessionId: SessionId,
+                            private val connection: LoginClientConnection,
+                            private val loginCrypt: LoginCrypt) {
     // Crypt
     val connectionStartTime: Long
     var state: LoginClientState? = null

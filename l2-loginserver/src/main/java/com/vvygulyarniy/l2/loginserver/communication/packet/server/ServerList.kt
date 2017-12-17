@@ -16,10 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.vvygulyarniy.l2.loginserver.netty.packet.server
+package com.vvygulyarniy.l2.loginserver.communication.packet.server
 
 
-import com.vvygulyarniy.l2.loginserver.netty.login.L2LoginClient
 import com.vvygulyarniy.l2.loginserver.netty.login.ServerStatus
 import java.nio.ByteBuffer
 
@@ -53,15 +52,15 @@ import java.nio.ByteBuffer
  * is less than half the maximum. as Normal between half and 4/5<br></br>
  * and Full when there's more than 4/5 of the maximum number of players.
  */
-data class ServerList(val client: L2LoginClient, val servers: List<ServerData>) : L2LoginServerPacket() {
+data class ServerList(private val servers: List<ServerData>) : L2LoginServerPacket() {
 
-    private val lastServer: Int = client.lastServer
+    private val lastServer: Int = 0
     private val charsOnServers: Map<Int, Int>
     private val charsToDelete: Map<Int, LongArray>?
 
     init {
-        charsOnServers = client.charsOnServ
-        charsToDelete = client.charsWaitingDelOnServ
+        charsOnServers = hashMapOf()
+        charsToDelete = hashMapOf()
     }
 
     override fun write(buffer: ByteBuffer) {

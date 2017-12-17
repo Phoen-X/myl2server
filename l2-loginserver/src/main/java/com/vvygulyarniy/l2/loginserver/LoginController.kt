@@ -18,17 +18,7 @@
  */
 package com.vvygulyarniy.l2.loginserver
 
-import com.l2server.network.SessionKey
-import com.vvygulyarniy.l2.loginserver.model.data.AccountInfo
-import com.vvygulyarniy.l2.loginserver.netty.login.L2LoginClient
-import com.vvygulyarniy.l2.loginserver.netty.packet.server.LoginFail.LoginFailReason
-import com.vvygulyarniy.l2.loginserver.util.Rnd
-import java.net.InetAddress
-import java.nio.charset.StandardCharsets
-import java.security.MessageDigest
-import java.util.*
-import java.util.concurrent.ConcurrentHashMap
-
+/*
 object LoginController {
     private val LOGIN_TIMEOUT = 60 * 1000
     private val BLOWFISH_KEYS = 20
@@ -91,7 +81,8 @@ object LoginController {
         return true
     }
 
-    /**
+    */
+/**
      * @param client  the client
      * *
      * @param address client host address
@@ -99,7 +90,8 @@ object LoginController {
      * @param info    the account info to checkin
      * *
      * @return true when ok to checkin, false otherwise
-     */
+ *//*
+
     fun canCheckin(client: L2LoginClient, address: InetAddress, info: AccountInfo): Boolean {
         return true
     }
@@ -147,4 +139,6 @@ object LoginController {
             }
         }
     }
+
 }
+*/

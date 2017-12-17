@@ -1,11 +1,9 @@
 package com.vvygulyarniy.l2.loginserver.netty
 
-import com.vvygulyarniy.l2.loginserver.netty.login.L2LoginClient
-import com.vvygulyarniy.l2.loginserver.netty.packet.server.L2LoginServerPacket
+import com.vvygulyarniy.l2.loginserver.communication.packet.server.L2LoginServerPacket
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.MessageToByteEncoder
-import io.netty.util.AttributeKey
 import java.nio.ByteBuffer
 import java.nio.ByteOrder.LITTLE_ENDIAN
 
@@ -13,7 +11,6 @@ class LoginServerPacketEncoder : MessageToByteEncoder<L2LoginServerPacket>() {
 
     override fun encode(ctx: ChannelHandlerContext, packet: L2LoginServerPacket, out: ByteBuf) {
         log.info("Encoding message: {}", packet)
-        val client = getClient(ctx)
 
         val buffer = ByteBuffer.allocate(65000).order(LITTLE_ENDIAN)
         val headerPos = 0
@@ -25,7 +22,7 @@ class LoginServerPacketEncoder : MessageToByteEncoder<L2LoginServerPacket>() {
 
         var dataSize = buffer.position() - dataPos
         buffer.position(dataPos)
-        ctx.crypt.encrypt(buffer, dataSize)
+        ctx.getCrypt().encrypt(buffer, dataSize)
 
         // recalculate size after encryption
         dataSize = buffer.position() - dataPos
@@ -38,10 +35,6 @@ class LoginServerPacketEncoder : MessageToByteEncoder<L2LoginServerPacket>() {
 
         out.writeBytes(data)
         log.info("Packet sent {}", packet)
-    }
-
-    private fun getClient(ctx: ChannelHandlerContext): L2LoginClient {
-        return ctx.channel().attr(AttributeKey.valueOf<L2LoginClient>("l2LoginClient")).get()
     }
 
     @Throws(Exception::class)

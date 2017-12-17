@@ -19,6 +19,8 @@
 package com.vvygulyarniy.l2.loginserver
 
 
+import com.vvygulyarniy.l2.loginserver.communication.NettyClientCommunicator
+import com.vvygulyarniy.l2.loginserver.communication.NettyCommunicationManager
 import com.vvygulyarniy.l2.loginserver.logic.LoginPacketsProcessor
 import com.vvygulyarniy.l2.loginserver.netty.LoginServerClientPacketDecoder
 import com.vvygulyarniy.l2.loginserver.netty.LoginServerPacketEncoder
@@ -41,9 +43,7 @@ class L2LoginServer private constructor() {
         Server.serverMode = Server.MODE_LOGINSERVER
 
         try {
-            GameServerTable.instance
-            val packetProcessor = LoginPacketsProcessor(GameServerTable.instance, LoginController)
-            startNettyHandler(packetProcessor)
+            startNettyHandler()
         } catch (e: Exception) {
             System.exit(1)
         }
@@ -51,9 +51,13 @@ class L2LoginServer private constructor() {
     }
 
     @Throws(InterruptedException::class)
-    private fun startNettyHandler(packetProcessor: LoginPacketsProcessor) {
+    private fun startNettyHandler() {
         val bossGroup = NioEventLoopGroup() // (1)
         val workerGroup = NioEventLoopGroup()
+
+        val communicationManager = NettyCommunicationManager({ ctx -> NettyClientCommunicator(ctx) })
+        val packetProcessor = LoginPacketsProcessor(communicationManager)
+
         try {
             val b = ServerBootstrap() // (2)
             b.group(bossGroup, workerGroup)
@@ -62,8 +66,8 @@ class L2LoginServer private constructor() {
                         @Throws(Exception::class)
                         public override fun initChannel(ch: SocketChannel) {
                             ch.pipeline().addLast(LoginServerClientPacketDecoder(),
-                                    LoginServerPacketEncoder(),
-                                    NettyLoginServerHandler(LoginController, packetProcessor))
+                                                  LoginServerPacketEncoder(),
+                                                  NettyLoginServerHandler(communicationManager, packetProcessor))
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG, 128)          // (5)
@@ -85,7 +89,8 @@ class L2LoginServer private constructor() {
     companion object {
         val LOGIN_SERVER_PORT = 2106
 
-        @JvmStatic fun main(args: Array<String>) {
+        @JvmStatic
+        fun main(args: Array<String>) {
             L2LoginServer()
         }
     }

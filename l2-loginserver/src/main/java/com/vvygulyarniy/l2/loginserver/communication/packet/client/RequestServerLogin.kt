@@ -16,54 +16,53 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.vvygulyarniy.l2.loginserver.netty.packet.client
+package com.vvygulyarniy.l2.loginserver.communication.packet.client
 
 
-import com.vvygulyarniy.l2.loginserver.netty.login.ClientPacketProcessor
-import com.vvygulyarniy.l2.loginserver.netty.login.L2LoginClient
 import java.nio.ByteBuffer
 
 /**
  * <pre>
- * Format: ddc
- * d: fist part of session id
+ * Format is ddc
+ * d: first part of session id
  * d: second part of session id
- * c: ?
+ * c: server ID
 </pre> *
  */
-class RequestServerList(buffer: ByteBuffer) : L2LoginClientPacket(buffer) {
-    /**
-     * @return
-     */
+class RequestServerLogin(buffer: ByteBuffer) : L2LoginClientPacket(buffer) {
     var sessionKey1: Int = 0
         private set
-    /**
-     * @return
-     */
     var sessionKey2: Int = 0
         private set
-    /**
-     * @return
-     */
-    val data3: Int = 0
+    var serverID: Byte = 0
+        private set
 
     public override fun readImpl(): Boolean {
-        if (super.buffer!!.remaining() >= 8) {
-            sessionKey1 = readD() // loginOk 1
-            sessionKey2 = readD() // loginOk 2
+        if (super.buffer.remaining() >= 9) {
+            sessionKey1 = readD()
+            sessionKey2 = readD()
+            serverID = readC()
             return true
         }
         return false
     }
 
-    override fun process(processor: ClientPacketProcessor, client: L2LoginClient) {
-        processor.process(this, client)
+    override fun toString(): String {
+        return "RequestServerLogin(_skey1=$sessionKey1, _skey2=$sessionKey2, serverId=$serverID)"
     }
 
-    /*@Override
+    /* @Override
     public void run() {
-        if (getClient().getSessionKey().checkLoginPair(_skey1, _skey2)) {
-            getClient().sendPacket(new ServerList(getClient()));
+        SessionKey sk = getClient().getSessionKey();
+
+        // if we didnt showed the license we cant check these values
+        if (sk.checkLoginPair(_skey1, _skey2)) {
+            if (LoginController.getInstance().isLoginPossible(getClient(), serverId)) {
+                getClient().setJoinedGS(true);
+                getClient().sendPacket(new PlayOk(sk));
+            } else {
+                getClient().close(PlayFail.PlayFailReason.REASON_SERVER_OVERLOADED);
+            }
         } else {
             getClient().close(LoginFail.LoginFailReason.REASON_ACCESS_FAILED);
         }

@@ -16,22 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.vvygulyarniy.l2.loginserver.netty.packet.server
+package com.vvygulyarniy.l2.loginserver.communication.packet.client
 
 
+import com.l2server.network.ReceivablePacket
 import java.nio.ByteBuffer
 
 /**
- * Fromat: d d: response
+ * @author KenM
  */
-data class GGAuth(private val session: Int) : L2LoginServerPacket() {
-
-    override fun write(buffer: ByteBuffer) {
-        writeC(buffer, 0x0b)
-        writeD(buffer, session)
-        writeD(buffer, 0x00)
-        writeD(buffer, 0x00)
-        writeD(buffer, 0x00)
-        writeD(buffer, 0x00)
+abstract class L2LoginClientPacket(buffer: ByteBuffer) : ReceivablePacket(buffer) {
+    override fun read(): Boolean {
+        try {
+            return readImpl()
+        } catch (e: Exception) {
+            return false
+        }
     }
+
+    protected abstract fun readImpl(): Boolean
 }

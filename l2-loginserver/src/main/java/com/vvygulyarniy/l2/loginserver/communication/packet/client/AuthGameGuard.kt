@@ -16,11 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.vvygulyarniy.l2.loginserver.netty.packet.client
+package com.vvygulyarniy.l2.loginserver.communication.packet.client
 
 
-import com.vvygulyarniy.l2.loginserver.netty.login.ClientPacketProcessor
-import com.vvygulyarniy.l2.loginserver.netty.login.L2LoginClient
 import java.nio.ByteBuffer
 
 /**
@@ -50,10 +48,6 @@ class AuthGameGuard(buffer: ByteBuffer) : L2LoginClientPacket(buffer) {
             return true
         }
         return false
-    }
-
-    override fun process(processor: ClientPacketProcessor, client: L2LoginClient) {
-        processor.process(this, client)
     }
 
     override fun toString(): String {

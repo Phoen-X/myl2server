@@ -1,30 +1,26 @@
 package com.vvygulyarniy.l2.loginserver.netty
 
-import com.vvygulyarniy.l2.loginserver.netty.login.L2LoginClient
-import com.vvygulyarniy.l2.loginserver.netty.packet.client.*
+import com.vvygulyarniy.l2.loginserver.communication.packet.client.*
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.ByteToMessageDecoder
-import io.netty.util.AttributeKey
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.experimental.and
 
 class LoginServerClientPacketDecoder : ByteToMessageDecoder() {
 
-    private val clientKey = AttributeKey.valueOf<L2LoginClient>("l2LoginClient")
 
     @Throws(Exception::class)
     override fun decode(ctx: ChannelHandlerContext, byteBuf: ByteBuf, list: MutableList<Any>) {
         byteBuf.markReaderIndex()
         val dataSize = byteBuf.readShortLE().toInt() and 0xFFFF - HEADER_SIZE
-        val client = ctx.channel().attr(clientKey).get()
         val byteBuffer = ByteBuffer.allocate(byteBuf.readableBytes()).order(ByteOrder.LITTLE_ENDIAN)
         val data = ByteArray(byteBuf.readableBytes())
         byteBuf.readBytes(data)
         byteBuffer.put(data)
         byteBuffer.position(0)
-        val descrypted = client.decrypt(byteBuffer, dataSize)
+        val descrypted = ctx.getCrypt().decrypt(byteBuffer.array(), byteBuffer.position(), dataSize)
 
         if (descrypted && byteBuffer.hasRemaining()) {
             // apply limit
