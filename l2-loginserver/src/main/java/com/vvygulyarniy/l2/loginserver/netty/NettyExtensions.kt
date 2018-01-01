@@ -1,7 +1,7 @@
 package com.vvygulyarniy.l2.loginserver.netty
 
 import com.l2server.crypt.LoginCrypt
-import com.vvygulyarniy.l2.loginserver.model.data.SessionId
+import com.l2server.network.communication.SessionId
 import io.netty.channel.ChannelHandlerContext
 import io.netty.util.AttributeKey
 

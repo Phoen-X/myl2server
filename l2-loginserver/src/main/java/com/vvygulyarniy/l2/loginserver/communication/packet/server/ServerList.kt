@@ -19,11 +19,11 @@
 package com.vvygulyarniy.l2.loginserver.communication.packet.server
 
 
-import com.vvygulyarniy.l2.loginserver.netty.login.ServerStatus
+import com.vvygulyarniy.l2.loginserver.server.ServerStatus
 import java.nio.ByteBuffer
 
 /**
- * ServerList
+ * GameServersManager
  *
  *
  * <pre>

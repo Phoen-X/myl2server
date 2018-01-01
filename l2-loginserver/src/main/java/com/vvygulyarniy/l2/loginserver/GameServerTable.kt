@@ -19,7 +19,7 @@
 package com.vvygulyarniy.l2.loginserver
 
 
-import com.vvygulyarniy.l2.loginserver.netty.login.ServerStatus
+import com.vvygulyarniy.l2.loginserver.server.ServerStatus
 import com.vvygulyarniy.l2.loginserver.util.Rnd
 import java.math.BigInteger
 import java.security.KeyPair

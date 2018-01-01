@@ -19,19 +19,10 @@
 package com.vvygulyarniy.l2.loginserver
 
 
-import com.vvygulyarniy.l2.loginserver.communication.NettyClientCommunicator
-import com.vvygulyarniy.l2.loginserver.communication.NettyCommunicationManager
-import com.vvygulyarniy.l2.loginserver.logic.LoginPacketsProcessor
-import com.vvygulyarniy.l2.loginserver.netty.LoginServerClientPacketDecoder
-import com.vvygulyarniy.l2.loginserver.netty.LoginServerPacketEncoder
-import com.vvygulyarniy.l2.loginserver.netty.NettyLoginServerHandler
+import com.vvygulyarniy.l2.loginserver.config.NettyConfig
 import io.netty.bootstrap.ServerBootstrap
-import io.netty.channel.ChannelInitializer
-import io.netty.channel.ChannelOption
-import io.netty.channel.nio.NioEventLoopGroup
-import io.netty.channel.socket.SocketChannel
-import io.netty.channel.socket.nio.NioServerSocketChannel
 import lombok.extern.slf4j.Slf4j
+import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 /**
  * @author KenM
@@ -52,38 +43,41 @@ class L2LoginServer private constructor() {
 
     @Throws(InterruptedException::class)
     private fun startNettyHandler() {
-        val bossGroup = NioEventLoopGroup() // (1)
-        val workerGroup = NioEventLoopGroup()
+        val server = AnnotationConfigApplicationContext(NettyConfig::class.java)
+                .getBean(ServerBootstrap::class.java)
+        println(server)
+        /* val bossGroup = NioEventLoopGroup() // (1)
+         val workerGroup = NioEventLoopGroup()
 
-        val communicationManager = NettyCommunicationManager({ ctx -> NettyClientCommunicator(ctx) })
-        val packetProcessor = LoginPacketsProcessor(communicationManager)
+         val communicationManager = NettyCommunicationManager({ ctx -> NettyClientCommunicator(ctx) })
+         val packetProcessor = LoginPacketsProcessor(communicationManager)
 
-        try {
-            val b = ServerBootstrap() // (2)
-            b.group(bossGroup, workerGroup)
-                    .channel(NioServerSocketChannel::class.java) // (3)
-                    .childHandler(object : ChannelInitializer<SocketChannel>() { // (4)
-                        @Throws(Exception::class)
-                        public override fun initChannel(ch: SocketChannel) {
-                            ch.pipeline().addLast(LoginServerClientPacketDecoder(),
-                                                  LoginServerPacketEncoder(),
-                                                  NettyLoginServerHandler(communicationManager, packetProcessor))
-                        }
-                    })
-                    .option(ChannelOption.SO_BACKLOG, 128)          // (5)
-                    .childOption(ChannelOption.SO_KEEPALIVE, true) // (6)
+         try {
+             val b = ServerBootstrap() // (2)
+             b.group(bossGroup, workerGroup)
+                     .channel(NioServerSocketChannel::class.java) // (3)
+                     .childHandler(object : ChannelInitializer<SocketChannel>() { // (4)
+                         @Throws(Exception::class)
+                         public override fun initChannel(ch: SocketChannel) {
+                             ch.pipeline().addLast(LoginServerClientPacketDecoder(),
+                                                   LoginServerPacketEncoder(),
+                                                   NettyLoginServerHandler(communicationManager, packetProcessor))
+                         }
+                     })
+                     .option(ChannelOption.SO_BACKLOG, 128)          // (5)
+                     .childOption(ChannelOption.SO_KEEPALIVE, true) // (6)
 
-            // Bind and start to accept incoming connections.
-            val f = b.bind(LOGIN_SERVER_PORT).sync() // (7)
+             // Bind and start to accept incoming connections.
+             val f = b.bind(LOGIN_SERVER_PORT).sync() // (7)
 
-            // Wait until the server socket is closed.
-            // In this example, this does not happen, but you can do that to gracefully
-            // shut down your server.
-            f.channel().closeFuture().sync()
-        } finally {
-            workerGroup.shutdownGracefully()
-            bossGroup.shutdownGracefully()
-        }
+             // Wait until the server socket is closed.
+             // In this example, this does not happen, but you can do that to gracefully
+             // shut down your server.
+             f.channel().closeFuture().sync()
+         } finally {
+             workerGroup.shutdownGracefully()
+             bossGroup.shutdownGracefully()
+         }*/
     }
 
     companion object {

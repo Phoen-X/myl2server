@@ -19,13 +19,13 @@
 package com.vvygulyarniy.l2.loginserver.communication.packet.client
 
 
-import com.l2server.network.ReceivablePacket
+import com.l2server.network.ClientPacket
 import java.nio.ByteBuffer
 
 /**
  * @author KenM
  */
-abstract class L2LoginClientPacket(buffer: ByteBuffer) : ReceivablePacket(buffer) {
+abstract class L2LoginClientPacket(buffer: ByteBuffer) : ClientPacket(buffer) {
     override fun read(): Boolean {
         try {
             return readImpl()

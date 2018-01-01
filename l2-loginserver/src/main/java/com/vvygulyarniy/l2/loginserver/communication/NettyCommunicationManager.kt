@@ -1,26 +1,28 @@
 package com.vvygulyarniy.l2.loginserver.communication
 
-import com.vvygulyarniy.l2.loginserver.communication.packet.server.L2LoginServerPacket
-import com.vvygulyarniy.l2.loginserver.model.data.SessionId
-import io.netty.channel.ChannelHandlerContext
-import java.util.concurrent.atomic.AtomicInteger
+import com.google.common.eventbus.EventBus
+import com.l2server.network.ServerPacket
+import com.l2server.network.communication.ClientCommunicator
+import com.l2server.network.communication.SessionId
+import org.springframework.stereotype.Component
 
-
-class NettyCommunicationManager(private val communicatorFactory: (ChannelHandlerContext) -> ClientCommunicator) : CommunicationManager<ChannelHandlerContext> {
-    private val lastSessionId = AtomicInteger(0)
+@Component
+class CommunicationManager(eventBus: EventBus) {
     private val communicators = hashMapOf<SessionId, ClientCommunicator>()
 
-    override fun sendPacket(session: SessionId, packet: L2LoginServerPacket) {
+    init {
+        eventBus.register(this)
+    }
+
+    fun sendPacket(session: SessionId, packet: ServerPacket) {
         getCommunicator(session).send(packet)
     }
 
-    override fun newChannel(context: ChannelHandlerContext): SessionId {
-        val sessionId = SessionId(lastSessionId.incrementAndGet())
-        communicators.put(sessionId, communicatorFactory.invoke(context))
-        return sessionId
+    fun newChannel(sessionId: SessionId, communicator: ClientCommunicator) {
+        communicators.put(sessionId, communicator)
     }
 
-    override fun closeChannel(session: SessionId) {
+    fun closeChannel(session: SessionId) {
         getCommunicator(session).disconnect()
     }
 

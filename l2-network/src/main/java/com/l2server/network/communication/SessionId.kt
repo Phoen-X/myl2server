@@ -1,4 +1,4 @@
-package com.vvygulyarniy.l2.loginserver.model.data
+package com.l2server.network.communication
 
 
 data class SessionId(private val id: Int) {

@@ -84,7 +84,7 @@ class RequestAuthLogin(buffer: ByteBuffer) : L2LoginClientPacket(buffer) {
                 client.setAccount(info.getLogin());
                 client.setState(L2LoginClient.LoginClientState.AUTHED_LOGIN);
                 client.setSessionKey(lc.assignSessionKeyToClient(info.getLogin(), client));
-                getClient().sendPacket(new ServerList(getClient()));
+                getClient().sendPacket(new GameServersManager(getClient()));
                 break;
             case INVALID_PASSWORD:
                 client.close(LoginFail.LoginFailReason.REASON_USER_OR_PASS_WRONG);

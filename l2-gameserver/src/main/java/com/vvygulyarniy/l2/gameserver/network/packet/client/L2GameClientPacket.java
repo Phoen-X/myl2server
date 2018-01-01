@@ -18,7 +18,7 @@
  */
 package com.vvygulyarniy.l2.gameserver.network.packet.client;
 
-import com.l2server.network.ReceivablePacket;
+import com.l2server.network.ClientPacket;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.ByteBuffer;
@@ -28,7 +28,7 @@ import java.nio.ByteBuffer;
  *
  * @author KenM
  */
-public abstract class L2GameClientPacket extends ReceivablePacket implements L2ProcessibleGamePacket {
+public abstract class L2GameClientPacket extends ClientPacket implements L2ProcessibleGamePacket {
 
 
     public L2GameClientPacket(@NotNull ByteBuffer buffer) {

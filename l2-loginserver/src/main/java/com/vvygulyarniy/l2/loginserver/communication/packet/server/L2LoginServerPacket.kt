@@ -19,7 +19,7 @@
 package com.vvygulyarniy.l2.loginserver.communication.packet.server
 
 
-import com.l2server.network.SendablePacket
+import com.l2server.network.ServerPacket
 
 
-abstract class L2LoginServerPacket : SendablePacket()
+abstract class L2LoginServerPacket : ServerPacket()

@@ -1,11 +1,11 @@
-package com.vvygulyarniy.l2.loginserver.communication
+package com.l2server.network.communication
 
-import com.vvygulyarniy.l2.loginserver.communication.packet.server.L2LoginServerPacket
+import com.l2server.network.ServerPacket
 import io.netty.channel.ChannelHandlerContext
 
 
 class NettyClientCommunicator(private val nettyContext: ChannelHandlerContext) : ClientCommunicator {
-    override fun send(packet: L2LoginServerPacket) {
+    override fun send(packet: ServerPacket) {
         nettyContext.channel().writeAndFlush(packet)
     }
 

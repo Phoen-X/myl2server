@@ -18,14 +18,14 @@
  */
 package com.vvygulyarniy.l2.gameserver.network.packet.server;
 
-import com.l2server.network.SendablePacket;
+import com.l2server.network.ServerPacket;
 
 import java.nio.ByteBuffer;
 
 /**
  * @author KenM
  */
-public abstract class L2GameServerPacket extends SendablePacket {
+public abstract class L2GameServerPacket extends ServerPacket {
     private boolean _invisible = false;
 
 

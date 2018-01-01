@@ -10,7 +10,6 @@ import kotlin.experimental.and
 
 class LoginServerClientPacketDecoder : ByteToMessageDecoder() {
 
-
     @Throws(Exception::class)
     override fun decode(ctx: ChannelHandlerContext, byteBuf: ByteBuf, list: MutableList<Any>) {
         byteBuf.markReaderIndex()
@@ -20,9 +19,9 @@ class LoginServerClientPacketDecoder : ByteToMessageDecoder() {
         byteBuf.readBytes(data)
         byteBuffer.put(data)
         byteBuffer.position(0)
-        val descrypted = ctx.getCrypt().decrypt(byteBuffer.array(), byteBuffer.position(), dataSize)
+        val decrypted = ctx.getCrypt().decrypt(byteBuffer.array(), byteBuffer.position(), dataSize)
 
-        if (descrypted && byteBuffer.hasRemaining()) {
+        if (decrypted && byteBuffer.hasRemaining()) {
             // apply limit
             val limit = byteBuffer.limit()
             byteBuf.capacity(byteBuffer.position() + dataSize)

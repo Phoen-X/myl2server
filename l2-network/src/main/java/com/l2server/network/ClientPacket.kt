@@ -6,7 +6,7 @@ import kotlin.experimental.and
 /**
  * @author KenM
  */
-abstract class ReceivablePacket protected constructor(buffer: ByteBuffer) : AbstractPacket(buffer) {
+abstract class ClientPacket protected constructor(buffer: ByteBuffer) : AbstractPacket(buffer) {
     private var _sbuf: NioNetStringBuffer = NioNetStringBuffer(64 * 128)
 
     abstract fun read(): Boolean

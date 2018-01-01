@@ -58,7 +58,7 @@ class RequestServerList(buffer: ByteBuffer) : L2LoginClientPacket(buffer) {
     /*@Override
     public void run() {
         if (getClient().getSessionKey().checkLoginPair(_skey1, _skey2)) {
-            getClient().sendPacket(new ServerList(getClient()));
+            getClient().sendPacket(new GameServersManager(getClient()));
         } else {
             getClient().close(LoginFail.LoginFailReason.REASON_ACCESS_FAILED);
         }
