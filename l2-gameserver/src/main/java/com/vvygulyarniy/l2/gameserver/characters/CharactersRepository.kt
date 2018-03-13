@@ -1,6 +1,5 @@
-package com.vvygulyarniy.l2.gameserver.account
+package com.vvygulyarniy.l2.gameserver.characters
 
-import com.vvygulyarniy.l2.gameserver.characters.Character
 import com.vvygulyarniy.l2.gameserver.domain.AccountId
 import com.vvygulyarniy.l2.gameserver.domain.CharacterId
 import com.vvygulyarniy.l2.gameserver.domain.ClassId

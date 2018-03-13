@@ -3,9 +3,8 @@ package com.vvygulyarniy.l2.gameserver.config;
 import com.google.common.eventbus.EventBus;
 import com.vvygulyarniy.l2.gameserver.account.AccountPlacementService;
 import com.vvygulyarniy.l2.gameserver.account.AccountRepository;
-import com.vvygulyarniy.l2.gameserver.account.CharactersRepository;
 import com.vvygulyarniy.l2.gameserver.auth.AuthManager;
-import com.vvygulyarniy.l2.gameserver.characters.CharacterInfoManager;
+import com.vvygulyarniy.l2.gameserver.characters.CharactersRepository;
 import com.vvygulyarniy.l2.gameserver.communication.CommunicationManager;
 import com.vvygulyarniy.l2.gameserver.crypt.CryptService;
 import com.vvygulyarniy.l2.gameserver.events.GameEventBus;
@@ -193,8 +192,14 @@ public class SpringConfig {
     }
 
     @Bean
-    public LobbyManager lobbyManager(UserEventBus userEventBus, GameEventBus gameEventBus) {
-        return new LobbyManager(userEventBus, gameEventBus);
+    public LobbyManager lobbyManager(UserEventBus userEventBus,
+                                     GameEventBus gameEventBus,
+                                     CharactersRepository charsRepo,
+                                     AccountRepository accountsRepo, CommunicationManager communicationManager) {
+        return new LobbyManager(charsRepo,
+                                accountsRepo,
+                                communicationManager,
+                                userEventBus, gameEventBus);
     }
 
     @Bean
@@ -245,10 +250,4 @@ public class SpringConfig {
         return new CharactersRepository();
     }
 
-    @Bean
-    public CharacterInfoManager characterInfoManager(CharactersRepository charRepo,
-                                                     AccountRepository accountRepo,
-                                                     CommunicationManager communicationManager, GameEventBus eventBus) {
-        return new CharacterInfoManager(charRepo, accountRepo, communicationManager, eventBus);
-    }
 }
