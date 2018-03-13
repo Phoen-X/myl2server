@@ -2,6 +2,11 @@ package com.vvygulyarniy.l2.gameserver.config;
 
 import com.google.common.eventbus.EventBus;
 import com.vvygulyarniy.l2.gameserver.account.AccountPlacementService;
+import com.vvygulyarniy.l2.gameserver.account.AccountRepository;
+import com.vvygulyarniy.l2.gameserver.account.CharactersRepository;
+import com.vvygulyarniy.l2.gameserver.auth.AuthManager;
+import com.vvygulyarniy.l2.gameserver.characters.CharacterInfoManager;
+import com.vvygulyarniy.l2.gameserver.communication.CommunicationManager;
 import com.vvygulyarniy.l2.gameserver.crypt.CryptService;
 import com.vvygulyarniy.l2.gameserver.events.GameEventBus;
 import com.vvygulyarniy.l2.gameserver.events.UserEventBus;
@@ -15,6 +20,7 @@ import com.vvygulyarniy.l2.gameserver.network.packet.coder.L2ClientPacketDecoder
 import com.vvygulyarniy.l2.gameserver.network.packet.coder.L2ServerPacketEncoder;
 import com.vvygulyarniy.l2.gameserver.service.characters.CharacterRepository;
 import com.vvygulyarniy.l2.gameserver.service.characters.InMemoryCharacterRepository;
+import com.vvygulyarniy.l2.gameserver.session.HandshakeHandler;
 import com.vvygulyarniy.l2.gameserver.session.SessionManager;
 import com.vvygulyarniy.l2.gameserver.world.L2World;
 import com.vvygulyarniy.l2.gameserver.world.castle.CastleRegistry;
@@ -132,7 +138,7 @@ public class SpringConfig {
                                        CryptService cryptService,
                                        AccountPlacementService placementService,
                                        final PacketToEventMapper packetToEventMapper,
-                                       final UserEventBus eventBus) {
+                                       final UserEventBus eventBus, final CommunicationManager communicationManager) {
         ServerBootstrap b = new ServerBootstrap(); // (2)
         b.group(bossGroup, workerGroup)
          .channel(NioServerSocketChannel.class) // (3)
@@ -140,8 +146,9 @@ public class SpringConfig {
              @Override
              public void initChannel(SocketChannel ch) throws Exception {
                  ch.pipeline().addLast(new L2ClientPacketDecoder(cryptService, placementService, sessionManager),
-                                       new L2ServerPacketEncoder(),
-                                       new NettyHandler(sessionManager, packetToEventMapper, cryptService, eventBus));
+                                       new L2ServerPacketEncoder(cryptService),
+                                       new NettyHandler(sessionManager, packetToEventMapper, cryptService, eventBus,
+                                                        communicationManager));
              }
          })
          .option(ChannelOption.SO_BACKLOG, 128)          // (5)
@@ -210,4 +217,38 @@ public class SpringConfig {
                                    MILLISECONDS);
     }
 
+    @Bean
+    public HandshakeHandler handshakeHandler(UserEventBus eventBus,
+                                             CommunicationManager communicator, CryptService cryptService) {
+        return new HandshakeHandler(eventBus, communicator, cryptService);
+    }
+
+    @Bean
+    public CommunicationManager communicationManager() {
+        return new CommunicationManager();
+    }
+
+    @Bean
+    public AuthManager authManager(SessionManager sessionManager,
+                                   AccountRepository accountRepo,
+                                   UserEventBus eventBus) {
+        return new AuthManager(sessionManager, accountRepo, eventBus);
+    }
+
+    @Bean
+    public AccountRepository accountRepository() {
+        return new AccountRepository();
+    }
+
+    @Bean
+    public CharactersRepository characterRepository() {
+        return new CharactersRepository();
+    }
+
+    @Bean
+    public CharacterInfoManager characterInfoManager(CharactersRepository charRepo,
+                                                     AccountRepository accountRepo,
+                                                     CommunicationManager communicationManager, GameEventBus eventBus) {
+        return new CharacterInfoManager(charRepo, accountRepo, communicationManager, eventBus);
+    }
 }

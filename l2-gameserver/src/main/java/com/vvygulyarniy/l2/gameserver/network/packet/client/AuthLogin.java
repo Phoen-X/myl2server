@@ -38,6 +38,15 @@ public final class AuthLogin extends L2GameClientPacket {
 
     // loginName + keys must match what the loginserver used.
     private String loginName;
+
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public int get_playKey1() {
+        return _playKey1;
+    }
+
     /*
      * private final long _key1; private final long _key2; private final long _key3; private final long _key4;
      */

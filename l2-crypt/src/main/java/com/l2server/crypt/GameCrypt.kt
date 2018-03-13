@@ -8,10 +8,16 @@ class GameCrypt {
     private val outKey = ByteArray(16)
     private var enabled: Boolean = false
 
+    init {
+        setKey(BlowFishKeygen.randomKey)
+    }
+
     fun setKey(key: ByteArray) {
         System.arraycopy(key, 0, inKey, 0, 16)
         System.arraycopy(key, 0, outKey, 0, 16)
     }
+
+    fun getKey() = inKey
 
     fun decrypt(encoded: ByteArray, offset: Int, size: Int) {
         if (!enabled) {

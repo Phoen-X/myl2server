@@ -17,7 +17,7 @@ class LobbyManager(userEventBus: UserEventBus, private val gameEventBus: GameEve
 
         if (!accountsInLobby.contains(accountId)) {
             accountsInLobby.add(accountId)
-            gameEventBus.post(PlayerEnteredLobby(accountId))
+            gameEventBus.post(PlayerEnteredLobby(event.sessionId, accountId))
         }
     }
 
@@ -26,6 +26,6 @@ class LobbyManager(userEventBus: UserEventBus, private val gameEventBus: GameEve
         val accountId = event.accountId
 
         accountsInLobby.remove(accountId)
-        gameEventBus.post(PlayerQuitLobby(accountId))
+        gameEventBus.post(PlayerQuitLobby(event.sessionId, accountId))
     }
 }

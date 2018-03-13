@@ -32,4 +32,6 @@ class CryptService {
 
         return false
     }
+
+    fun getKey(sessionId: SessionId) = sessionCrypts[sessionId]?.getKey()
 }

@@ -178,9 +178,9 @@ public class L2ClientPacketProcessorImpl implements L2ClientPacketProcessor {
                                        .map(L2Player::getId)
                                        .min(Integer::compareTo)
                                        .orElse(-1);
-        return new CharSelectionInfo(client.getAccountName(),
+        return null; /* new CharSelectionInfo(client.getAccountName(),
                                      client.getSessionId().getPlayOkID1(),
                                      accountChars,
-                                     activeCharId);
+                                     activeCharId);*/
     }
 }

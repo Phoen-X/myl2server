@@ -8,6 +8,8 @@ sealed class UserEvent(open val sessionId: SessionId)
 
 data class UserConnected(override val sessionId: SessionId) : UserEvent(sessionId)
 
+data class AuthRequested(override val sessionId: SessionId, val login: String, val playKey1: Int) : UserEvent(sessionId)
+
 data class LobbyEnterRequested(override val sessionId: SessionId, val accountId: AccountId) : UserEvent(sessionId)
 
 data class LobbyQuitRequested(val accountId: AccountId, override val sessionId: SessionId) : UserEvent(sessionId)

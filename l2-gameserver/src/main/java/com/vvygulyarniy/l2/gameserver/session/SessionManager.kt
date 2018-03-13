@@ -14,6 +14,10 @@ class SessionManager(private val sessionIdFactory: SessionIdFactory) {
         return session.sessionId
     }
 
+    fun closeSession(sessionId: SessionId) {
+        sessions.remove(sessionId)
+    }
+
     private fun buildNewSession(): GameSession {
         val sessionId = sessionIdFactory.nextValue()
         return GameSession(sessionId, LocalDateTime.now())
