@@ -1,8 +1,13 @@
 package com.vvygulyarniy.l2.gameserver.network.packet.coder;
 
-import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
-import com.vvygulyarniy.l2.gameserver.network.L2GameClient.GameClientState;
+import com.l2server.network.communication.SessionId;
+import com.vvygulyarniy.l2.gameserver.account.AccountPlacement;
+import com.vvygulyarniy.l2.gameserver.account.AccountPlacementService;
+import com.vvygulyarniy.l2.gameserver.crypt.CryptService;
+import com.vvygulyarniy.l2.gameserver.domain.AccountId;
 import com.vvygulyarniy.l2.gameserver.network.packet.client.*;
+import com.vvygulyarniy.l2.gameserver.session.GameSession;
+import com.vvygulyarniy.l2.gameserver.session.SessionManager;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
@@ -19,11 +24,24 @@ import java.util.List;
  */
 @Slf4j
 public class L2ClientPacketDecoder extends ByteToMessageDecoder {
-    private static final AttributeKey<L2GameClient> gameClientKey = AttributeKey.valueOf("l2GameClient");
+    private static final AttributeKey<SessionId> gameSessionKey = AttributeKey.valueOf("gameSession");
+    private final CryptService cryptService;
+    private final AccountPlacementService placementService;
+    private final SessionManager sessionManager;
+
+    public L2ClientPacketDecoder(CryptService cryptService,
+                                 AccountPlacementService placementService,
+                                 SessionManager sessionManager) {
+        this.cryptService = cryptService;
+        this.placementService = placementService;
+        this.sessionManager = sessionManager;
+    }
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-        L2GameClient client = ctx.channel().attr(gameClientKey).get();
+        SessionId sessionId = ctx.channel().attr(gameSessionKey).get();
+        GameSession session = sessionManager.getSession(sessionId);
+
         in.markReaderIndex();
         int dataSize = in.readShortLE() & 0xFFFF - 2;
         ByteBuffer byteBuffer = ByteBuffer.allocate(in.readableBytes() + 256).order(ByteOrder.LITTLE_ENDIAN);
@@ -32,13 +50,13 @@ public class L2ClientPacketDecoder extends ByteToMessageDecoder {
         byteBuffer.put(data);
         byteBuffer.position(0);
         log.debug("Decoding packet: {}", Arrays.toString(data));
-        final boolean ret = client.decrypt(byteBuffer, data.length);
+        final boolean ret = cryptService.decrypt(session.getSessionId(), byteBuffer, data.length);
         log.debug("Decoded packet: {}", Arrays.toString(byteBuffer.array()));
         if (ret && byteBuffer.hasRemaining()) {
             // apply limit
             final int limit = byteBuffer.limit();
             byteBuffer.limit(byteBuffer.position() + dataSize);
-            final L2GameClientPacket cp = createPacket(byteBuffer, client);
+            final L2GameClientPacket cp = createPacket(byteBuffer, session.getAccountId());
             if (cp != null) {
                 if (cp.read()) {
                     out.add(cp);
@@ -51,12 +69,12 @@ public class L2ClientPacketDecoder extends ByteToMessageDecoder {
         }
     }
 
-    public L2GameClientPacket createPacket(ByteBuffer buf, L2GameClient client) {
+    public L2GameClientPacket createPacket(ByteBuffer buf, AccountId accountId) {
         int opCode = buf.get() & 0xFF;
 
-        GameClientState state = client.getState();
+        AccountPlacement placement = placementService.getCurrentPlacement(accountId);
 
-        switch (state) {
+        switch (placement) {
             case CONNECTED:
                 switch (opCode) {
                     case 0x0e:
@@ -68,7 +86,7 @@ public class L2ClientPacketDecoder extends ByteToMessageDecoder {
                         break;
                 }
                 break;
-            case AUTHED:
+            case IN_LOBBY:
                 switch (opCode) {
                     case 0x00:
                         return new Logout(buf);
@@ -87,7 +105,7 @@ public class L2ClientPacketDecoder extends ByteToMessageDecoder {
                         if (buf.remaining() >= 2) {
                             id2 = buf.getShort() & 0xffff;
                         } else {
-                            log.warn("Client: {} sent a 0xd0 without the second opcode.", client);
+                            log.warn("Client: {} sent a 0xd0 without the second opcode.", accountId);
                             break;
                         }
 
@@ -249,7 +267,7 @@ public class L2ClientPacketDecoder extends ByteToMessageDecoder {
                         if (buf.remaining() >= 2) {
                             id_2 = buf.getShort() & 0xffff;
                         } else {
-                            log.warn("Client: {} sent a 0x4a without the second opcode.", client);
+                            log.warn("Client: {} sent a 0x4a without the second opcode.", accountId);
 
                             break;
                         }
@@ -512,7 +530,7 @@ public class L2ClientPacketDecoder extends ByteToMessageDecoder {
                         if (buf.remaining() >= 2) {
                             id2 = buf.getShort() & 0xffff;
                         } else {
-                            log.warn("Client: {} sent a 0xd0 without the second opcode.", client);
+                            log.warn("Client: {} sent a 0xd0 without the second opcode.", accountId);
                             break;
                         }
 
@@ -696,7 +714,7 @@ public class L2ClientPacketDecoder extends ByteToMessageDecoder {
                                 if (buf.remaining() >= 4) {
                                     id3 = buf.getInt();
                                 } else {
-                                    log.warn("Client: {} sent a 0xd0:0x51 without the third opcode.", client);
+                                    log.warn("Client: {} sent a 0xd0:0x51 without the third opcode.", accountId);
                                     break;
                                 }
                                 switch (id3) {

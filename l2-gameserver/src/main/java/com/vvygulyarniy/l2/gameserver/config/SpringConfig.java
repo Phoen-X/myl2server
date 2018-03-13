@@ -1,13 +1,21 @@
 package com.vvygulyarniy.l2.gameserver.config;
 
 import com.google.common.eventbus.EventBus;
+import com.vvygulyarniy.l2.gameserver.account.AccountPlacementService;
+import com.vvygulyarniy.l2.gameserver.crypt.CryptService;
+import com.vvygulyarniy.l2.gameserver.events.GameEventBus;
+import com.vvygulyarniy.l2.gameserver.events.UserEventBus;
+import com.vvygulyarniy.l2.gameserver.lobby.LobbyManager;
 import com.vvygulyarniy.l2.gameserver.network.handler.NettyHandler;
+import com.vvygulyarniy.l2.gameserver.network.handler.PacketToEventMapper;
+import com.vvygulyarniy.l2.gameserver.network.handler.SessionIdFactory;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessorImpl;
 import com.vvygulyarniy.l2.gameserver.network.packet.coder.L2ClientPacketDecoder;
 import com.vvygulyarniy.l2.gameserver.network.packet.coder.L2ServerPacketEncoder;
 import com.vvygulyarniy.l2.gameserver.service.characters.CharacterRepository;
 import com.vvygulyarniy.l2.gameserver.service.characters.InMemoryCharacterRepository;
+import com.vvygulyarniy.l2.gameserver.session.SessionManager;
 import com.vvygulyarniy.l2.gameserver.world.L2World;
 import com.vvygulyarniy.l2.gameserver.world.castle.CastleRegistry;
 import com.vvygulyarniy.l2.gameserver.world.castle.HardCodedCastleRegistry;
@@ -120,22 +128,66 @@ public class SpringConfig {
     @Bean
     public ServerBootstrap nettyServer(@Qualifier("bossGroup") EventLoopGroup bossGroup,
                                        @Qualifier("workerGroup") EventLoopGroup workerGroup,
-                                       final L2ClientPacketProcessor packetProcessor) {
+                                       final SessionManager sessionManager,
+                                       CryptService cryptService,
+                                       AccountPlacementService placementService,
+                                       final PacketToEventMapper packetToEventMapper,
+                                       final UserEventBus eventBus) {
         ServerBootstrap b = new ServerBootstrap(); // (2)
         b.group(bossGroup, workerGroup)
          .channel(NioServerSocketChannel.class) // (3)
          .childHandler(new ChannelInitializer<SocketChannel>() { // (4)
              @Override
              public void initChannel(SocketChannel ch) throws Exception {
-                 ch.pipeline().addLast(new L2ClientPacketDecoder(),
+                 ch.pipeline().addLast(new L2ClientPacketDecoder(cryptService, placementService, sessionManager),
                                        new L2ServerPacketEncoder(),
-                                       new NettyHandler(packetProcessor));
+                                       new NettyHandler(sessionManager, packetToEventMapper, cryptService, eventBus));
              }
          })
          .option(ChannelOption.SO_BACKLOG, 128)          // (5)
          .childOption(ChannelOption.SO_KEEPALIVE, true); // (6)
 
         return b;
+    }
+
+    @Bean
+    public SessionIdFactory sessionIdFactory() {
+        return new SessionIdFactory();
+    }
+
+    @Bean
+    public SessionManager sessionManager(SessionIdFactory sessionIdFactory) {
+        return new SessionManager(sessionIdFactory);
+    }
+
+    @Bean
+    public CryptService cryptService() {
+        return new CryptService();
+    }
+
+    @Bean
+    public AccountPlacementService placementService(GameEventBus eventBus) {
+        return new AccountPlacementService(eventBus);
+    }
+
+    @Bean
+    public PacketToEventMapper packetToEventMapper() {
+        return new PacketToEventMapper();
+    }
+
+    @Bean
+    public UserEventBus userEventBus() {
+        return new UserEventBus();
+    }
+
+    @Bean
+    public GameEventBus gameEventBus() {
+        return new GameEventBus();
+    }
+
+    @Bean
+    public LobbyManager lobbyManager(UserEventBus userEventBus, GameEventBus gameEventBus) {
+        return new LobbyManager(userEventBus, gameEventBus);
     }
 
     @Bean

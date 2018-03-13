@@ -1,10 +1,10 @@
 package com.vvygulyarniy.l2.gameserver.world.character;
 
+import com.vvygulyarniy.l2.gameserver.domain.ClassId;
 import com.vvygulyarniy.l2.gameserver.network.GameClientConnection;
 import com.vvygulyarniy.l2.gameserver.network.packet.server.L2GameServerPacket;
 import com.vvygulyarniy.l2.gameserver.world.character.gear.PaperDoll;
 import com.vvygulyarniy.l2.gameserver.world.character.info.CharacterAppearance;
-import com.vvygulyarniy.l2.gameserver.world.character.info.ClassId;
 import com.vvygulyarniy.l2.gameserver.world.character.info.stat.BasicStatSet;
 import lombok.Getter;
 import lombok.Setter;

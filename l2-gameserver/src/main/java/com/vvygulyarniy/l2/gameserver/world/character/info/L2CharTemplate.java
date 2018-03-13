@@ -1,5 +1,6 @@
 package com.vvygulyarniy.l2.gameserver.world.character.info;
 
+import com.vvygulyarniy.l2.gameserver.domain.ClassId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

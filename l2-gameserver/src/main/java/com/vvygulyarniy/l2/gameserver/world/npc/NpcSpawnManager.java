@@ -30,7 +30,8 @@ public class NpcSpawnManager {
                            TimeUnit timeUnit) {
         this.eventBus = eventBus;
         this.repo = repo;
-        scheduler.scheduleAtFixedRate(this::spawnNpcs, 30000, tickDelay, timeUnit);
+        //TODO uncomment it back when server is up and running
+        //scheduler.scheduleAtFixedRate(this::spawnNpcs, 30000, tickDelay, timeUnit);
     }
 
     private void spawnNpcs() {

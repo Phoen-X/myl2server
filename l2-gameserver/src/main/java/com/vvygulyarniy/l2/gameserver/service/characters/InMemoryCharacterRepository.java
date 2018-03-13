@@ -1,12 +1,12 @@
 package com.vvygulyarniy.l2.gameserver.service.characters;
 
 import com.vvygulyarniy.l2.domain.geo.Position;
+import com.vvygulyarniy.l2.gameserver.domain.ClassId;
 import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.server.CharCreateFail;
 import com.vvygulyarniy.l2.gameserver.world.character.L2Character;
 import com.vvygulyarniy.l2.gameserver.world.character.L2Player;
 import com.vvygulyarniy.l2.gameserver.world.character.info.CharacterAppearance;
-import com.vvygulyarniy.l2.gameserver.world.character.info.ClassId;
 import com.vvygulyarniy.l2.gameserver.world.item.L2GenericGearItem;
 import com.vvygulyarniy.l2.gameserver.world.item.L2Weapon;
 import lombok.extern.slf4j.Slf4j;

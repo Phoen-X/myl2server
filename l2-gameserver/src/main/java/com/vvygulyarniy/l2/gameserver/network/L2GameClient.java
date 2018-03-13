@@ -155,7 +155,7 @@ public final class L2GameClient {
      */
     public enum GameClientState {
         CONNECTED, // Client has just connected .
-        AUTHED, // Client has authed but doesn't has character attached to it yet.
+        IN_LOBBY, // Client has authed but doesn't has character attached to it yet.
         IN_GAME // Client has selected a char and is in game.
     }
 }

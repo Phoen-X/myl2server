@@ -121,7 +121,7 @@ public final class RequestRestart extends L2GameClientPacket {
         AntiFeedManager.getInstance().onDisconnect(client);
 
         // return the client to the authed status
-        client.setState(GameClientState.AUTHED);
+        client.setState(GameClientState.IN_LOBBY);
 
         send(RestartResponse.valueOf(true));
 

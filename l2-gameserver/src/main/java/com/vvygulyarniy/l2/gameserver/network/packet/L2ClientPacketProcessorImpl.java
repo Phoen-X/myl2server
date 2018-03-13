@@ -3,6 +3,7 @@ package com.vvygulyarniy.l2.gameserver.network.packet;
 
 import com.google.common.eventbus.EventBus;
 import com.l2server.network.SessionKey;
+import com.vvygulyarniy.l2.gameserver.domain.ClassId;
 import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.NettyClientConnection;
 import com.vvygulyarniy.l2.gameserver.network.packet.client.*;
@@ -23,10 +24,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.vvygulyarniy.l2.domain.sevensigns.SevenSignsWinner.NONE;
-import static com.vvygulyarniy.l2.gameserver.network.L2GameClient.GameClientState.AUTHED;
 import static com.vvygulyarniy.l2.gameserver.network.L2GameClient.GameClientState.IN_GAME;
-import static com.vvygulyarniy.l2.gameserver.world.character.info.ClassId.getClassId;
-import static java.util.Comparator.comparing;
+import static com.vvygulyarniy.l2.gameserver.network.L2GameClient.GameClientState.IN_LOBBY;
 
 @Slf4j
 public class L2ClientPacketProcessorImpl implements L2ClientPacketProcessor {
@@ -62,7 +61,7 @@ public class L2ClientPacketProcessorImpl implements L2ClientPacketProcessor {
                                         packet.get_playKey1(),
                                         packet.get_playKey2());
         client.setSessionId(key);
-        client.setState(AUTHED);
+        client.setState(IN_LOBBY);
         client.setAccountName(packet.getLoginName());
         client.setAccountCharacters(characterRepository.findByAccount(client.getAccountName()));
         CharSelectionInfo charList = buildCharSelectionInfo(client);
@@ -83,7 +82,7 @@ public class L2ClientPacketProcessorImpl implements L2ClientPacketProcessor {
                                                                  packet.getFace());
         try {
             L2Player character = characterRepository.createCharacter(client,
-                                                                     getClassId(packet.getClassId()),
+                                                                     ClassId.getClassId(packet.getClassId()),
                                                                      packet.getName(),
                                                                      appearance);
             client.addCharacter(character);
@@ -176,9 +175,8 @@ public class L2ClientPacketProcessorImpl implements L2ClientPacketProcessor {
     private CharSelectionInfo buildCharSelectionInfo(L2GameClient client) {
         List<L2Player> accountChars = client.getAccountCharacters();
         int activeCharId = accountChars.stream()
-                                       .sorted(comparing(L2Player::getId))
-                                       .findFirst()
                                        .map(L2Player::getId)
+                                       .min(Integer::compareTo)
                                        .orElse(-1);
         return new CharSelectionInfo(client.getAccountName(),
                                      client.getSessionId().getPlayOkID1(),

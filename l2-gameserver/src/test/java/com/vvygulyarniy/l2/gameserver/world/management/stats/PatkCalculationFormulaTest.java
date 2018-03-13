@@ -1,8 +1,8 @@
 package com.vvygulyarniy.l2.gameserver.world.management.stats;
 
+import com.vvygulyarniy.l2.gameserver.domain.ClassId;
 import com.vvygulyarniy.l2.gameserver.world.character.L2Player;
 import com.vvygulyarniy.l2.gameserver.world.character.info.CharacterAppearance;
-import com.vvygulyarniy.l2.gameserver.world.character.info.ClassId;
 import com.vvygulyarniy.l2.gameserver.world.item.L2Weapon;
 import org.testng.annotations.Test;
 

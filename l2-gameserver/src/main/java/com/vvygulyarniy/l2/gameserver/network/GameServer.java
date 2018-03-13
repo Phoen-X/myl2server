@@ -1,15 +1,11 @@
-package com.vvygulyarniy.l2.gameserver;
+package com.vvygulyarniy.l2.gameserver.network;
 
 import com.vvygulyarniy.l2.gameserver.config.SpringConfig;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import lombok.extern.slf4j.Slf4j;
-import org.jdom2.JDOMException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 @Slf4j
 public class GameServer {
@@ -19,7 +15,7 @@ public class GameServer {
 
     }
 
-    private static void startNettyHandler() throws InterruptedException, JDOMException, IOException, URISyntaxException {
+    private static void startNettyHandler() throws InterruptedException {
         log.info("Starting game server");
         ApplicationContext ctx = new AnnotationConfigApplicationContext(SpringConfig.class);
 

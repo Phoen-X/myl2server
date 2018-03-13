@@ -2,9 +2,9 @@ package com.vvygulyarniy.l2.gameserver.world.position;
 
 import com.google.common.eventbus.EventBus;
 import com.vvygulyarniy.l2.domain.geo.Position;
+import com.vvygulyarniy.l2.gameserver.domain.ClassId;
 import com.vvygulyarniy.l2.gameserver.world.character.L2Player;
 import com.vvygulyarniy.l2.gameserver.world.character.info.CharacterAppearance;
-import com.vvygulyarniy.l2.gameserver.world.character.info.ClassId;
 import com.vvygulyarniy.l2.gameserver.world.event.MoveRequested;
 import com.vvygulyarniy.l2.gameserver.world.event.MoveStopped;
 import com.vvygulyarniy.l2.testutils.MutableGameTimeProvider;
