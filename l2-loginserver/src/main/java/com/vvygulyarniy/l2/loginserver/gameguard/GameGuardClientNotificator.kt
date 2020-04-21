@@ -17,6 +17,6 @@ class GameGuardClientNotificator(eventBus: EventBus,
 
     @Subscribe
     fun notifyGgAuthSucceeded(event: GameGuardAuthSucceeded) {
-        communicationManager.sendPacket(event.sessionId, GGAuth(event.sessionId.toInt()))
+        communicationManager.sendPacket(event.sessionId, GGAuth(event.sessionId.id))
     }
 }

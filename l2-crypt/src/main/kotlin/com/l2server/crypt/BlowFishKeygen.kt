@@ -60,4 +60,4 @@ object BlowFishKeygen {
      */
     val randomKey: ByteArray
         get() = CRYPT_KEYS[rnd.nextInt(CRYPT_KEYS_SIZE)]
-}// block instantiation
+}

@@ -21,7 +21,6 @@ package com.vvygulyarniy.l2.gameserver.network.packet.client;
 import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import lombok.ToString;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.nio.ByteBuffer;
 import java.util.logging.Logger;
@@ -305,6 +304,6 @@ public final class Say2 extends L2GameClientPacket {
 
     @Override
     public void process(L2ClientPacketProcessor processor, L2GameClient client) {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not implemented yet");
     }
 }

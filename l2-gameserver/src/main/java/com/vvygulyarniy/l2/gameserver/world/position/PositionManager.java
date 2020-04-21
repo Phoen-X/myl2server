@@ -4,6 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.vvygulyarniy.l2.domain.geo.Point;
 import com.vvygulyarniy.l2.domain.geo.Position;
+import com.vvygulyarniy.l2.gameserver.AbstractWorldProcessor;
 import com.vvygulyarniy.l2.gameserver.network.packet.server.ValidateLocation;
 import com.vvygulyarniy.l2.gameserver.world.character.L2Player;
 import com.vvygulyarniy.l2.gameserver.world.event.MoveRequested;
@@ -17,31 +18,27 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Phoen-X on 03.03.2017.
  */
 @Slf4j
-public class PositionManager {
+public class PositionManager extends AbstractWorldProcessor {
     private final GameTimeProvider gameTime;
     private final EventBus eventBus;
     private final Map<L2Player, MovingContext> movingObjects = new ConcurrentHashMap<>();
     //private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
     public PositionManager(GameTimeProvider gameTimeProvider,
-                           EventBus eventBus,
-                           ScheduledExecutorService scheduler,
-                           long tickPeriod,
-                           TimeUnit timeUnit) {
+                           EventBus eventBus) {
+        super(gameTimeProvider, "Position Manager");
         this.gameTime = gameTimeProvider;
         this.eventBus = eventBus;
         eventBus.register(this);
-        scheduler.scheduleAtFixedRate(this::updatePositions, 0, tickPeriod, timeUnit);
     }
 
-    private synchronized void updatePositions() {
+    @Override
+    public void processTick() {
         movingObjects.forEach((l2Char, moveContext) -> moveChar(l2Char, moveContext, gameTime.now()));
     }
 
@@ -58,7 +55,7 @@ public class PositionManager {
 
     private void moveChar(L2Player l2Char, MovingContext moveContext, Instant now) {
         log.info("Moving char id: {}, Moving ({}) -> ({})",
-                 new Object[]{l2Char.getId(), l2Char.getPosition(), l2Char.getMoveTarget()});
+                new Object[]{l2Char.getId(), l2Char.getPosition(), l2Char.getMoveTarget()});
         Point current = l2Char.getPosition().getPoint();
         Point target = l2Char.getMoveTarget().getPoint();
 
@@ -75,7 +72,7 @@ public class PositionManager {
 
         } else {
             Position newPosition = new Position(current.moveForwardTo(target, lengthToGo),
-                                                l2Char.getPosition().getHeading());
+                    l2Char.getPosition().getHeading());
             log.info("New position {}", newPosition);
             l2Char.setPosition(newPosition);
         }
@@ -94,9 +91,9 @@ public class PositionManager {
         } else {
             //TODO we have to make our own opinion, not to trust client side
             l2Char.setPosition(new Position(new Point(currentPoint.getX(),
-                                                      currentPoint.getY(),
-                                                      proposedPoint.getZ()),
-                                            proposedPosition.getHeading()));
+                    currentPoint.getY(),
+                    proposedPoint.getZ()),
+                    proposedPosition.getHeading()));
         }
         l2Char.send(new ValidateLocation(l2Char.getId(), l2Char.getPosition()));
     }

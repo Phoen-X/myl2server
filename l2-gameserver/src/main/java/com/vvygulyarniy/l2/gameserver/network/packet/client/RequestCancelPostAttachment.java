@@ -21,7 +21,6 @@ package com.vvygulyarniy.l2.gameserver.network.packet.client;
 import com.vvygulyarniy.l2.gameserver.network.L2GameClient;
 import com.vvygulyarniy.l2.gameserver.network.packet.L2ClientPacketProcessor;
 import org.jetbrains.annotations.NotNull;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.nio.ByteBuffer;
 
@@ -195,6 +194,6 @@ public final class RequestCancelPostAttachment extends L2GameClientPacket {
 
     @Override
     public void process(L2ClientPacketProcessor processor, L2GameClient client) {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not implemented yet");
     }
 }

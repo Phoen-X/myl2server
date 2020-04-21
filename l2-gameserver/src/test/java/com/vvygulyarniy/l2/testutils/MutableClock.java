@@ -1,6 +1,6 @@
 package com.vvygulyarniy.l2.testutils;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 
 import java.time.Clock;
 import java.time.Duration;
@@ -32,7 +32,7 @@ public class MutableClock extends Clock {
 
     @Override
     public Clock withZone(ZoneId zone) {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.vvygulyarniy.l2.testutils;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,12 +17,12 @@ public class OnDemandScheduledExecutorService implements ScheduledExecutorServic
 
     @Override
     public ScheduledFuture<?> schedule(Runnable command, long delay, TimeUnit unit) {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override
     public <V> ScheduledFuture<V> schedule(Callable<V> callable, long delay, TimeUnit unit) {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override
@@ -33,76 +33,76 @@ public class OnDemandScheduledExecutorService implements ScheduledExecutorServic
 
     @Override
     public ScheduledFuture<?> scheduleWithFixedDelay(Runnable command, long initialDelay, long delay, TimeUnit unit) {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override
     public void shutdown() {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override
     public List<Runnable> shutdownNow() {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override
     public boolean isShutdown() {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override
     public boolean isTerminated() {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override
     public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override
     public <T> Future<T> submit(Callable<T> task) {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override
     public <T> Future<T> submit(Runnable task, T result) {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override
     public Future<?> submit(Runnable task) {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override
     public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks) throws InterruptedException {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override
     public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks,
                                          long timeout,
                                          TimeUnit unit) throws InterruptedException {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override
     public <T> T invokeAny(Collection<? extends Callable<T>> tasks) throws InterruptedException, ExecutionException {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override
     public <T> T invokeAny(Collection<? extends Callable<T>> tasks,
                            long timeout,
                            TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override
     public void execute(Runnable command) {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not implemented yet");
     }
 
     public void runScheduledTasks() {

@@ -22,6 +22,7 @@ import com.vvygulyarniy.l2.gameserver.service.characters.InMemoryCharacterReposi
 import com.vvygulyarniy.l2.gameserver.session.HandshakeHandler;
 import com.vvygulyarniy.l2.gameserver.session.SessionManager;
 import com.vvygulyarniy.l2.gameserver.world.L2World;
+import com.vvygulyarniy.l2.gameserver.world.TickHandler;
 import com.vvygulyarniy.l2.gameserver.world.castle.CastleRegistry;
 import com.vvygulyarniy.l2.gameserver.world.castle.HardCodedCastleRegistry;
 import com.vvygulyarniy.l2.gameserver.world.config.npc.XmlNpcInfoRepository;
@@ -50,6 +51,8 @@ import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Clock;
+import java.time.Duration;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -80,13 +83,19 @@ public class SpringConfig {
     }
 
     @Bean
-    public L2World world(EventBus eventBus) throws JDOMException, IOException, URISyntaxException {
+    public L2World world(EventBus eventBus) {
         return new L2World(eventBus);
     }
 
     @Bean
     public CharRegenerationManager regenManager(EventBus bus, ScheduledExecutorService scheduler) {
         return new CharRegenerationManager(scheduler, bus, Clock.systemUTC(), 1000, MILLISECONDS);
+    }
+
+    @Bean
+    public TickHandler tickHandler(PositionManager positionManager, ScheduledExecutorService scheduler) {
+        long tickDelay = Duration.ofSeconds(1).dividedBy(TICKS_PER_SECOND).toMillis();
+        return new TickHandler(List.of(positionManager), scheduler, tickDelay, MILLISECONDS);
     }
 
     @Bean
@@ -212,14 +221,8 @@ public class SpringConfig {
     }
 
     @Bean
-    public PositionManager positionManager(GameTimeProvider gameTimeProvider,
-                                           EventBus eventBus,
-                                           ScheduledExecutorService scheduler) {
-        return new PositionManager(gameTimeProvider,
-                                   eventBus,
-                                   scheduler,
-                                   TICKS_PER_SECOND,
-                                   MILLISECONDS);
+    public PositionManager positionManager(GameTimeProvider gameTimeProvider, EventBus eventBus) {
+        return new PositionManager(gameTimeProvider, eventBus);
     }
 
     @Bean

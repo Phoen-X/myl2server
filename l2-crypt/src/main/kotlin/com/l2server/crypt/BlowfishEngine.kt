@@ -58,15 +58,15 @@ class BlowfishEngine {
     /**
      * apply the encryption cycle to each value pair in the table.
 
-     * @param xl
+     * @param left
      * *
-     * @param xr
+     * @param right
      * *
      * @param table
      */
-    private fun processTable(xl: Int, xr: Int, table: IntArray) {
-        var xl = xl
-        var xr = xr
+    private fun processTable(left: Int, right: Int, table: IntArray) {
+        var xl = left
+        var xr = right
         val size = table.size
         var s = 0
         while (s < size) {

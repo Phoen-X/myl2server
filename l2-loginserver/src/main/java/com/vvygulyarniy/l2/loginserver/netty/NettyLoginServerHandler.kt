@@ -38,7 +38,7 @@ class NettyLoginServerHandler(private val communicationManager: CommunicationMan
         log.info("Channel active: {}", ctx)
         val crypt = ctx.getCrypt()
 
-        val initPacket = Init(crypt.scrambledKeyPair.modulus, crypt.blowfishKey, ctx.getSessionId().toInt())
+        val initPacket = Init(crypt.scrambledKeyPair.modulus, crypt.blowfishKey, ctx.getSessionId().id)
 
         communicationManager.sendPacket(ctx.getSessionId(), initPacket)
     }

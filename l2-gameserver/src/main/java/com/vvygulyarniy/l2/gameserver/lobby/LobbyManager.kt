@@ -52,7 +52,7 @@ class LobbyManager(private val repo: CharactersRepository,
                                   accountId: AccountId,
                                   characters: List<CharSelectionInfo.CharacterInfo>,
                                   selectedCharId: Int = -1): CharSelectionInfo {
-        return CharSelectionInfo(sessionId.toInt(),
+        return CharSelectionInfo(sessionId.id,
                                  accountRepository.find(accountId)?.login,
                                  characters,
                                  selectedCharId)

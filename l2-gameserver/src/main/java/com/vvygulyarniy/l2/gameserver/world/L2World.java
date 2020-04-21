@@ -22,6 +22,7 @@ public class L2World {
     private final List<L2Player> onlinePlayers = new ArrayList<>();
     private final List<L2Npc> npcList = new ArrayList<>();
 
+
     public L2World(EventBus eventBus) {
         eventBus.register(this);
     }
@@ -47,8 +48,8 @@ public class L2World {
         playersLock.readLock().lock();
         try {
             onlinePlayers.stream()
-                         .filter(player -> player.getPosition().distanceTo(npc.getPosition()) < 900)
-                         .forEach(player -> player.send(new NpcInfo(npc)));
+                    .filter(player -> player.getPosition().distanceTo(npc.getPosition()) < 900)
+                    .forEach(player -> player.send(new NpcInfo(npc)));
         } finally {
             playersLock.readLock().unlock();
         }
@@ -62,4 +63,6 @@ public class L2World {
             playersLock.readLock().unlock();
         }
     }
+
+
 }
