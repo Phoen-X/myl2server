@@ -15,7 +15,6 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 
 import static com.vvygulyarniy.l2.gameserver.world.character.info.CharacterAppearance.Sex.MALE;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -29,7 +28,7 @@ public class PositionManagerTest {
         gameTime = new MutableGameTimeProvider();
         scheduler = new OnDemandScheduledExecutorService();
         eventBus = new EventBus("main");
-        new PositionManager(gameTime, eventBus, scheduler, 10, MILLISECONDS);
+        new PositionManager(gameTime, eventBus);
     }
 
     @Test
@@ -113,7 +112,7 @@ public class PositionManagerTest {
         l2Char.setPosition(startPosition);
 
         EventBus busMock = mock(EventBus.class);
-        PositionManager manager = new PositionManager(gameTime, busMock, scheduler, 1, MILLISECONDS);
+        PositionManager manager = new PositionManager(gameTime, busMock);
 
         // we imitate event occurrence as we have mock for EventBus
         manager.startMoving(new MoveRequested(l2Char, targetPosition));
